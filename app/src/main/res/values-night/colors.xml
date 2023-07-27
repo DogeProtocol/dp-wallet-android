@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Read only -->
+    <color name="colorAccent">#7d44aa</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDarkStart">#7d44aa</color>
+    <color name="colorPrimaryDarkCenter">#956FB4</color>
+    <color name="colorPrimaryDarkEnd">#9C82B1</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorBlock">#000000</color>
+    <color name="colorGray">#505051</color>
+
+    <!-- Change themes wise -->
+    <color name="colorEye">#CE93D8</color>
+    <color name="colorToastBackground">#EF9A9A</color>
+
+    <color name="colorProgressStart">#B09BDF</color>
+    <color name="colorProgressEnd">#00ffffff</color>
+
+    <color name="colorRectangleLine">#FAFAF8</color>
+
+    <color name="colorGainsboro">#80313030</color>
+    <color name="colorRedTwo">#FF7043</color>
+
+    <color name="colorGreenOne">#1AB664</color>
+    <color name="colorGreen">#038f07</color>
+
+    <color name="colorMilkWhite">#FAFAF8</color>
+
+
+    <color name="colorCommon1">#49154E</color>
+    <color name="colorCommon2">#8255C3</color>
+
+    <color name="colorCommon3">#FFFFFFFF</color>
+    <color name="colorCommon4">#dfdede</color>
+    <color name="colorCommon5">#f2f2f2</color>
+
+    <color name="colorCommon6">#FFFFFFFF</color>
+    <color name="colorCommon7">#000000</color>
+
+    <color name="colorCommon8">#D1C4E9</color>
+    <color name="colorCommon9">#F8BBD0</color>
+
+    <color name="colorCommon10">#000000</color>
+
+</resources>

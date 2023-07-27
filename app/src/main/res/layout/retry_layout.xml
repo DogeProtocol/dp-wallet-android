@@ -1,0 +1,66 @@
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_retry"
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/noconnection" />
+
+        <TextView
+            android:id="@+id/textview_title_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/general_connect_internet"
+            android:textColor="@color/colorCommon6"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/textview_subtitle_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/general_offline_access"
+            android:textColor="@color/colorCommon6"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/button_retry"
+            android:background="@drawable/button_square_selector"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:drawableLeft="@drawable/retry_icon"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:drawablePadding="5dp"
+            android:textAllCaps="false"
+            android:text="@string/general_retry"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>

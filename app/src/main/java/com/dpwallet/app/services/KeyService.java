@@ -1,0 +1,184 @@
+package com.dpwallet.app.services;
+
+import android.app.Activity;
+import android.content.Context;
+
+import com.dpwallet.app.entity.Result;
+import com.dpwallet.app.hybrid.IHybridPqcJNIImpl;
+
+
+public class KeyService implements IKeyService
+{
+    private Context context;
+    private Activity activity;
+
+    private IHybridPqcJNIImpl _iHybridPqcJNI = null;
+
+    public KeyService(IHybridPqcJNIImpl iHybridPqcJNI)
+    {
+        this._iHybridPqcJNI = iHybridPqcJNI;
+    }
+
+    @Override
+    public Result<Object> newAccount()
+    {
+        String[] keys = _iHybridPqcJNI.dpKeypair();
+        return new Result<Object>(getIntDataArray(keys[0]), null);
+    }
+
+    @Override
+    public Result<Object> signAccount(int[] message, int[] skKey)
+    {
+        String sign = _iHybridPqcJNI.dpSign(message, skKey);
+        return new Result<Object>(getIntDataArray(sign), null);
+    }
+
+    @Override
+    public Result<Object> verifyAccount(int[] message, int[] sign, int[] pkKey)
+    {
+        int result = _iHybridPqcJNI.dpSignVerify(message, sign, pkKey);
+        return new Result<Object>(result, null);
+    }
+
+    @Override
+    public Result<Object> publicKeyFromPrivateKey(int[] skKey)
+    {
+        String pk = _iHybridPqcJNI.dpPublicKeyFromPrivateKey(skKey);
+        return new Result<Object>(getIntDataArray(pk), null);
+    }
+
+    @Override
+    public Result<Object> getAccountAddress(int[] pkKey)
+    {
+        String[] apk = _iHybridPqcJNI.dpAddressFromPublicKey(pkKey);
+        String addressResult = apk[0];
+        String addressError = apk[1];
+
+        if(!addressResult.isEmpty()){
+            return new Result<Object>(addressResult, null);
+        }
+        return new Result<Object>(null, addressError);
+   }
+
+    @Override
+    public Result<Object> getTxMessage(String fromAddress, String nonce, String toAddress,
+                            String amount, String gas, String gasPrice, String data, String chainId)
+    {
+        String[] msg = _iHybridPqcJNI.dpTxMessage(fromAddress, nonce, toAddress, amount, gas, gasPrice, data, chainId);
+
+        int msgLen = msg[0].length();
+        int[] messageResult = new int[msgLen];
+        String messageError = msg[1];
+
+        for (int i = 0; i < msgLen; i++) {
+            int codePointAt = Character.codePointAt(msg[0], i);
+            messageResult[i] = codePointAt;
+        }
+
+        if(msgLen > 0 )
+        {
+            return new Result<Object>(messageResult, null);
+        }
+        return new Result<Object>(null, messageError);
+    }
+
+    @Override
+    public Result<Object> getTxHash(String fromAddress, String nonce, String toAddress,
+                         String amount, String gas, String gasPrice, String chainId,
+                         int[] pkKey, int[] sig)
+    {
+        String[] hash = _iHybridPqcJNI.dpTxHash(fromAddress, nonce, toAddress, amount, gas, gasPrice, "", chainId, pkKey, sig);
+        String hashResult = hash[0];
+        String hashError = hash[1];
+        if(!hashResult.isEmpty())
+        {
+            return new Result<Object>(hashResult, null);
+        }
+        return new Result<Object>(null, hashError);
+    }
+
+    @Override
+    public Result<Object> getTxData(String fromAddress, String nonce, String toAddress,
+                        String amount, String gas, String gasPrice, String chainId,
+                        int[] pkKey, int[] sig)
+    {
+        String[] data = _iHybridPqcJNI.dpTxData(fromAddress, nonce, toAddress, amount, gas, gasPrice, "", chainId, pkKey, sig);
+        String dataResult = data[0];
+        String dataError = data[1];
+        if(!dataResult.isEmpty())
+        {
+            return new Result<Object>(dataResult, null);
+        }
+        return new Result<Object>(null, dataError);
+    }
+
+
+    @Override
+    public Result<Object> unLockAccount(String encrypted_skKey, String password)
+    {
+        return new Result<Object>(0, null);
+    }
+
+    @Override
+    public Result<Object> importUnLockAccount(String encrypted_skKey, String password)
+    {
+        return new Result<Object>(0, null);
+    }
+
+    @Override
+    public Result<Object> storeAccountKey(String skKey, String password)
+    {
+        return new Result<Object>(0, null);
+    }
+
+    @Override
+    public Result<Object> getDogeProtocolToWei(String value)
+    {
+        String[] wei = _iHybridPqcJNI.dpDogeProtocolToWei(value);
+        String weiResult = wei[0];
+        String weiError = wei[1];
+        if(!weiResult.isEmpty())
+        {
+            return new Result<Object>(weiResult, null);
+        }
+        return new Result<Object>(null, weiError);
+    }
+
+    @Override
+    public Result<Object> getParseBigFloat(String value)
+    {
+        String[] parse = _iHybridPqcJNI.dpParseBigFloat(value);
+        String parseResult = parse[0];
+        String parseError = parse[1];
+        if(!parseResult.isEmpty())
+        {
+            return new Result<Object>(parseResult, null);
+        }
+        return new Result<Object>(null, parseError);
+    }
+
+    @Override
+    public Result<Object> getWeiToDogeProtocol(String value)
+    {
+        String[] dp = _iHybridPqcJNI.dpWeiToDogeProtocol(value);
+        String dpResult = dp[0];
+        String dpError = dp[1];
+        if(!dpResult.isEmpty())
+        {
+            return new Result<Object>(dpResult, null);
+        }
+        return new Result<Object>(null, dpError);
+    }
+
+
+    private int[] getIntDataArray(String d) {
+        String[] data = d.split(",");
+        int[] intData = new int[data.length];
+        for(int i = 0;i < intData.length;i++)
+        {
+            intData[i] = Integer.parseInt(data[i]);
+        }
+        return intData;
+    }
+
+}

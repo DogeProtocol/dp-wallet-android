@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:background="@color/colorCommon10">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/qrcode_container"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView_qr_code_dialog_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.2"
+                android:background= "@color/colorGray" />
+
+            <TextView
+                android:id="@+id/textView_qr_code_dialog_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:text="@string/qr_code_dialog_close"
+                android:textSize="25dp"
+                android:textAlignment="center"
+                android:textColor = "@color/colorGray"
+                android:background="@drawable/image_selector" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transactions_list_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal" >
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/imageView_account_transactions_adapter_inout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:padding="10dp"
+            android:src="@drawable/arrow_up_circle_outline"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView_account_transactions_adapter_trans_hash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="@color/colorCommon8"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView_account_transactions_adapter_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:gravity="center"
+            android:textSize="11dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView_account_transactions_adapter_from"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="@color/colorCommon8" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView_account_transactions_adapter_to"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="@color/colorCommon8" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView_account_transactions_adapter_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight= "1"
+            android:textSize="10dp"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/separator_line_vertical"
+            android:alpha="0.15"
+            android:layout_alignParentEnd="true" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:alpha="0.2"
+        android:background="@drawable/line_2_shape" />
+
+</LinearLayout>

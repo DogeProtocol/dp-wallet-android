@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:aapt="http://schemas.android.com/aapt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linerLayout_account_transactions_offline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical|center_horizontal"
+            android:visibility="gone">
+                <include layout="@layout/retry_layout"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linerLayout_account_transactions_offline">
+
+          <!--  <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"> -->
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/top_linear_layout_account_transactions_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/transparent">
+
+                    <ImageButton
+                        android:id="@+id/imageButton_account_transactions_back_arrow"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:padding="5dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="left"
+                        android:background="@drawable/image_selector"
+                        android:src="@drawable/arrow_back_circle_outline"
+                        app:tint="@color/colorCommon6"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/middle_linear_layout_account_transactions_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/top_linear_layout_account_transactions_id"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/transparent"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/transaction_title"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+
+                    <ImageButton
+                        android:id="@+id/imageButton_account_transactions_refresh"
+                        android:layout_width="40dp"
+                        android:layout_height="41dp"
+                        android:padding="5dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/image_selector"
+                        android:src="@drawable/retry"
+                        app:tint="@color/colorCommon6" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/middle_linear_layout_account_transactions_id"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/center_container">
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3dp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/table_header_linear_layout_account_transactions_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="horizontal">
+
+                            <ToggleButton
+                                android:id="@+id/toggleButton_account_transactions_completed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAllCaps="false"
+                                android:text="@string/transaction_completed_title"
+                                android:textStyle="bold"
+                                android:textSize="14dp"
+                                android:textColor="@color/colorCommon2"
+                                android:textOn="@string/transaction_completed_title"
+                                android:textOff="@string/transaction_completed_title"
+                                android:checked="true"
+                                android:background="@drawable/toggle_selector"/>
+
+                            <ToggleButton
+                                android:id="@+id/toggleButton_account_transactions_pending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAllCaps="false"
+                                android:text="@string/transaction_completed_title"
+                                android:textSize="14dp"
+                                android:textColor="@color/colorCommon3"
+                                android:textOn="@string/transaction_pending_title"
+                                android:textOff="@string/transaction_pending_title"
+                                android:checked="false"
+                                android:background="@drawable/toggle_selector"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/table_body_linear_layout_account_transactions_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/table_header_linear_layout_account_transactions_id"
+                            android:layout_above="@+id/table_bottom_linear_layout_account_transactions_id"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <include layout="@layout/account_transactions_header"/>
+
+                            </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_account_transactions"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingBottom="50dp"
+                                    android:clipToPadding="false"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/table_bottom_linear_layout_account_transactions_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/materialButtonToggleGroup_account_transactions_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="10dp"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/materialButton_account_transactions_previous"
+                                style="@style/BottomSegmentedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/transaction_previous_title"
+                                android:textAllCaps="false" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/materialButton_account_transactions_next"
+                                style="@style/BottomSegmentedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/transaction_next_title"
+                                android:textAllCaps="false" />
+
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress_loader_account_transactions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_alignParentBottom="false"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    android:max="100"
+                    android:progress="0"
+                    android:background="@android:color/transparent"
+                    android:indeterminateDrawable="@drawable/progress" />
+
+            </RelativeLayout>
+
+         <!--   </ScrollView> -->
+
+        </LinearLayout>
+
+    </RelativeLayout>
