@@ -159,7 +159,7 @@ public class AccountTransactionsFragment extends Fragment  {
 
                 pendingToggleButton.setChecked(false);
                 pendingToggleButton.setTypeface(pendingToggleButton.getTypeface(), Typeface.NORMAL);
-                pendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon10));
+                pendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon3));
 
                 transactionStatus = 0;
                 pageIndex = 1;
