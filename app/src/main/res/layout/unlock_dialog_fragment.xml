@@ -89,7 +89,6 @@
                     android:orientation="horizontal">
                     <Button
                         android:id="@+id/button_unlock_close"
-                        android:background="@drawable/button_dark_pink_selector"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -97,7 +96,8 @@
                         android:padding="5dp"
                         android:textAllCaps="false"
                         android:text="@string/unlock_button_close_title"
-                        android:textColor="@color/colorCommon7" />
+                        android:textColor="@color/colorCommon7"
+                        android:backgroundTint="@drawable/button_green_selector"/>
 
                     <View
                         android:layout_width="1dp"
@@ -106,15 +106,15 @@
 
                     <Button
                         android:id="@+id/button_unlock_unlock"
-                        android:background="@drawable/button_green_selector"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_margin="1dp"
                         android:padding="5dp"
                         android:textAllCaps="false"
                         android:text="@string/unlock_button_unlock_title"
-                        android:textColor="@color/colorCommon7" />
+                        android:textColor="@color/colorCommon7"
+                        android:backgroundTint="@drawable/button_green_selector"/>
 
                 </LinearLayout>
 

@@ -221,7 +221,7 @@ public class SendFragment extends Fragment  {
                 public void onClick(View v) {
                     //Check Password
                     String password = passwordEditText.getText().toString();
-                    if(password.trim().length() < GlobalMethods.MINIMUM_PASSWORD_LENGTH) {
+                    if (password == null || password.isEmpty()) {
                         messageDialogFragment(getResources().getString(
                                 R.string.unlock_password_empty_message));
                         return;
@@ -308,13 +308,14 @@ public class SendFragment extends Fragment  {
                 int[] SK_KEY = keyViewModel.decryptDataByAccount(context, fromAddress, password);
                 getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, dp_wei, SK_KEY, password);
             }
+            return;
         } catch (KeyServiceException e){
-            progressBar.setVisibility(View.GONE);
-            GlobalMethods.ExceptionError(getContext(), TAG, e);
+
         }catch (InvalidKeyException e){
-            progressBar.setVisibility(View.GONE);
-            GlobalMethods.ExceptionError(getContext(), TAG, e);
+
         }
+        progressBar.setVisibility(View.GONE);
+        messageDialogFragment(getResources().getString(R.string.unlock_password_wrong_message));
     }
 
     private  void getBalanceNonceByAccount(Context context, ProgressBar progressBar, String fromAddress, String toAddress,
@@ -424,7 +425,7 @@ public class SendFragment extends Fragment  {
                         context, new TransactionRestTask.TaskListener() {
                     @Override
                     public void onFinished(TransactionSummaryResponse transactionSummaryResponse) {
-                        mSendListener.onSendComplete(password);
+                        sendCompletedDialogFragment(context,password);
                     }
                     @Override
                     public void onFailure(com.dpwallet.app.api.write.ApiException e) {
@@ -454,5 +455,31 @@ public class SendFragment extends Fragment  {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
+
+
+    private void sendCompletedDialogFragment(Context context, String password) {
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle((CharSequence) "").setView((int)
+                            R.layout.send_completed_dialog_fragment).create();
+            dialog.setCancelable(false);
+            dialog.show();
+
+            TextView textViewOk = (TextView) dialog.findViewById(
+                    R.id.textView_send_completed_alert_dialog_ok);
+
+            textViewOk.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    mSendListener.onSendComplete(password);
+                }
+            });
+
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getContext(), TAG, e);
+        }
+    }
+
+
 
 }

@@ -112,7 +112,7 @@
     <string name="unlock_button_close_title">Close</string>string>
 
     <string name="unlock_password_empty_message">Enter the password!</string>
-
+    <string name="unlock_password_wrong_message">Could not unlock the wallet with the password. Please try again!</string>
     <string name="unlock_message_description">Sign verification failed!</string>
 
     <!-- Receive fragment -->
@@ -140,7 +140,6 @@
 
     <string name="setting_dialog_message_exits">Processing...</string>
 
-
     <!-- send fragment -->
     <string name="send_title">Send</string>
     <string name="send_description">Send coins to someone!</string>
@@ -162,6 +161,7 @@
     <string name="send_transaction_sample_address1_description">0xf3a5018b6d38549459880bdc3bfedd2a7bae2c9e</string>
     <string name="send_transaction_sample_address2_description">0x34bf2610320df478e617f3f496952edd8c80a9a4</string>
 
+    <string name="send_transaction_send_message_description">Your transaction was submitted. It can take a few seconds to process the transaction.</string>
 
     <!-- transaction fragment -->
     <string name="transaction_title">Transaction</string>
@@ -208,7 +208,5 @@
     <string name="downloadCompleted">Download Completed…</string>
     <string name="downloadFailed">Download Failed…</string>
     <string name="downloadAgain">Download Again</string>
-
-
 
 </resources>

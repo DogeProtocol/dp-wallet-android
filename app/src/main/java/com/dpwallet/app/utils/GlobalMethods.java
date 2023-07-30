@@ -38,6 +38,7 @@ public class GlobalMethods {
     public static String CHAIN_ID = "36996";
     public static String GAS = "21000";
     public static String GAS_PRICE = "1000000000";
+
     //public static String NONCE = "0";
 
     public static int DURATION = 20;
