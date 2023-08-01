@@ -42,6 +42,9 @@ android {
     }
 }
 
+//Notification
+def core_version = "1.6.0"
+
 dependencies {
     //implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.appcompat:appcompat:1.6.0'
@@ -92,4 +95,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+
+    //Notification
+    implementation "androidx.core:core:$core_version"
 }

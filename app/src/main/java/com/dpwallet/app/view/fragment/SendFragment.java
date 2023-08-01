@@ -35,6 +35,7 @@ public class SendFragment extends Fragment  {
     private static final String TAG = "SendFragment";
 
     private int retryStatus = 0;
+    private int sendButtonStatus = 0;
 
     private LinearLayout linerLayoutOffline;
     private ImageView imageViewRetry;
@@ -103,6 +104,10 @@ public class SendFragment extends Fragment  {
             sendButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     try {
+                        if(sendButtonStatus == 1){
+                            return;
+                        }
+                        sendButtonStatus = 1;
                         String message = getResources().getString(R.string.send_address_message_description);
                         if (toAddressEditText.getText().toString().startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
                             if (toAddressEditText.getText().toString().length() == GlobalMethods.ADDRESS_LENGTH) {
@@ -128,6 +133,7 @@ public class SendFragment extends Fragment  {
                             }
                         }
                         messageDialogFragment(message);
+                        sendButtonStatus = 0;
                     }catch (Exception e){
                         GlobalMethods.ExceptionError(getContext(), TAG, e);
                     }
@@ -193,6 +199,7 @@ public class SendFragment extends Fragment  {
         try {
             Bundle bundleRoute = new Bundle();
             bundleRoute.putString("message", message);
+
             FragmentManager fragmentManager  = getFragmentManager();
             MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
             messageDialogFragment.setCancelable(false);
@@ -210,6 +217,7 @@ public class SendFragment extends Fragment  {
             AlertDialog dialog = new AlertDialog.Builder(getContext())
                     .setTitle((CharSequence) "").setView((int)
                             R.layout.unlock_dialog_fragment).create();
+            dialog.dismiss();
             dialog.setCancelable(false);
             dialog.show();
 
@@ -226,15 +234,19 @@ public class SendFragment extends Fragment  {
                                 R.string.unlock_password_empty_message));
                         return;
                     }
+                    if(sendButtonStatus == 1){
                         dialog.dismiss();
                         sendTransaction(getContext(), progressBarSendCoins,
-                                walletAddress, toAddress, dp_wei, password);
+                                walletAddress, toAddress, dp_wei, password.trim());
+                    }
+                    sendButtonStatus = 2;
                 }
             });
 
             closeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     dialog.dismiss();
+                    sendButtonStatus = 0;
                 }
             });
 
@@ -315,6 +327,7 @@ public class SendFragment extends Fragment  {
 
         }
         progressBar.setVisibility(View.GONE);
+        sendButtonStatus = 0;
         messageDialogFragment(getResources().getString(R.string.unlock_password_wrong_message));
     }
 
@@ -332,11 +345,14 @@ public class SendFragment extends Fragment  {
                         context, new AccountBalanceRestTask.TaskListener() {
                     @Override
                     public void onFinished(BalanceResponse balanceResponse) {
-                        getTxData(context, progressBar, balanceResponse, fromAddress, toAddress, dp_wei, SK_KEY, password);
+                        getTxData(context, progressBar, balanceResponse, fromAddress, toAddress,
+                                dp_wei, SK_KEY, password);
                     }
                     @Override
                     public void onFailure(com.dpwallet.app.api.read.ApiException e) {
                         progressBar.setVisibility(View.GONE);
+                        sendButtonStatus = 0;
+
                         int code = e.getCode();
                         boolean check = GlobalMethods.ApiExceptionSourceCodeBoolean(code);
                         if(check == true) {
@@ -354,12 +370,16 @@ public class SendFragment extends Fragment  {
                 task.execute(taskParams);
             } else {
                 progressBar.setVisibility(View.GONE);
+                sendButtonStatus = 0;
+
                 GlobalMethods.OfflineOrExceptionError(getContext(),
                         linerLayoutOffline, imageViewRetry, textViewTitleRetry,
                         textViewSubTitleRetry, false);
             }
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
+            sendButtonStatus = 0;
+
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
@@ -367,7 +387,6 @@ public class SendFragment extends Fragment  {
     private  void getTxData(Context context, ProgressBar progressBar, BalanceResponse balanceResponse,
                             String fromAddress, String toAddress, String dp_wei,
                             int[] SK_KEY, String password){
-
         try {
             String NONCE = "0";
 
@@ -393,25 +412,19 @@ public class SendFragment extends Fragment  {
 
                 transactionByAccount(context, progressBar, txData, password);
             } else {
-                Bundle bundleRoute = new Bundle();
-                String information = getResources().getString(R.string.unlock_message_description);
-                bundleRoute.putString("message", information);
-                FragmentManager fragmentManager  = getFragmentManager();
-                MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
-                messageDialogFragment.setCancelable(false);
-                messageDialogFragment.setArguments(bundleRoute);
-                messageDialogFragment.show(fragmentManager, "");
+                messageDialogFragment(getResources().getString(R.string.unlock_message_description));
+                progressBar.setVisibility(View.GONE);
+                sendButtonStatus = 0;
             }
-
         } catch (ServiceException e) {
             progressBar.setVisibility(View.GONE);
+            sendButtonStatus = 0;
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
 
     private  void transactionByAccount(Context context, ProgressBar progressBar, String txData, String password) {
         try{
-
             retryStatus = 1;
 
             linerLayoutOffline.setVisibility(View.GONE);
@@ -430,6 +443,8 @@ public class SendFragment extends Fragment  {
                     @Override
                     public void onFailure(com.dpwallet.app.api.write.ApiException e) {
                         progressBar.setVisibility(View.GONE);
+                        sendButtonStatus = 0;
+
                         int code = e.getCode();
                         boolean check = GlobalMethods.ApiExceptionSourceCodeBoolean(code);
                         if(check == true) {
@@ -446,12 +461,15 @@ public class SendFragment extends Fragment  {
                 task.execute(taskParams);
             } else {
                 progressBar.setVisibility(View.GONE);
+                sendButtonStatus = 0;
+
                 GlobalMethods.OfflineOrExceptionError(getContext(),
                         linerLayoutOffline, imageViewRetry, textViewTitleRetry,
                         textViewSubTitleRetry, false);
             }
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
+            sendButtonStatus = 0;
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
@@ -470,6 +488,7 @@ public class SendFragment extends Fragment  {
 
             textViewOk.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    sendButtonStatus = 0;
                     dialog.dismiss();
                     mSendListener.onSendComplete(password);
                 }
@@ -479,7 +498,4 @@ public class SendFragment extends Fragment  {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
-
-
-
 }

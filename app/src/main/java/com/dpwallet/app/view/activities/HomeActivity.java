@@ -1,10 +1,18 @@
 package com.dpwallet.app.view.activities;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +27,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -50,10 +62,15 @@ import com.dpwallet.app.view.fragment.TestnetCoinsFragment;
 
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class HomeActivity extends FragmentActivity implements
         HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeNewWalletFragment.OnHomeNewWalletCompleteListener,
@@ -64,6 +81,7 @@ public class HomeActivity extends FragmentActivity implements
         TestnetCoinsFragment.OnTestnetCoinsCompleteListener, SettingsFragment.OnSettingsCompleteListener {
 
     private static final String TAG = "HomeActivity";
+    private final int notificationRequestCode = 112;
 
     private LinearLayout topLinearLayout;
     private ViewGroup.LayoutParams topLinearLayoutParams;
@@ -127,6 +145,14 @@ public class HomeActivity extends FragmentActivity implements
             Button buttonRetry = (Button) findViewById(R.id.button_retry);
 
             setWalletAddress();
+
+            //Notification permission
+            if (Build.VERSION.SDK_INT >= 33) {
+                if (ContextCompat.checkSelfPermission(this,  android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS},notificationRequestCode);
+                }
+                createNotificationChannel();
+            }
 
             //Center buttons setOnClickListener
             copyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +251,7 @@ public class HomeActivity extends FragmentActivity implements
                 if (walletAddress.length()>10) {
                     screenViewType(0);
                     beginTransaction(HomeFragment.newInstance(), bundle);
+                    notificationThread(1);
                 } else {
                     bundle.putString("screenStart", "1");
                     screenViewType(1);
@@ -328,10 +355,9 @@ public class HomeActivity extends FragmentActivity implements
     @Override
     public void onTestnetCoinsComplete() {
         try{
-           //// screenViewType(1);
-          ////  beginTransaction(ExportWalletFragment.newInstance(), bundle);
-             screenViewType(0);
-             beginTransaction(HomeFragment.newInstance(), bundle);
+            screenViewType(0);
+            beginTransaction(HomeFragment.newInstance(), bundle);
+            notificationThread(0);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -651,6 +677,112 @@ public class HomeActivity extends FragmentActivity implements
         } else {
             GlobalMethods.ShowToast(getApplicationContext(), "Oops!! There is no SD Card.");
         }
+    }
+
+
+    //Notification
+    private void notificationThread(int accountStatus) {
+        try {
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    //boolean threadStop = false;
+                    final int TIME_SLEEP = 5000;
+                    final String[] previewsQuantity = new String[1];
+                    String[] currentQuantity = new String[1];
+
+                    //New account
+                    if(accountStatus == 0){
+                        previewsQuantity[0] = "0";
+                    }
+
+                    try {
+                        while (true) {
+
+                            if (walletAddress.length()<10){
+                                break;
+                            }
+
+                            String[] taskParams = { walletAddress };
+
+                            AccountBalanceRestTask task = new AccountBalanceRestTask(
+                                    getApplicationContext(), new AccountBalanceRestTask.TaskListener() {
+                                @Override
+                                public void onFinished(BalanceResponse balanceResponse) throws ServiceException {
+                                    if (balanceResponse.getResult().getBalance() != null) {
+                                        String value = balanceResponse.getResult().getBalance().toString();
+                                        KeyViewModel keyViewModel = new KeyViewModel();
+                                        currentQuantity[0] = (String) keyViewModel.getWeiToDogeProtocol(value);
+                                        if(previewsQuantity[0] != null) {
+                                            if(!previewsQuantity[0].equals(currentQuantity[0])) {
+                                                balanceTextView.setText(currentQuantity[0]);
+                                                sendNotificationChannel(getApplicationContext().getString(R.string.notification_description) + " " + currentQuantity[0]);
+                                            }
+                                        }
+                                        previewsQuantity[0] = currentQuantity[0];
+                                    }
+                                }
+                                @Override
+                                public void onFailure(com.dpwallet.app.api.read.ApiException e) {
+
+                                }
+                            });
+
+                            task.execute(taskParams);
+
+                            Thread.sleep(TIME_SLEEP);
+                        }
+                    } catch (Exception e) {
+                        GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
+                    }
+                }
+            };
+            thread.start();
+        }catch (Exception e) {
+            GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notification_channel_name);
+            String description = getString(R.string.notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.notification_channel_id), name, importance
+            );
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendNotificationChannel(String content) {
+        String title = getResources().getString(R.string.notification_title);
+        String channelId = getResources().getString(R.string.notification_channel_id);
+        int priority = NotificationCompat.PRIORITY_DEFAULT;
+        int notificationID = notificationRequestCode;
+
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationRequestCode,
+                intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), channelId)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
+                        .setContentIntent(pendingIntent)
+                        .setPriority(priority)
+                        .setContentTitle(title)
+                        .setContentText(content)
+                        .setAutoCancel(true)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        // Since android Oreo notification channel is needed.
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationID, notificationBuilder.build());
     }
 
 /*
