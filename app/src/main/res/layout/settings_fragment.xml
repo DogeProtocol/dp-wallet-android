@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linerLayout_setting_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone">
+
+        <include layout="@layout/retry_layout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linerLayout_setting_offline">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/top_linear_layout_setting_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/transparent">
+                    <ImageButton
+                        android:id="@+id/imageButton_setting_back_arrow"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:padding="5dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="left"
+                        android:background="@drawable/image_selector"
+                        android:src="@drawable/arrow_back_circle_outline"
+                        app:tint="@color/colorCommon6"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/middle_linear_layout_setting_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/top_linear_layout_setting_id"
+                    android:background="@android:color/transparent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting_title"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+               </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_below="@+id/middle_linear_layout_setting_id"
+                    android:background="@drawable/center_container">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/button_settings_export_wallet"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/image_selector"
+                                android:drawableRight="@drawable/chevron_right"
+                                android:drawableTint="@color/colorCommon4"
+                                android:drawablePadding="5dp"
+                                android:paddingTop="5dp"
+                                android:gravity="left|center_vertical"
+                                android:textAllCaps="false"
+                                android:text="@string/setting_title_export_wallet"
+                                android:visibility="gone"/>
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:alpha="0.2"
+                                android:background="@drawable/line_2_shape"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="horizontal">
+
+                                <ProgressBar
+                                    android:id="@+id/progress_settings_request_test_loader"
+                                    android:layout_width="25dp"
+                                    android:layout_height="26dp"
+                                    android:padding="5dp"
+                                    android:indeterminate="true"
+                                    android:visibility="gone"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:background="@android:color/transparent"
+                                    android:indeterminateDrawable="@drawable/progress" />
+
+                                <Button
+                                    android:id="@+id/button_settings_request_test_coins"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/image_selector"
+                                    android:drawableRight="@drawable/chevron_right"
+                                    android:drawableTint="@color/colorCommon4"
+                                    android:drawablePadding="5dp"
+                                    android:paddingTop="5dp"
+                                    android:gravity="left|center_vertical"
+                                    android:textAllCaps="false"
+                                    android:text="@string/setting_title_request_test_coins" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:alpha="0.2"
+                                android:background="@drawable/line_2_shape" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="horizontal">
+
+                                <ProgressBar
+                                    android:id="@+id/progress_settings_delete_wallet_loader"
+                                    android:layout_width="25dp"
+                                    android:layout_height="26dp"
+                                    android:padding="5dp"
+                                    android:indeterminate="true"
+                                    android:visibility="gone"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:background="@android:color/transparent"
+                                    android:indeterminateDrawable="@drawable/progress" />
+
+                                <Button
+                                    android:id="@+id/button_settings_delete_wallet"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/image_selector"
+                                    android:drawableRight="@drawable/chevron_right"
+                                    android:drawableTint="@color/colorCommon4"
+                                    android:drawablePadding="5dp"
+                                    android:paddingTop="5dp"
+                                    android:gravity="left|center_vertical"
+                                    android:textAllCaps="false"
+                                    android:text="@string/setting_title_delete_wallet" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

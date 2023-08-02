@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+  <!--
+  <color name="colorPrimary">#008577</color>
+  <color name="colorPrimaryDark">#00574B</color>
+  <color name="colorDarkPink">#D81B60</color>
+
+  <color name="colorPrimaryDark">#7d44aa</color>
+  <color name="colorPrimaryDarkStart">#7d44aa</color>
+  <color name="colorPrimaryDarkCenter">#956FB4</color>
+  <color name="colorPrimaryDarkEnd">#9C82B1</color>
+
+  <color name="colorAccent">#7d44aa</color>
+  <color name="purple_200">#FFBB86FC</color>
+  <color name="purple_500">#FF6200EE</color>
+  <color name="purple_700">#FF3700B3</color>
+
+
+
+  <color name="teal_200">#FF03DAC5</color>
+  <color name="teal_700">#FF018786</color>
+  <color name="black">#FF000000</color>
+  <color name="white">#FFFFFFFF</color>
+
+  <color name="viewBGColor">#F7F9FB</color>
+  <color name="light_color">#323238</color>
+
+  <color name="colorGrayTwo">#f2f2f2</color>
+  <color name="colorBlack">#000000</color>
+  <color name="colorWhite">#FFFFFFFF</color>
+  <color name="colorGray">#dfdede</color>
+  <color name="colorMilkWhite">#FAFAF8</color>
+
+  <color name="colorGainsboro">#EDEDF5</color>
+
+  <color name="colorRedTwo">#e20c0c</color>
+
+  <color name="colorDialogGray">#5C5C5E</color>
+  <color name="colorDarkGray">#807d7d</color>
+
+
+
+  <color name="colorGreenOne">#1AB664</color>
+  <color name="colorGreen">#038f07</color>
+  <color name="colorGreenTwo">#4da300</color>
+
+  <color name="darkGrayColor">#372339</color>
+
+  <color name="colorFillSend">#FFB400</color>
+
+  -->
+  <!-- Read only -->
+  <color name="colorAccent">#7d44aa</color>
+  <color name="colorPrimaryDark">#00574B</color>
+  <color name="colorPrimaryDarkStart">#7d44aa</color>
+  <color name="colorPrimaryDarkCenter">#956FB4</color>
+  <color name="colorPrimaryDarkEnd">#9C82B1</color>
+  <color name="colorWhite">#FFFFFFFF</color>
+  <color name="colorBlock">#000000</color>
+  <color name="colorGray">#505051</color>
+
+  <!-- Change themes wise -->
+  <color name="colorEye">#D81B60</color>
+  <color name="colorToastBackground">#D81B60</color>
+
+  <color name="colorProgressStart">#FF3700B3</color>
+  <color name="colorProgressEnd">#00ffffff</color>
+
+  <color name="colorRectangleLine">#323238</color>
+
+  <color name="colorGainsboro">#EDEDF5</color>
+  <color name="colorRedTwo">#e20c0c</color>
+
+  <color name="colorGreenOne">#1AB664</color>
+  <color name="colorGreen">#038f07</color>
+
+  <color name="colorMilkWhite">#FAFAF8</color>
+
+  <color name="colorCommon1">#372339</color>
+  <color name="colorCommon2">#FF6200EE</color>
+
+  <color name="colorCommon3">#807d7d</color>
+  <color name="colorCommon4">#dfdede</color>
+  <color name="colorCommon5">#f2f2f2</color>
+
+  <color name="colorCommon6">#000000</color>
+  <color name="colorCommon7">#FFFFFFFF</color>
+
+  <color name="colorCommon8">#FF3700B3</color>
+  <color name="colorCommon9">#D81B60</color>
+
+  <color name="colorCommon10">#5C5C5E</color>
+
+</resources>

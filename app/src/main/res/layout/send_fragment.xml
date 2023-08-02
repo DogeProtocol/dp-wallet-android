@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/linerLayout_send_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone">
+
+        <include layout="@layout/retry_layout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linerLayout_send_offline">
+
+        <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top_linear_layout_send_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent">
+
+                <ImageButton
+                    android:id="@+id/imageButton_send_back_arrow"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="left"
+                    android:background="@drawable/image_selector"
+                    android:src="@drawable/arrow_back_circle_outline"
+                    app:tint="@color/colorCommon6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_linear_layout_send_id"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/center_container">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/send_title"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorCommon6"/>
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:textSize="16dp"
+                            android:text="@string/send_description"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="left|center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:text="@string/send_available_balance_title"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left|center_vertical"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/textView_send_balance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:textSize="20dp"
+                                    android:text="0"/>
+
+                                <ProgressBar
+                                    android:id="@+id/progress_send_loader"
+                                    android:layout_width="25dp"
+                                    android:layout_height="26dp"
+                                    android:padding="5dp"
+                                    android:indeterminate="true"
+                                    android:visibility="gone"
+                                    android:max="100"
+                                    android:progress="0"
+                                    android:background="@android:color/transparent"
+                                    android:indeterminateDrawable="@drawable/progress" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16dp"
+                            android:text="@string/send_to_address_title"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/editText_send_to_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_weight="1"
+                                android:padding="5dp"
+                                android:inputType="text"
+                                android:textSize="14dp"
+                                android:hint="@string/send_to_address_description"
+                                android:maxLines="1"
+                                android:background="@drawable/text_input_selector"  />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:background="@drawable/image_selector"
+                                android:src="@android:drawable/ic_menu_camera"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16dp"
+                            android:text="@string/send_quantity_title"/>
+
+                        <EditText
+                            android:id="@+id/editText_send_quantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|left"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp"
+                            android:padding="5dp"
+                            android:hint="@string/send_quantity_description"
+                            android:maxLines="1"
+                            android:ems="10"
+                            android:textSize="14dp"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:background="@drawable/text_input_selector"  />
+
+                        <Button
+                            android:id="@+id/button_send_send"
+                            android:background="@drawable/button_green_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:padding="5dp"
+                            android:textAllCaps="false"
+                            android:text="@string/send_button_send_title"
+                            android:textColor="@color/colorCommon7" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textSize="12dp"
+                            android:textColor="@color/colorRedTwo"
+                            android:text="@string/send_transaction_sample_message_description"/>
+
+                        <TextView
+                            android:id="@+id/textView_send_sample_address1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/image_selector"
+                            android:textSize="10dp"
+                            android:text="@string/send_transaction_sample_address1_description"/>
+
+                        <TextView
+                            android:id="@+id/textView_send_sample_address2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/image_selector"
+                            android:textSize="10dp"
+                            android:text="@string/send_transaction_sample_address2_description"/>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_loader_send_coins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_alignParentBottom="true"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:max="100"
+                android:progress="0"
+                android:background="@android:color/transparent"
+                android:indeterminateDrawable="@drawable/progress" />
+
+        </RelativeLayout>
+
+      </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

@@ -1,0 +1,220 @@
+<resources>
+    <string name="app_name" translatable="false">DP Wallet</string>
+
+    <string name="cannot_read_encrypt_file">Wallet can not read encrypted key; re-import required.</string>
+    <string name="authentication_error">Authentication to unlock key not provided or timed out. Please try again.</string>
+    <string name="device_security_changed">Since this key was created the mobile device security has changed and the OS has invalidated the key. Please re-import your key.</string>
+
+    <!-- Home -->
+    <string name="home_title">Doge Protocol Wallet</string>
+    <string name="home_total_balance_title">Total Balance</string>
+
+    <!-- Home new fragment -->
+    <string name="home_new_title_1">Welcome 1 of 5</string>
+    <string name="home_new_sub_title_1">Important, Please Read!</string>
+    <string name="home_new_description_1">You are about to create to a quantum resistant wallet. Do not send Ethereum or other coins or tokens to this wallet address!</string>
+    <string name="home_new_button_next_1">Next >></string>
+
+    <string name="home_new_title_2">Welcome 2 of 5</string>
+    <string name="home_new_sub_title_2">Anti Virus</string>
+    <string name="home_new_description_2">Make sure that your computer or laptop or device has anti-virus software installed and enabled!</string>
+    <string name="home_new_button_next_2">Next >></string>
+
+    <string name="home_new_title_3">Welcome 3 of 5</string>
+    <string name="home_new_sub_title_3">Passwords</string>
+    <string name="home_new_description_3">Make sure that you use strong and long passwords. Remember the password that you use and do not forget!</string>
+    <string name="home_new_button_next_3">Next >></string>
+
+    <string name="home_new_title_4">Welcome 4 of 5</string>
+    <string name="home_new_sub_title_4">Backups</string>
+    <string name="home_new_description_4">Backup your wallet and keep it safe offline. Keep atleast 3 copies of your wallets in different places offline.</string>
+    <string name="home_new_button_next_4">Next >></string>
+
+    <string name="home_new_title_5">Welcome 5 of 5</string>
+    <string name="home_new_sub_title_5">Safety</string>
+    <string name="home_new_description_5">Do not share your wallet or passwords with anyone. Scammers often offer to help but might steal your wallet!</string>
+    <string name="home_new_button_Ok_5">I understand</string>
+
+    <string name="home_new_title_6">Safety Quiz</string>
+    <string name="home_new_sub_title_6">Wallet</string>
+    <string name="home_new_description_6">What coins or tokens can you send to this wallet?</string>
+    <string name="home_new_option_1_6">Ethereum</string>
+    <string name="home_new_option_2_6">DogeP Tokens</string>
+    <string name="home_new_option_3_6">DP Testnet Coins</string>
+    <string name="home_new_option_4_6">All the above</string>
+    <string name="home_new_button_Submit_6">Submit</string>
+
+    <string name="home_new_title_7">Wallet</string>
+    <string name="home_new_description_7">You can create a new wallet an existing DP Test Coin Wallet. Do not import your DogeP token or Ethereum wallet!</string>
+    <string name="home_new_button_wallet_7">Create A New Wallet</string>
+    <string name="home_import_button_wallet_7">Import An Existing Wallet</string>
+
+    <string name="home_safety_quiz_message_correct">That is correct. You should send only DP Testnet Coins to this wallet.</string>string>
+    <string name="home_safety_quiz_message_wrong">That is wrong! Please read the question carefully and try again.</string>
+
+    <!-- Home new wallet fragment -->
+    <string name="home_new_wallet_title">Create New Wallet</string>
+    <string name="home_new_wallet_description">Use a strong and long password. And do not forget it!</string>
+    <string name="home_new_wallet_password_title">Password</string>
+    <string name="home_new_wallet_password_description">Enter a password</string>
+    <string name="home_new_wallet_retype_password_title">Retype Password</string>
+    <string name="home_new_wallet_retype_password_description">Retype the password</string>
+    <string name="home_new_wallet_create_title">Create Wallet</string>
+
+    <string name="home_new_wallet_password_minimum_message">Password should be minimum 16 characters in length!</string>
+    <string name="home_new_wallet_password_mismatch_message">Passwords don\'t match!</string>
+    <string name="home_new_wallet_message_exits">Processing...</string>
+
+    <!-- Home import wallet fragment -->
+    <string name="home_import_wallet_title">Import Wallet</string>
+    <string name="home_import_wallet_description">You can import only Doge Protocol Testnet wallet. Do not import your Ethereum or DogeP token or other wallets!</string>
+    <string name="home_import_wallet_password_title">Password</string>
+    <string name="home_import_wallet_password_description">Enter the wallet password</string>
+    <string name="home_import_wallet_file_title">Select a wallet file</string>
+    <string name="home_import_wallet_import">Import</string>
+
+    <string name="home_import_wallet_password_minimum_message">Password should be minimum 16 characters in length!</string>
+
+
+    <!-- export wallet fragment -->
+    <string name="export_wallet_title">Export Wallet</string>
+    <string name="export_wallet_description">Export your wallet file. Please make sure that you keep at least three copies in different devices offline!</string>
+    <string name="export_wallet_export">Export</string>
+    <string name="export_wallet_skip">Skip &amp; Continue to wallet</string>
+
+    <!-- testnet coins fragment -->
+    <string name="testnet_coins_title">Testnet Coins</string>
+    <string name="testnet_coins_description">Would you like to get some testnet coins to try out? It can take upto 5 minutes to get these coins.</string>
+    <string name="testnet_coins_request">Request Coins</string>
+    <string name="testnet_coins_skip">Skip</string>
+
+    <string name="testnet_coins_message_description">Testnet coins have been requested. It can take up to 5 minutes to get the coins.</string>
+    <string name="testnet_coins_dialog_ok">Ok</string>
+
+    <string name="testnet_coins_message_exits">Processing...</string>
+
+
+    <!--- Menu -->
+    <string name="nav_home_title">Home</string>
+    <string name="nav_help_title">Help</string>
+    <string name="nav_dp_scan_title">DpScan</string>
+    <string name="nav_settings_title">Settings</string>
+
+    <string name="nav_send_title">Send</string>
+    <string name="nav_receive_title">Receive</string>
+    <string name="nav_transactions_title">Transactions</string>
+
+    <!-- Unlock dialog fragment -->
+    <string name="unlock_title">Unlock Wallet</string>
+    <string name="unlock_description">Enter the password used for your wallet</string>string>
+    <string name="unlock_password_description">Enter password</string>
+    <string name="unlock_button_unlock_title">Unlock</string>string>
+    <string name="unlock_button_close_title">Close</string>string>
+
+    <string name="unlock_password_empty_message">Enter the password!</string>
+    <string name="unlock_password_wrong_message">Could not unlock the wallet with the password. Please try again!</string>
+    <string name="unlock_message_description">Sign verification failed!</string>
+
+    <!-- Receive fragment -->
+    <string name="receive_title">Receive Coins</string>
+    <string name="receive_warning_message">Do not send Ethereum or DogeP tokens! Send only DP Testnet coins.</string>
+
+    <!-- qr code dialog fragment -->
+    <string name="qr_code_dialog_close">CLOSE</string>
+
+    <!-- message dialog fragment -->
+    <string name="message_dialog_close">Close</string>
+
+    <!-- settings fragment -->
+    <string name="setting_title">Wallet</string>
+    <string name="setting_title_export_wallet">Export Wallet</string>
+    <string name="setting_title_request_test_coins">Request Testnet Coins</string>
+    <string name="setting_title_delete_wallet">Delete Wallet</string>
+
+    <string name="setting_message_description">Please unlock wallet first!</string>
+
+    <string name="setting_dialog_delete_title">Delete Wallet</string>
+    <string name="setting_dialog_delete_description">Are you sure you want to delete the wallet?</string>
+    <string name="setting_dialog_delete_yes">Yes</string>
+    <string name="setting_dialog_delete_no">No</string>
+
+    <string name="setting_dialog_message_exits">Processing...</string>
+
+    <!-- send fragment -->
+    <string name="send_title">Send</string>
+    <string name="send_description">Send coins to someone!</string>
+    <string name="send_available_balance_title">Available Balance</string>
+    <string name="send_to_address_title">Address</string>
+    <string name="send_to_address_description">Address to send to</string>
+    <string name="send_quantity_title">Quantity</string>
+    <string name="send_quantity_description">Quantity to send</string>
+    <string name="send_button_send_title">Send</string>
+
+    <string name="send_address_message_description">Enter the to address correctly!</string>
+    <string name="send_quantity_message_description">Enter the to quantity correctly!</string>
+
+    <string name="send_transaction_message_description">Service unavailable try again later</string>
+    <string name="send_transaction_message_exits">Processing...</string>
+
+
+    <string name="send_transaction_sample_message_description">Here are some example addresses you can try sending to.</string>
+    <string name="send_transaction_sample_address1_description">0xf3a5018b6d38549459880bdc3bfedd2a7bae2c9e</string>
+    <string name="send_transaction_sample_address2_description">0x34bf2610320df478e617f3f496952edd8c80a9a4</string>
+
+    <string name="send_transaction_send_message_description">Your transaction was submitted. It can take a few seconds to process the transaction.</string>
+
+    <!-- transaction fragment -->
+    <string name="transaction_title">Transaction</string>
+    <string name="transaction_completed_title">Completed</string>
+    <string name="transaction_pending_title">Pending</string>
+
+    <string name="transaction_table_column_1_title">In/Out</string>
+    <string name="transaction_table_column_2_title">Txn Hash</string>
+    <string name="transaction_table_column_3_title">Date</string>
+    <string name="transaction_table_column_4_title">From</string>
+    <string name="transaction_table_column_5_title">To</string>
+    <string name="transaction_table_column_6_title">Quantity</string>
+
+    <string name="transaction_previous_title">Previous</string>
+    <string name="transaction_next_title">Next</string>
+
+    <string name="transaction_message_exits">Processing...</string>
+
+    <!-- Error offline and online -->
+    <string name="general_connect_internet">Connect to the internet</string>
+    <string name="general_offline_access">Your are offline Check your connection</string>
+
+    <string name="offline_exception_error_title">Service unavailable</string>
+    <string name="offline_exception_error_subtitle">Try again later</string>
+
+    <string name="code_401">Access is denied due to invalid credentials</string>
+    <string name="code_404">Information is not found , waiting for approval ,
+        try after some time or create new user</string>
+    <string name="code_406">Invalid header information</string>
+    <string name="code_409">Try again later</string>
+    <string name="code_417">Captha dose not support, Try again</string>
+
+    <string name="internet">Connect to the internet \n You are offline. Check your connection.</string>
+    <string name="apierror">Try again</string>
+    <string name="apierrorlater">Try again later</string>
+
+    <string name="general_retry">Retry</string>
+
+
+    <!-- download files -->
+    <string name="download_wallet">Download Wallet</string>
+    <string name="openFolder">Open Downloaded Folder</string>
+    <string name="downloadStarted">Download Started…</string>
+    <string name="downloadCompleted">Download Completed…</string>
+    <string name="downloadFailed">Download Failed…</string>
+    <string name="downloadAgain">Download Again</string>
+
+    <!-- notification -->
+    <string name="notification_channel_id">DPWallet</string>
+    <string name="notification_channel_name">DP Wallet</string>
+    <string name="notification_channel_description">You are about to create to a quantum resistant wallet.</string>
+
+    <string name="notification_title">Doge Protocol</string>
+    <string name="notification_description">Balance changed in wallet</string>
+
+</resources>
