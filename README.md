@@ -1,1 +1,1 @@
-# dp-wallet-android
+Doge Protocol Android Wallet
