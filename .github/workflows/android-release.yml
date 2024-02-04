@@ -1,13 +1,14 @@
 name: Dp Wallet
+env:
+  # The name of the main module repository
+  main_project_module: app
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: set up JDK 11
@@ -16,39 +17,25 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
     - name: Build with Gradle
       run: ./gradlew build
-
       # Create APK Release
     - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
       run: ./gradlew assembleDebug
-
       # Create APK Release
     - name: Build apk release project (APK) - ${{ env.main_project_module }} module
       run: ./gradlew assemble
-
-      # Create Bundle Release
-      # Noted for main module build [main_project_module]:bundleRelease
-    - name: Build app bundle release - ${{ env.main_project_module }} module
-      run: ./gradlew ${{ env.main_project_module }}:assembleRelease
-      
     - name: Upload Dp Wallet APK Debug 
       uses: actions/upload-artifact@v3
       with:
-        name: APK(s) debug generated
+        name: DP Wallet APK(s) debug generated
         path: ${{ env.main_project_module }}/build/outputs/apk/debug/
     - name: Upload Dp Wallet APK Release
       uses: actions/upload-artifact@v3
       with:
-        name: APK(s) release generated
+        name: DP Wallet APK(s) release generated
         path: ${{ env.main_project_module }}/build/outputs/apk/release/
-    - name: Upload DP Wallet (App Bundle) Release 
-      uses: actions/upload-artifact@v3
-      with:
-        name: App bundle(s) DP Wallet release generated
-        path: ${{ env.main_project_module }}/build/outputs/bundle/release/
+
       
