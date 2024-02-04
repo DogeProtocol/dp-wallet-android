@@ -4,41 +4,43 @@ env:
   main_project_module: app
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+    - '*'    
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      - uses: actions/checkout@v3
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
       # Create APK Release
-    - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
-      run: ./gradlew assembleDebug
+      - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assembleDebug
       # Create APK Release
-    - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-      run: ./gradlew assemble
-    - name: Upload DP Wallet APK Debug 
-      uses: actions/upload-artifact@v3
-      with:
-        name: dp-wallet-debug
-        path: ${{ env.main_project_module }}/build/outputs/apk/debug/dp-wallet-debug.apk
-    - name: Upload DP Wallet APK Release
-      uses: actions/upload-artifact@v3
-      with:
-        name: dp-wallet-release
-        path: ${{ env.main_project_module }}/build/outputs/apk/release/dp-wallet-release.apk
-    - name: release
-      uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        artifacts: "build/outputs/apk/release/dp-wallet-release.apk"
+      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assemble
+      - name: Upload DP Wallet APK Debug 
+        uses: actions/upload-artifact@v3
+        with:
+          name: dp-wallet-debug
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/dp-wallet-debug.apk
+      - name: Upload DP Wallet APK Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: dp-wallet-release
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/dp-wallet-release.apk
+      - name: release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "build/outputs/apk/release/dp-wallet-release.apk"
