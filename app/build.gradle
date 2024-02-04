@@ -15,9 +15,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        ndk {
+      /*  ndk {
             abiFilters "armeabi-v7a" , "arm64-v8a", "x86", "x86_64"
-        }
+        } */
     }
 
     buildTypes {
@@ -31,12 +31,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    externalNativeBuild {
+    /*externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
             version '3.18.1'
         }
-    }
+    } */
     buildFeatures {
         viewBinding true
     }
