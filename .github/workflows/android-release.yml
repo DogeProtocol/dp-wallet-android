@@ -34,7 +34,7 @@ jobs:
       # Create Bundle Release
       # Noted for main module build [main_project_module]:bundleRelease
     - name: Build app bundle release - ${{ env.main_project_module }} module
-      run: ./gradlew ${{ env.main_project_module }}:bundleRelease
+      run: ./gradlew ${{ env.main_project_module }}:assembleRelease
       
     - name: Upload Dp Wallet APK Debug 
       uses: actions/upload-artifact@v3
