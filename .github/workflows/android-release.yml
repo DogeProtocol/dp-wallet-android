@@ -27,15 +27,18 @@ jobs:
       # Create APK Release
     - name: Build apk release project (APK) - ${{ env.main_project_module }} module
       run: ./gradlew assemble
-    - name: Upload Dp Wallet APK Debug 
+    - name: Upload DP Wallet APK Debug 
       uses: actions/upload-artifact@v3
       with:
-        name: DP Wallet APK(s) debug generated
-        path: ${{ env.main_project_module }}/build/outputs/apk/debug/
-    - name: Upload Dp Wallet APK Release
+        name: dp-wallet-debug
+        path: ${{ env.main_project_module }}/build/outputs/apk/debug/dp-wallet-debug.apk
+    - name: Upload DP Wallet APK Release
       uses: actions/upload-artifact@v3
       with:
-        name: DP Wallet APK(s) release generated
-        path: ${{ env.main_project_module }}/build/outputs/apk/release/
-
-      
+        name: dp-wallet-release
+        path: ${{ env.main_project_module }}/build/outputs/apk/release/dp-wallet-release.apk
+    - name: release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "build/outputs/apk/release/dp-wallet-release.apk"
