@@ -1,10 +1,6 @@
-name: Android CI
+name: Dp Wallet
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -23,5 +19,36 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
     - name: Build with Gradle
       run: ./gradlew build
+
+      # Create APK Release
+    - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
+      run: ./gradlew assembleDebug
+
+      # Create APK Release
+    - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+      run: ./gradlew assemble
+
+      # Create Bundle Release
+      # Noted for main module build [main_project_module]:bundleRelease
+    - name: Build app bundle release - ${{ env.main_project_module }} module
+      run: ./gradlew ${{ env.main_project_module }}:bundleRelease
+      
+    - name: Upload Dp Wallet APK Debug 
+      uses: actions/upload-artifact@v3
+      with:
+        name: APK(s) debug generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+    - name: Upload Dp Wallet APK Release
+      uses: actions/upload-artifact@v3
+      with:
+        name: APK(s) release generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/release/
+    - name: Upload DP Wallet (App Bundle) Release 
+      uses: actions/upload-artifact@v3
+      with:
+        name: App bundle(s) DP Wallet release generated
+        path: ${{ env.main_project_module }}/build/outputs/bundle/release/
+      
