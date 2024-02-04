@@ -33,14 +33,14 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dp-wallet-debug
-          path: ${{ env.main_project_module }}/build/outputs/apk/debug/dp-wallet-debug.apk
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
       - name: Upload DP Wallet APK Release
         uses: actions/upload-artifact@v3
         with:
           name: dp-wallet-release
-          path: ${{ env.main_project_module }}/build/outputs/apk/release/dp-wallet-release.apk
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/
       - name: release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: "build/outputs/apk/release/dp-wallet-release.apk"
+          artifacts: "build/outputs/apk/release/*.apk"
