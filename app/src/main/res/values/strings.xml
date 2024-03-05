@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DPWallet</string>
+    <string name="app_name" translatable="false">DP Wallet</string>
 
     <string name="cannot_read_encrypt_file">Wallet can not read encrypted key; re-import required.</string>
     <string name="authentication_error">Authentication to unlock key not provided or timed out. Please try again.</string>

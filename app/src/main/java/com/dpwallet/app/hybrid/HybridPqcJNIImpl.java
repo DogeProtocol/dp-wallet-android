@@ -4,7 +4,7 @@ public class HybridPqcJNIImpl implements IHybridPqcJNIImpl {
     //private final Context context;
 
     public HybridPqcJNIImpl() {
-       // System.loadLibrary("dpwallet");
+        System.loadLibrary("dpwallet");
       //  this.context = ctx;
     }
 
