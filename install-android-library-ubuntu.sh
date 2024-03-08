@@ -7,6 +7,16 @@ mkdir templibs
 mkdir templibs/hybrid-pqc
 mkdir templibs/mobile-go
 
+mkdir templibs/hybrid-pqc/android-arm64-v8a
+mkdir templibs/hybrid-pqc/android-armeabi-v7a
+mkdir templibs/hybrid-pqc/android-x86
+mkdir templibs/hybrid-pqc/android-x86_64
+
+mkdir templibs/mobile-go/android-arm64-v8a
+mkdir templibs/mobile-go/android-armeabi-v7a
+mkdir templibs/mobile-go/android-x86
+mkdir templibs/mobile-go/android-x86_64
+
 rm -rf $PWD/app/src/main/jniLibs/arm64-v8a/
 rm -rf $PWD/app/src/main/jniLibs/armeabi-v7a/
 rm -rf $PWD/app/src/main/jniLibs/x86/
