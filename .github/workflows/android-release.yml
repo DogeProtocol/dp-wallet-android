@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
           cache: gradle
       - name: Install Dependencies
-        run: ./install-ubuntu.sh
+        run: cd ${{ github.workspace }} && //install-android-library-ubuntu.sh
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
