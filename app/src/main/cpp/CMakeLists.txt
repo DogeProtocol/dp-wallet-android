@@ -13,14 +13,13 @@ add_library(lib_hybridpqc SHARED IMPORTED)
 set_property(TARGET lib_hybridpqc PROPERTY IMPORTED_NO_SONAME 1)
 set_target_properties(lib_hybridpqc PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/libhybridpqc.so)
 
-#set_property(TARGET myapplication PROPERTY IMPORTED_NO_SONAME 1)
-#set_target_properties(myapplication PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/libgodp.so)
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/)
 add_library(lib_godp SHARED IMPORTED)
 set_property(TARGET lib_godp PROPERTY IMPORTED_NO_SONAME 1)
 set_target_properties(lib_godp PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/libgodp.so)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/)
+include_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI}/
+        )
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
