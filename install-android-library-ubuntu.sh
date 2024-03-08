@@ -27,19 +27,19 @@ unzip $PWD/templibs/hybrid-pqc/includes.zip -d $PWD/templibs/hybrid-pqc
 echo "DBD4E19F2C6E083897F0C42DD771D4150755FAD9FEB4623CAC891E392557DB14 $PWD/templibs/hybrid-pqc/includes.zip" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-arm64-v8a.tar.gz
-cd $PWD/templibs/hybrid-pqc && tar -czf $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz .
+tar -zxf $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz --directory $PWD/templibs/hybrid-pqc
 echo "86888ac1323738ca882e00c379adc6ffa06722d207ac6468450fe7a556a8be67 $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-armeabi-v7a.tar.gz
-cd $PWD/templibs/hybrid-pqc && tar -czf $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz .
+tar -zxf $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz --directory $PWD/templibs/hybrid-pqc
 echo "e0ec9c6e15155e4ec533083e33f0f197e9a5d2412c50bae979e0c8c858166fb8 $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-x86.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-x86.tar.gz
-cd $PWD/templibs/hybrid-pqc && tar -czf $PWD/templibs/hybrid-pqc/android-x86.tar.gz .
+tar -zxf $PWD/templibs/hybrid-pqc/android-x86.tar.gz --directory $PWD/templibs/hybrid-pqc
 echo "4c7513c1adac7af4371f79544d8d36917a7e04d4a675d3911895f56a73f91818 $PWD/templibs/hybrid-pqc/android-x86.tar.gz" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-x86_64.tar.gz
-cd $PWD/templibs/hybrid-pqc && tar -czf $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz .
+tar -zxf $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz --directory $PWD/templibs/hybrid-pqc
 echo "4e406a956eba914243a95d67d118f4e82d832cab2f51e87d865507cf06f43541 $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
 ls $PWD/templibs/hybrid-pqc
