@@ -31,7 +31,7 @@ tar -zxf $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz --directory $PWD/temp
 echo "86888ac1323738ca882e00c379adc6ffa06722d207ac6468450fe7a556a8be67 $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-armeabi-v7a.tar.gz
-tar -zxf $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz --directory $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar
+tar -zxf $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz --directory $PWD/templibs/hybrid-pqc/android-armeabi-v7a
 echo "e0ec9c6e15155e4ec533083e33f0f197e9a5d2412c50bae979e0c8c858166fb8 $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
 
 curl -Lo $PWD/templibs/hybrid-pqc/android-x86.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/android-x86.tar.gz
@@ -43,17 +43,18 @@ tar -zxf $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz --directory $PWD/templib
 echo "4e406a956eba914243a95d67d118f4e82d832cab2f51e87d865507cf06f43541 $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
 ls $PWD/templibs/hybrid-pqc
-ls $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/
+
+ls $PWD/templibs/hybrid-pqc/build/include/dilithium/
+
 ls $PWD/templibs/hybrid-pqc/android-arm64-v8a
 ls $PWD/templibs/hybrid-pqc/android-armeabi-v7a
 ls $PWD/templibs/hybrid-pqc/android-x86
 ls $PWD/templibs/hybrid-pqc/android-x86_64
 
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86_64/hybrid.h
-
+cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
+cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
+cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86/hybrid.h
+cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86_64/hybrid.h
 
 
 cp $PWD/templibs/hybrid-pqc/android-arm64-v8a/libhybridpqc.so $PWD/app/src/main/jniLibs/arm64-v8a/libhybridpqc.so
@@ -79,10 +80,15 @@ echo "ca40d57bd95c8eeca8830218f0b88a8bd44cd60b2d0021104ccfa7270420542a $PWD/temp
 
 ls $PWD/templibs/mobile-go
 
-cp $PWD/templibs/mobile-go/android-arm64-v8a/. $PWD/app/src/main/jniLibs/arm64-v8a/
-cp $PWD/templibs/mobile-go/android-armeabi-v7a/. $PWD/app/src/main/jniLibs/armeabi-v7a/
-cp $PWD/templibs/mobile-go/android-x86/. $PWD/app/src/main/jniLibs/x86/
-cp $PWD/templibs/mobile-go/android-x86_64/. $PWD/app/src/main/jniLibs/x86_64/
+ls $PWD/templibs/mobile-go/android-arm64-v8a
+ls $PWD/templibs/mobile-go/android-armeabi-v7a
+ls $PWD/templibs/mobile-go/android-x86
+ls $PWD/templibs/mobile-go/android-x86_64
+
+cp $PWD/templibs/mobile-go/android-arm64-v8a/* $PWD/app/src/main/jniLibs/arm64-v8a/
+cp $PWD/templibs/mobile-go/android-armeabi-v7a/* $PWD/app/src/main/jniLibs/armeabi-v7a/
+cp $PWD/templibs/mobile-go/android-x86/* $PWD/app/src/main/jniLibs/x86/
+cp $PWD/templibs/mobile-go/android-x86_64/* $PWD/app/src/main/jniLibs/x86_64/
 
 ls $PWD/app/src/main/jniLibs/arm64-v8a/
 ls $PWD/app/src/main/jniLibs/armeabi-v7a/
