@@ -32,6 +32,8 @@ curl -Lo $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz https://github.com/DogeP
 unzip $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz -d $PWD/templibs/hybrid-pqc
 echo "4e406a956eba914243a95d67d118f4e82d832cab2f51e87d865507cf06f43541 $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
+$PWD/templibs/hybrid-pqc
+
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86/hybrid.h
@@ -57,6 +59,8 @@ echo "fd70b0124260e92d9fdcad2d609d022757cf556d02eaed9488205c47fc2e1467 $PWD/temp
 curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-x86_64.tar.gz
 unzip $PWD/templibs/mobile-go/android-x86_64.tar.gz -d $PWD/templibs/mobile-go
 echo "ca40d57bd95c8eeca8830218f0b88a8bd44cd60b2d0021104ccfa7270420542a $PWD/templibs/mobile-go/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
+
+ls $PWD/templibs/mobile-go
 
 cp $PWD/templibs/mobile-go/android-arm64-v8a/. $PWD/app/src/main/jniLibs/arm64-v8a/
 cp $PWD/templibs/mobile-go/android-armeabi-v7a/. $PWD/app/src/main/jniLibs/armeabi-v7a/
