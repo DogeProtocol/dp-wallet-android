@@ -44,12 +44,17 @@ echo "4e406a956eba914243a95d67d118f4e82d832cab2f51e87d865507cf06f43541 $PWD/temp
 
 ls $PWD/templibs/hybrid-pqc
 
+ls $PWD/templibs/hybrid-pqc/android-arm64-v8a
+ls $PWD/templibs/hybrid-pqc/android-armeabi-v7a
+ls $PWD/templibs/hybrid-pqc/android-x86
+ls $PWD/templibs/hybrid-pqc/android-x86_64
+
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86/hybrid.h
 cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86_64/hybrid.h
 
-ls $PWD/templibs/hybrid-pqc/android-arm64-v8a
+
 
 cp $PWD/templibs/hybrid-pqc/android-arm64-v8a/libhybridpqc.so $PWD/app/src/main/jniLibs/arm64-v8a/libhybridpqc.so
 cp $PWD/templibs/hybrid-pqc/android-armeabi-v7a/libhybridpqc.so $PWD/app/src/main/jniLibs/armeabi-v7a/libhybridpqc.so
