@@ -7,10 +7,10 @@ mkdir templibs
 mkdir templibs/hybrid-pqc
 mkdir templibs/mobile-go
 
-rm -rf $PWD/src/main/jniLibs/arm64-v8a/
-rm -rf $PWD/src/main/jniLibs/armeabi-v7a/
-rm -rf $PWD/src/main/jniLibs/x86/
-rm -rf $PWD/src/main/jniLibs/x86_64/
+rm -rf $PWD/app/src/main/jniLibs/arm64-v8a/
+rm -rf $PWD/app/src/main/jniLibs/armeabi-v7a/
+rm -rf $PWD/app/src/main/jniLibs/x86/
+rm -rf $PWD/app/src/main/jniLibs/x86_64/
 
 curl -Lo $PWD/templibs/hybrid-pqc/includes.zip https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/includes.zip
 unzip $PWD/templibs/hybrid-pqc/includes.zip -d $PWD/templibs/hybrid-pqc
@@ -32,15 +32,15 @@ curl -Lo $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz https://github.com/DogeP
 unzip $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz -d $PWD/templibs/hybrid-pqc
 echo "4e406a956eba914243a95d67d118f4e82d832cab2f51e87d865507cf06f43541 $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/src/main/jniLibs/arm64-v8a/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/src/main/jniLibs/armeabi-v7a/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/src/main/jniLibs/x86/hybrid.h
-cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/src/main/jniLibs/x86_64/hybrid.h
+cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
+cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
+cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86/hybrid.h
+cp $PWD/templibs/hybrid-pqc/includes/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/x86_64/hybrid.h
 
-cp $PWD/templibs/hybrid-pqc/android-arm64-v8a/libhybridpqc.so $PWD/src/main/jniLibs/arm64-v8a/libhybridpqc.so
-cp $PWD/templibs/hybrid-pqc/android-armeabi-v7a/libhybridpqc.so $PWD/src/main/jniLibs/armeabi-v7a/libhybridpqc.so
-cp $PWD/templibs/hybrid-pqc/android-x86/libhybridpqc.so $PWD/src/main/jniLibs/x86/libhybridpqc.so
-cp $PWD/templibs/hybrid-pqc/android-x86_64/libhybridpqc.so $PWD/src/main/jniLibs/x86_64/libhybridpqc.so
+cp $PWD/templibs/hybrid-pqc/android-arm64-v8a/libhybridpqc.so $PWD/app/src/main/jniLibs/arm64-v8a/libhybridpqc.so
+cp $PWD/templibs/hybrid-pqc/android-armeabi-v7a/libhybridpqc.so $PWD/app/src/main/jniLibs/armeabi-v7a/libhybridpqc.so
+cp $PWD/templibs/hybrid-pqc/android-x86/libhybridpqc.so $PWD/app/src/main/jniLibs/x86/libhybridpqc.so
+cp $PWD/templibs/hybrid-pqc/android-x86_64/libhybridpqc.so $PWD/app/src/main/jniLibs/x86_64/libhybridpqc.so
 
 curl -Lo $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-arm64-v8a.tar.gz
 unzip $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz -d $PWD/templibs/mobile-go
@@ -58,12 +58,12 @@ curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/steveh
 unzip $PWD/templibs/mobile-go/android-x86_64.tar.gz -d $PWD/templibs/mobile-go
 echo "ca40d57bd95c8eeca8830218f0b88a8bd44cd60b2d0021104ccfa7270420542a $PWD/templibs/mobile-go/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
-cp $PWD/templibs/mobile-go/android-arm64-v8a/. $PWD/src/main/jniLibs/arm64-v8a/
-cp $PWD/templibs/mobile-go/android-armeabi-v7a/. $PWD/src/main/jniLibs/armeabi-v7a/
-cp $PWD/templibs/mobile-go/android-x86/. $PWD/src/main/jniLibs/x86/
-cp $PWD/templibs/mobile-go/android-x86_64/. $PWD/src/main/jniLibs/x86_64/
+cp $PWD/templibs/mobile-go/android-arm64-v8a/. $PWD/app/src/main/jniLibs/arm64-v8a/
+cp $PWD/templibs/mobile-go/android-armeabi-v7a/. $PWD/app/src/main/jniLibs/armeabi-v7a/
+cp $PWD/templibs/mobile-go/android-x86/. $PWD/app/src/main/jniLibs/x86/
+cp $PWD/templibs/mobile-go/android-x86_64/. $PWD/app/src/main/jniLibs/x86_64/
 
-ls $PWD/src/main/jniLibs/arm64-v8a/
-ls $PWD/src/main/jniLibs/armeabi-v7a/
-ls $PWD/src/main/jniLibs/x86/
-ls $PWD/src/main/jniLibs/x86_64/
+ls $PWD/app/src/main/jniLibs/arm64-v8a/
+ls $PWD/app/src/main/jniLibs/armeabi-v7a/
+ls $PWD/app/src/main/jniLibs/x86/
+ls $PWD/app/src/main/jniLibs/x86_64/
