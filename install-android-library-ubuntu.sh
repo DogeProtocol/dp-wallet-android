@@ -17,12 +17,27 @@ mkdir templibs/mobile-go/android-armeabi-v7a
 mkdir templibs/mobile-go/android-x86
 mkdir templibs/mobile-go/android-x86_64
 
+echo "$PWD"
+ls $PWD
+
+echo "app"
+ls $PWD/app
+
+echo "src"
+ls $PWD/app/src
+
+echo "main"
+ls $PWD/app/src/main
+
+echo "jniLibs"
+ls $PWD/app/src/main/jniLibs
+
+ls $PWD/app/src/main/jniLibs/x86_64
+
 sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/arm64-v8a
 sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/armeabi-v7a
 sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/x86
 sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/x86_64
-
-ls $PWD/app/src/main/jniLibs/x86_64
 
 sudo rm -rf $PWD/app/src/main/jniLibs/arm64-v8a/
 sudo rm -rf $PWD/app/src/main/jniLibs/armeabi-v7a/
