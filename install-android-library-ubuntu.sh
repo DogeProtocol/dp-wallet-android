@@ -17,10 +17,19 @@ mkdir templibs/mobile-go/android-armeabi-v7a
 mkdir templibs/mobile-go/android-x86
 mkdir templibs/mobile-go/android-x86_64
 
+sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/arm64-v8a
+sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/armeabi-v7a
+sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/x86
+sudo chmod -R a+rwx $PWD/app/src/main/jniLibs/x86_64
+
+ls $PWD/app/src/main/jniLibs/x86_64
+
 sudo rm -rf $PWD/app/src/main/jniLibs/arm64-v8a/
 sudo rm -rf $PWD/app/src/main/jniLibs/armeabi-v7a/
 sudo rm -rf $PWD/app/src/main/jniLibs/x86/
 sudo rm -rf $PWD/app/src/main/jniLibs/x86_64/
+
+ls $PWD/app/src/main/jniLibs/x86_64
 
 curl -Lo $PWD/templibs/hybrid-pqc/includes.zip https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.23/includes.zip
 unzip $PWD/templibs/hybrid-pqc/includes.zip -d $PWD/templibs/hybrid-pqc
