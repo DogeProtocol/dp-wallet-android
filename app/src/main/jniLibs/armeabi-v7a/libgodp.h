@@ -87,21 +87,35 @@ struct TxMessage_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxMessage_return TxMessage(char* from, char* nonce, char* to, char* value, char* gasLimit, char* gasPrice, char* data, char* chainId);
+extern struct TxMessage_return TxMessage(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId);
 
 /* Return type for TxHash */
 struct TxHash_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxHash_return TxHash(char* from, char* nonce, char* to, char* value, char* gasLimit, char* gasPrice, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
+extern struct TxHash_return TxHash(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
 
 /* Return type for TxData */
 struct TxData_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxData_return TxData(char* from, char* nonce, char* to, char* value, char* gasLimit, char* gasPrice, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
+extern struct TxData_return TxData(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
+
+/* Return type for ExportKey */
+struct ExportKey_return {
+	char* r0;
+	char* r1;
+};
+extern struct ExportKey_return ExportKey(char* skKeyStr, char* pkKeyStr, char* authentication, GoInt skCount, GoInt pkCount);
+
+/* Return type for ImportKey */
+struct ImportKey_return {
+	char* r0;
+	char* r1;
+};
+extern struct ImportKey_return ImportKey(char* skKeyStr, char* authentication, GoInt skCount);
 
 /* Return type for DogeProtocolToWei */
 struct DogeProtocolToWei_return {
