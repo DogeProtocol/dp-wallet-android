@@ -67,19 +67,19 @@ cp $PWD/templibs/hybrid-pqc/android-armeabi-v7a/libhybridpqc.so $PWD/app/src/mai
 cp $PWD/templibs/hybrid-pqc/android-x86/libhybridpqc.so $PWD/app/src/main/jniLibs/x86/libhybridpqc.so
 cp $PWD/templibs/hybrid-pqc/android-x86_64/libhybridpqc.so $PWD/app/src/main/jniLibs/x86_64/libhybridpqc.so
 
-curl -Lo $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-arm64-v8a.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.25/android-arm64-v8a.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz --directory $PWD/templibs/mobile-go/android-arm64-v8a
 echo "d29042cb0aeec07ff31e0de6ab6527f8c4503e816907411289cd4f44b7248367 $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-armeabi-v7a.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.25/android-armeabi-v7a.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz --directory $PWD/templibs/mobile-go/android-armeabi-v7a
 echo "ff64c53a14b1a5706a1c107e65a05986ccd305c8d7e5b61c7babc1021104c8ff $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-x86.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-x86.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-x86.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.25/android-x86.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-x86.tar.gz --directory $PWD/templibs/mobile-go/android-x86
 echo "fd70b0124260e92d9fdcad2d609d022757cf556d02eaed9488205c47fc2e1467 $PWD/templibs/mobile-go/android-x86.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.7/android-x86_64.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.25/android-x86_64.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-x86_64.tar.gz --directory $PWD/templibs/mobile-go/android-x86_64
 echo "ca40d57bd95c8eeca8830218f0b88a8bd44cd60b2d0021104ccfa7270420542a $PWD/templibs/mobile-go/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
