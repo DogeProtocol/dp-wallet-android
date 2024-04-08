@@ -1,15 +1,16 @@
 #include <jni.h>
 #include <string.h>
 #include <stdio.h>
-#include "hybrid-pqc/hybrid/hybrid.h"
 #include <sstream>
 #include <iostream>
+#include "hybrid.h"
 #include "libgodp.h"
+#define JNICALL
 
 const int CRYPTO_MESSAGE_LEN = 32;
-const int CRYPTO_SECRETKEY_BYTES = 64 + 1281 + 897;
-const int CRYPTO_PUBLICKEY_BYTES = 32 + 897;
-const int CRYPTO_SIGNATURE_BYTES = 2 + 2 + 64 + CRYPTO_MESSAGE_LEN + 40 + 690; //Nonce + 2 for size
+const int CRYPTO_SECRETKEY_BYTES = 64 + 2560 + 1312 + 128;
+const int CRYPTO_PUBLICKEY_BYTES = 32 + 1312 + 64;
+const int CRYPTO_SIGNATURE_BYTES = 2 + 64 + 2420 + 40 + CRYPTO_MESSAGE_LEN; //2558
 
 extern "C" JNIEXPORT jobjectArray   JNICALL
 Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpKeypair(JNIEnv* env, jobject )
@@ -17,7 +18,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpKeypair(JNIEnv* env, jobject )
     unsigned char *sk = (unsigned char*) malloc(CRYPTO_SECRETKEY_BYTES * sizeof(1));
     unsigned char *pk = (unsigned char*) malloc(CRYPTO_PUBLICKEY_BYTES * sizeof(1));
 
-    crypto_sign_falcon_ed25519_keypair(pk, sk);
+    crypto_sign_dilithium_ed25519_sphincs_keypair(pk, sk);
 
     jstring skkey;
     jstring pkkey;
@@ -82,7 +83,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSign(JNIEnv* env, jobject ,
         sk[i] = (unsigned char)sKey[i];
     }
 
-    crypto_sign_falcon_ed25519(sm, smlen, m, CRYPTO_MESSAGE_LEN, sk);
+    crypto_sign_compact_dilithium_ed25519_sphincs(sm, smlen, m, CRYPTO_MESSAGE_LEN, sk);
 
     std::ostringstream sig;
     for (int i = 0; i < CRYPTO_SIGNATURE_BYTES; i++) {
@@ -135,7 +136,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSignVerify(JNIEnv* env, jobject,
     }
 
 
-    int v = crypto_verify_falcon_ed25519(m, CRYPTO_MESSAGE_LEN, sm, CRYPTO_SIGNATURE_BYTES, pk);
+    int v = crypto_verify_compact_dilithium_ed25519_sphincs(m, CRYPTO_MESSAGE_LEN, sm, CRYPTO_SIGNATURE_BYTES, pk);
 
     //memory free
     memset(m, 0, CRYPTO_MESSAGE_LEN);
@@ -165,7 +166,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpPublicKeyFromPrivateKey(JNIEnv* 
         sk[i] = (unsigned char)(sKey[i]);
     }
 
-    crypto_public_key_from_private_key_falcon_ed25519(pk, sk);
+    //crypto_public_key_from_private_key_falcon_ed25519(pk, sk);
 
     std::ostringstream opk;
     for (int i = 0; i < CRYPTO_PUBLICKEY_BYTES; i++) {
@@ -241,11 +242,10 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxMessage(JNIEnv* env, jobject ,
     char *t = const_cast<char *>(env->GetStringUTFChars(to, &isCopy));
     char *v = const_cast<char *>(env->GetStringUTFChars(value, &isCopy));
     char *gl = const_cast<char *>(env->GetStringUTFChars(gasLimit, &isCopy));
-    char *gp = const_cast<char *>(env->GetStringUTFChars(gasPrice, &isCopy));
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
 
-    TxMessage_return r = TxMessage(f, n, t, v, gl, gp, d, c);
+    TxMessage_return r = TxMessage(f, n, t, v, gl, d, c);
 
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
@@ -275,7 +275,6 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxMessage(JNIEnv* env, jobject ,
     env->ReleaseStringUTFChars(to, t);
     env->ReleaseStringUTFChars(value, v);
     env->ReleaseStringUTFChars(gasLimit, gl);
-    env->ReleaseStringUTFChars(gasPrice, gp);
     env->ReleaseStringUTFChars(data, d);
     env->ReleaseStringUTFChars(chainId, c);
 
@@ -294,7 +293,6 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxHash(JNIEnv* env, jobject ,
     char *t = const_cast<char *>(env->GetStringUTFChars(to, &isCopy));
     char *v = const_cast<char *>(env->GetStringUTFChars(value, &isCopy));
     char *gl = const_cast<char *>(env->GetStringUTFChars(gasLimit, &isCopy));
-    char *gp = const_cast<char *>(env->GetStringUTFChars(gasPrice, &isCopy));
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
 
@@ -312,7 +310,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxHash(JNIEnv* env, jobject ,
         sm[i] = (char)sig[i];
     }
 
-    TxHash_return r = TxHash(f, n, t, v, gl, gp, d, c,
+    TxHash_return r = TxHash(f, n, t, v, gl, d, c,
                              pk, sm,  CRYPTO_PUBLICKEY_BYTES, CRYPTO_SIGNATURE_BYTES);
 
     jstring result = env->NewStringUTF(r.r0);
@@ -349,7 +347,6 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxHash(JNIEnv* env, jobject ,
     env->ReleaseStringUTFChars(to, t);
     env->ReleaseStringUTFChars(value, v);
     env->ReleaseStringUTFChars(gasLimit, gl);
-    env->ReleaseStringUTFChars(gasPrice, gp);
     env->ReleaseStringUTFChars(data, d);
     env->ReleaseStringUTFChars(chainId, c);
 
@@ -371,7 +368,6 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxData(JNIEnv* env, jobject ,
     char *t = const_cast<char *>(env->GetStringUTFChars(to, &isCopy));
     char *v = const_cast<char *>(env->GetStringUTFChars(value, &isCopy));
     char *gl = const_cast<char *>(env->GetStringUTFChars(gasLimit, &isCopy));
-    char *gp = const_cast<char *>(env->GetStringUTFChars(gasPrice, &isCopy));
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
 
@@ -389,7 +385,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxData(JNIEnv* env, jobject ,
         sm[i] = (char)sig[i];
     }
 
-    TxData_return r = TxData(f, n, t, v, gl, gp, d, c,
+    TxData_return r = TxData(f, n, t, v, gl, d, c,
                              pk, sm,  CRYPTO_PUBLICKEY_BYTES, CRYPTO_SIGNATURE_BYTES);
 
     jstring result = env->NewStringUTF(r.r0);
@@ -426,7 +422,6 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxData(JNIEnv* env, jobject ,
     env->ReleaseStringUTFChars(to, t);
     env->ReleaseStringUTFChars(value, v);
     env->ReleaseStringUTFChars(gasLimit, gl);
-    env->ReleaseStringUTFChars(gasPrice, gp);
     env->ReleaseStringUTFChars(data, d);
     env->ReleaseStringUTFChars(chainId, c);
 
