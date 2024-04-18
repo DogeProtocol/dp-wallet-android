@@ -13,7 +13,7 @@ const int CRYPTO_PUBLICKEY_BYTES = 32 + 1312 + 64;
 const int CRYPTO_SIGNATURE_BYTES = 2 + 64 + 2420 + 40 + CRYPTO_MESSAGE_LEN; //2558
 
 extern "C" JNIEXPORT jobjectArray   JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpKeypair(JNIEnv* env, jobject )
+Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_Keypair(JNIEnv* env, jobject )
 {
     unsigned char *sk = (unsigned char*) malloc(CRYPTO_SECRETKEY_BYTES * sizeof(1));
     unsigned char *pk = (unsigned char*) malloc(CRYPTO_PUBLICKEY_BYTES * sizeof(1));
@@ -59,7 +59,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpKeypair(JNIEnv* env, jobject )
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSign(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_Sign(JNIEnv* env, jobject ,
                                                    jintArray  message, jintArray skKey)
 {
     jint msglen = env->GetArrayLength(message);
@@ -107,7 +107,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSign(JNIEnv* env, jobject ,
 }
 
 extern "C" JNIEXPORT jint  JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSignVerify(JNIEnv* env, jobject,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_SignVerify(JNIEnv* env, jobject,
                                                          jintArray message, jintArray sign, jintArray pkKey)
 {
     jint msglen = env->GetArrayLength(message);
@@ -154,7 +154,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpSignVerify(JNIEnv* env, jobject,
     return v;
 }
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpPublicKeyFromPrivateKey(JNIEnv* env, jobject , jintArray skKey)
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_PublicKeyFromPrivateKey(JNIEnv* env, jobject , jintArray skKey)
 {
     unsigned char *sk = (unsigned char*) malloc(CRYPTO_SECRETKEY_BYTES * sizeof(1));
     unsigned char *pk = (unsigned char*) malloc(CRYPTO_PUBLICKEY_BYTES * sizeof(1));
@@ -187,7 +187,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpPublicKeyFromPrivateKey(JNIEnv* 
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpAddressFromPublicKey(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_AddressFromPublicKey(JNIEnv* env, jobject ,
                                                                    jintArray pkKey)
 {
     jint *pKey = env->GetIntArrayElements(pkKey, NULL);
@@ -232,9 +232,9 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpAddressFromPublicKey(JNIEnv* env
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxMessage(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_TxnSigningHash(JNIEnv* env, jobject ,
                         jstring from, jstring nonce, jstring to, jstring value,
-                        jstring gasLimit, jstring gasPrice, jstring data, jstring chainId)
+                        jstring gasLimit, jstring data, jstring chainId)
 {
     jboolean isCopy;
     char *f = const_cast<char *>(env->GetStringUTFChars(from, &isCopy));
@@ -245,7 +245,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxMessage(JNIEnv* env, jobject ,
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
 
-    TxMessage_return r = TxMessage(f, n, t, v, gl, d, c);
+    TxnSigningHash_return r = TxnSigningHash(f, n, t, v, gl, d, c);
 
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
@@ -282,9 +282,9 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxMessage(JNIEnv* env, jobject ,
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxHash(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_TxHash(JNIEnv* env, jobject ,
                                                     jstring from, jstring nonce, jstring to, jstring value,
-                                                    jstring gasLimit, jstring gasPrice, jstring data, jstring chainId,
+                                                    jstring gasLimit, jstring data, jstring chainId,
                                                     jintArray pkKey, jintArray sign)
 {
     jboolean isCopy;
@@ -357,9 +357,9 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxHash(JNIEnv* env, jobject ,
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxData(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_TxData(JNIEnv* env, jobject ,
                                                      jstring from, jstring nonce, jstring to, jstring value,
-                                                     jstring gasLimit, jstring gasPrice, jstring data, jstring chainId,
+                                                     jstring gasLimit, jstring data, jstring chainId,
                                                      jintArray pkKey, jintArray sign)
 {
     jboolean isCopy;
@@ -432,13 +432,13 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpTxData(JNIEnv* env, jobject ,
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpDogeProtocolToWei(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_DogeProtocolToWei(JNIEnv* env, jobject ,
                                                                 jstring quantity)
 {
     jboolean isCopy;
     char *q = const_cast<char *>(env->GetStringUTFChars(quantity, &isCopy));
 
-    DogeProtocolToWei_return r= DogeProtocolToWei(const_cast<char*>(q));
+    EtherToWeiFloat_return r= EtherToWeiFloat(const_cast<char*>(q));
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
 
@@ -468,7 +468,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpDogeProtocolToWei(JNIEnv* env, j
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpParseBigFloat(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_ParseBigFloat(JNIEnv* env, jobject ,
                                                                 jstring quantity)
 {
     jboolean isCopy;
@@ -504,13 +504,13 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpParseBigFloat(JNIEnv* env, jobje
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_dpWeiToDogeProtocol(JNIEnv* env, jobject ,
+Java_com_wallet_app_hybrid_HybridPqcJNIImpl_WeiToDogeProtocol(JNIEnv* env, jobject ,
                                                             jstring quantity)
 {
     jboolean isCopy;
     char *q = const_cast<char *>(env->GetStringUTFChars(quantity, &isCopy));
 
-    WeiToDogeProtocol_return r= WeiToDogeProtocol(const_cast<char*>(q));
+    WeiToEther_return r= WeiToEther(const_cast<char*>(q));
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
 

@@ -65,22 +65,22 @@ public class KeyViewModel  extends ViewModel{
         return _keyInteract.getAccountAddress(pkKey);
     }
 
-    public int[] getTxMessage(String fromAddress, String nonce, String toAddress,
-                              String amount, String gas, String gasPrice, String chainId) throws ServiceException {
-        return _keyInteract.getTxMessage(fromAddress, nonce, toAddress,
-                amount, gas, gasPrice,  chainId);
+    public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
+                              String amount, String gasLimit,  String chainId) throws ServiceException {
+        return _keyInteract.getTxnSigningHash(fromAddress, nonce, toAddress,
+                amount, gasLimit, chainId);
     }
 
     public String getTxHash(String fromAddress, String nonce, String toAddress,
-                            String amount, String gas, String gasPrice, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         return _keyInteract.getTxHash(fromAddress, nonce, toAddress,
-                amount, gas, gasPrice,  chainId, pkKey, sig);
+                amount, gasLimit,  chainId, pkKey, sig);
     }
 
     public String getTxData(String fromAddress, String nonce, String toAddress,
-                            String amount, String gas, String gasPrice, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         return _keyInteract.getTxData(fromAddress, nonce, toAddress,
-                amount, gas, gasPrice,  chainId, pkKey, sig);
+                amount, gasLimit, chainId, pkKey, sig);
     }
 
     public String getDogeProtocolToWei(String value) throws ServiceException {
