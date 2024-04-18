@@ -22,35 +22,35 @@ public class KeyService implements IKeyService
     @Override
     public Result<Object> newAccount()
     {
-        String[] keys = _iHybridPqcJNI.dpKeypair();
+        String[] keys = _iHybridPqcJNI.Keypair();
         return new Result<Object>(getIntDataArray(keys[0]), null);
     }
 
     @Override
     public Result<Object> signAccount(int[] message, int[] skKey)
     {
-        String sign = _iHybridPqcJNI.dpSign(message, skKey);
+        String sign = _iHybridPqcJNI.Sign(message, skKey);
         return new Result<Object>(getIntDataArray(sign), null);
     }
 
     @Override
     public Result<Object> verifyAccount(int[] message, int[] sign, int[] pkKey)
     {
-        int result = _iHybridPqcJNI.dpSignVerify(message, sign, pkKey);
+        int result = _iHybridPqcJNI.SignVerify(message, sign, pkKey);
         return new Result<Object>(result, null);
     }
 
     @Override
     public Result<Object> publicKeyFromPrivateKey(int[] skKey)
     {
-        String pk = _iHybridPqcJNI.dpPublicKeyFromPrivateKey(skKey);
+        String pk = _iHybridPqcJNI.PublicKeyFromPrivateKey(skKey);
         return new Result<Object>(getIntDataArray(pk), null);
     }
 
     @Override
     public Result<Object> getAccountAddress(int[] pkKey)
     {
-        String[] apk = _iHybridPqcJNI.dpAddressFromPublicKey(pkKey);
+        String[] apk = _iHybridPqcJNI.AddressFromPublicKey(pkKey);
         String addressResult = apk[0];
         String addressError = apk[1];
 
@@ -61,10 +61,10 @@ public class KeyService implements IKeyService
    }
 
     @Override
-    public Result<Object> getTxMessage(String fromAddress, String nonce, String toAddress,
-                            String amount, String gas, String gasPrice, String data, String chainId)
+    public Result<Object> getTxnSigningHash(String fromAddress, String nonce, String toAddress,
+                            String amount, String gasLimit, String data, String chainId)
     {
-        String[] msg = _iHybridPqcJNI.dpTxMessage(fromAddress, nonce, toAddress, amount, gas, gasPrice, data, chainId);
+        String[] msg = _iHybridPqcJNI.TxnSigningHash(fromAddress, nonce, toAddress, amount, gasLimit, data, chainId);
 
         int msgLen = msg[0].length();
         int[] messageResult = new int[msgLen];
@@ -84,10 +84,10 @@ public class KeyService implements IKeyService
 
     @Override
     public Result<Object> getTxHash(String fromAddress, String nonce, String toAddress,
-                         String amount, String gas, String gasPrice, String chainId,
+                         String amount, String gasLimit,  String chainId,
                          int[] pkKey, int[] sig)
     {
-        String[] hash = _iHybridPqcJNI.dpTxHash(fromAddress, nonce, toAddress, amount, gas, gasPrice, "", chainId, pkKey, sig);
+        String[] hash = _iHybridPqcJNI.TxHash(fromAddress, nonce, toAddress, amount, gasLimit, "", chainId, pkKey, sig);
         String hashResult = hash[0];
         String hashError = hash[1];
         if(!hashResult.isEmpty())
@@ -99,10 +99,10 @@ public class KeyService implements IKeyService
 
     @Override
     public Result<Object> getTxData(String fromAddress, String nonce, String toAddress,
-                        String amount, String gas, String gasPrice, String chainId,
+                        String amount, String gasLimit, String chainId,
                         int[] pkKey, int[] sig)
     {
-        String[] data = _iHybridPqcJNI.dpTxData(fromAddress, nonce, toAddress, amount, gas, gasPrice, "", chainId, pkKey, sig);
+        String[] data = _iHybridPqcJNI.TxData(fromAddress, nonce, toAddress, amount, gasLimit,  "", chainId, pkKey, sig);
         String dataResult = data[0];
         String dataError = data[1];
         if(!dataResult.isEmpty())
@@ -134,7 +134,7 @@ public class KeyService implements IKeyService
     @Override
     public Result<Object> getDogeProtocolToWei(String value)
     {
-        String[] wei = _iHybridPqcJNI.dpDogeProtocolToWei(value);
+        String[] wei = _iHybridPqcJNI.DogeProtocolToWei(value);
         String weiResult = wei[0];
         String weiError = wei[1];
         if(!weiResult.isEmpty())
@@ -147,7 +147,7 @@ public class KeyService implements IKeyService
     @Override
     public Result<Object> getParseBigFloat(String value)
     {
-        String[] parse = _iHybridPqcJNI.dpParseBigFloat(value);
+        String[] parse = _iHybridPqcJNI.ParseBigFloat(value);
         String parseResult = parse[0];
         String parseError = parse[1];
         if(!parseResult.isEmpty())
@@ -160,7 +160,7 @@ public class KeyService implements IKeyService
     @Override
     public Result<Object> getWeiToDogeProtocol(String value)
     {
-        String[] dp = _iHybridPqcJNI.dpWeiToDogeProtocol(value);
+        String[] dp = _iHybridPqcJNI.WeiToDogeProtocol(value);
         String dpResult = dp[0];
         String dpError = dp[1];
         if(!dpResult.isEmpty())

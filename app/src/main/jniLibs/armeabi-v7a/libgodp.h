@@ -75,68 +75,82 @@ extern "C" {
 #endif
 
 
+/* Return type for Scrypt */
+struct Scrypt_return {
+	char* r0;
+	char* r1;
+};
+extern struct Scrypt_return Scrypt(char* skKeyStr, char* saltStr, GoInt skCount);
+
 /* Return type for PublicKeyToAddress */
 struct PublicKeyToAddress_return {
 	char* r0;
 	char* r1;
 };
-extern struct PublicKeyToAddress_return PublicKeyToAddress(char* pKey_str, GoInt pk_count);
+extern struct PublicKeyToAddress_return PublicKeyToAddress(char* pKeyStr, GoInt pkCount);
 
-/* Return type for TxMessage */
-struct TxMessage_return {
+/* Return type for IsValidAddress */
+struct IsValidAddress_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxMessage_return TxMessage(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId);
+extern struct IsValidAddress_return IsValidAddress(char* addressStr);
+
+/* Return type for TxnSigningHash */
+struct TxnSigningHash_return {
+	char* r0;
+	char* r1;
+};
+extern struct TxnSigningHash_return TxnSigningHash(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId);
 
 /* Return type for TxHash */
 struct TxHash_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxHash_return TxHash(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
+extern struct TxHash_return TxHash(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKeyStr, char* sigStr, GoInt pkCount, GoInt sigCount);
 
 /* Return type for TxData */
 struct TxData_return {
 	char* r0;
 	char* r1;
 };
-extern struct TxData_return TxData(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKey_str, char* sig_str, GoInt pk_count, GoInt sig_count);
+extern struct TxData_return TxData(char* from, char* nonce, char* to, char* value, char* gasLimit, char* data, char* chainId, char* pKeyStr, char* sigStr, GoInt pkCount, GoInt sigCount);
 
-/* Return type for ExportKey */
-struct ExportKey_return {
+/* Return type for ContractData */
+struct ContractData_return {
 	char* r0;
 	char* r1;
 };
-extern struct ExportKey_return ExportKey(char* skKeyStr, char* pkKeyStr, char* authentication, GoInt skCount, GoInt pkCount);
-
-/* Return type for ImportKey */
-struct ImportKey_return {
-	char* r0;
-	char* r1;
-};
-extern struct ImportKey_return ImportKey(char* skKeyStr, char* authentication, GoInt skCount);
-
-/* Return type for DogeProtocolToWei */
-struct DogeProtocolToWei_return {
-	char* r0;
-	char* r1;
-};
-extern struct DogeProtocolToWei_return DogeProtocolToWei(char* quantity);
+extern struct ContractData_return ContractData(char** argv, GoInt argvLength);
 
 /* Return type for ParseBigFloat */
 struct ParseBigFloat_return {
 	char* r0;
 	char* r1;
 };
-extern struct ParseBigFloat_return ParseBigFloat(char* quantity);
+extern struct ParseBigFloat_return ParseBigFloat(char* value);
 
-/* Return type for WeiToDogeProtocol */
-struct WeiToDogeProtocol_return {
+/* Return type for ParseBigFloatInner */
+struct ParseBigFloatInner_return {
 	char* r0;
 	char* r1;
 };
-extern struct WeiToDogeProtocol_return WeiToDogeProtocol(char* quantity);
+extern struct ParseBigFloatInner_return ParseBigFloatInner(char* value);
+
+/* Return type for WeiToEther */
+struct WeiToEther_return {
+	char* r0;
+	char* r1;
+};
+extern struct WeiToEther_return WeiToEther(char* wei);
+
+/* Return type for EtherToWeiFloat */
+struct EtherToWeiFloat_return {
+	char* r0;
+	char* r1;
+};
+extern struct EtherToWeiFloat_return EtherToWeiFloat(char* ethVal);
 
 #ifdef __cplusplus
 }

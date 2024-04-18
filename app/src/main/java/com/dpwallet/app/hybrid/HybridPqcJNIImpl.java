@@ -8,31 +8,29 @@ public class HybridPqcJNIImpl implements IHybridPqcJNIImpl {
       //  this.context = ctx;
     }
 
-    public native String[] dpKeypair();
+    public native String[] Keypair();
 
-    public native String dpSign(int[] m, int[] skKey);
+    public native String Sign(int[] m, int[] skKey);
 
-    public native int dpSignVerify(int[] m, int[] sign, int[] pkKey);
+    public native int SignVerify(int[] m, int[] sign, int[] pkKey);
 
-    public native String dpPublicKeyFromPrivateKey(int[] skKey);
+    public native String PublicKeyFromPrivateKey(int[] skKey);
 
-    public native String[] dpAddressFromPublicKey(int[] pkKey);
+    public native String[] AddressFromPublicKey(int[] pkKey);
 
-    public native String[] dpTxMessage(String from, String nonce, String to, String value,
-                                       String gasLimit, String gasPrice, String data, String chainId);
-
-    public native String[] dpTxHash(String from, String nonce, String to, String value,
-                                    String gasLimit, String gasPrice, String data, String chainId,
+    public native String[] TxnSigningHash(String from, String nonce, String to, String value,
+                                       String gasLimit,  String data, String chainId);
+    public native String[] TxHash(String from, String nonce, String to, String value,
+                                    String gasLimit, String data, String chainId,
+                                    int[] pkKey, int[] sign);
+    public native String[] TxData(String from, String nonce, String to, String value,
+                                    String gasLimit,  String data, String chainId,
                                     int[] pkKey, int[] sign);
 
-    public native String[] dpTxData(String from, String nonce, String to, String value,
-                                    String gasLimit, String gasPrice, String data, String chainId,
-                                    int[] pkKey, int[] sign);
+    public native String[] DogeProtocolToWei(String quantity);
 
-    public native String[] dpDogeProtocolToWei(String quantity);
+    public native String[] ParseBigFloat(String quantity);
 
-    public native String[] dpParseBigFloat(String quantity);
-
-    public native String[] dpWeiToDogeProtocol(String quantity);
+    public native String[] WeiToDogeProtocol(String quantity);
 
 }

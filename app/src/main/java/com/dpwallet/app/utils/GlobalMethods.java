@@ -36,8 +36,7 @@ public class GlobalMethods {
     //Network
     public static String NETWORK_NAME = "T3";
     public static String CHAIN_ID = "36996";
-    public static String GAS = "21000";
-    public static String GAS_PRICE = "1000000000";
+    public static String GAS_LIMIT = "21000";
 
     //public static String NONCE = "0";
 

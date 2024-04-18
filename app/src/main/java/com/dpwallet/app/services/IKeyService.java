@@ -15,15 +15,15 @@ public interface IKeyService {
 
     Result<Object> getAccountAddress(int[] pkKey);
 
-    Result<Object> getTxMessage(String fromAddress, String nonce, String toAddress,
-                     String amount, String gas, String gasPrice, String data, String chainId);
+    Result<Object> getTxnSigningHash(String fromAddress, String nonce, String toAddress,
+                     String amount, String gasLimit,  String data, String chainId);
 
     Result<Object> getTxHash(String fromAddress, String nonce, String toAddress,
-                             String amount, String gas, String gasPrice, String chainId,
+                             String amount, String gasLimit,  String chainId,
                              int[] pkKey, int[] sig);
 
     Result<Object> getTxData(String fromAddress, String nonce, String toAddress,
-                             String amount, String gas, String gasPrice, String chainId,
+                             String amount, String gasLimit,  String chainId,
                              int[] pkKey, int[] sig);
 
     Result<Object> unLockAccount(String encrypted_skKey, String password);
