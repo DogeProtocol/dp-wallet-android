@@ -1,12 +1,15 @@
 package com.dpwallet.app.view.fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -15,10 +18,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.dpwallet.app.R;
+import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.utils.PrefConnect;
+import com.dpwallet.app.viewmodel.JsonViewModel;
+import com.dpwallet.app.viewmodel.KeyViewModel;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomeNewFragment extends Fragment  {
-
     private static final String TAG = "HomeNewFragment";
+
+    private int jsonIndex = 0;
+    private JsonViewModel jsonViewModel;
 
     private OnHomeNewCompleteListener mHomeNewListener;
 
@@ -46,117 +58,78 @@ public class HomeNewFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayout n1linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_1);
-        LinearLayout n2linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_2);
-        LinearLayout n3linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_3);
-        LinearLayout n4linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_4);
-        LinearLayout n5linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_5);
-        LinearLayout n6linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_6);
-        LinearLayout n7linearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_new_middle_7);
+        jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
 
-        Button next1Button = (Button) getView().findViewById(R.id.button_home_new_next_1);
-        Button next2Button = (Button) getView().findViewById(R.id.button_home_new_next_2);
-        Button next3Button = (Button) getView().findViewById(R.id.button_home_new_next_3);
-        Button next4Button = (Button) getView().findViewById(R.id.button_home_new_next_4);
-        Button ok5Button = (Button) getView().findViewById(R.id.button_home_new_ok_5);
-        Button submit6Button = (Button) getView().findViewById(R.id.button_home_new_submit_6);
-        Button newWallet = (Button) getView().findViewById(R.id.button_home_new_wallet_7);
-        Button importWallet = (Button) getView().findViewById(R.id.button_home_import_wallet_7);
+        LinearLayout homeWelcomeLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_welcome);
+        TextView homeWelcomeInfoStepTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep);
+        TextView homeWelcomeInfoStepInfoTileTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep_info_title);
+        TextView homeWelcomeInfoStepInfoDescTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep_info_desc);
+        Button homeWelcomeLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_welcome_langValues_next);
 
-        RadioButton radioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_new_1);
-        RadioButton radioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_new_2);
-        RadioButton radioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_new_3);
-        RadioButton radioButton_4 = (RadioButton) getView().findViewById(R.id.radioButton_home_new_4);
 
-        String screenStart = getArguments().getString("screenStart");
+        LinearLayout homeSaftyQuizLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_safety_quiz);
+        TextView homeSaftyQuizQuizStepTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep);
+        TextView homeSaftyQuizQuizStepQuizeTitleTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep_quiz_title);
+        TextView homeSaftyQuizQuizStepQuizQuestionTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep_quiz_question);
 
-        switch(screenStart){
-            case "1":
-                n1linearLayout.setVisibility(View.VISIBLE);
-                break;
-            case "7":
-                n1linearLayout.setVisibility(View.GONE);
-                n7linearLayout.setVisibility(View.VISIBLE);
-                break;
-        }
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_0 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_0);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_1);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_2);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_3);
 
-        next1Button.setOnClickListener(new View.OnClickListener() {
+        Button homeSaftyQuizLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_safety_quiz_langValues_next);
+
+        homeWelcomeLinearLayout.setVisibility(View.VISIBLE);
+
+        InfoView(homeWelcomeInfoStepTextView,homeWelcomeInfoStepInfoTileTextView,homeWelcomeInfoStepInfoDescTextView,
+                homeWelcomeLangValuesNextButton,
+                jsonIndex, jsonViewModel.getInfoStep(), jsonViewModel.getInfo());
+        homeWelcomeLangValuesNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                n1linearLayout.setVisibility(View.GONE);
-                n2linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
+                try {
 
-        next2Button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n2linearLayout.setVisibility(View.GONE);
-                n3linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
+                    if(jsonIndex +1 >= jsonViewModel.getInfo().length()-1){
+                        jsonIndex = 0;
+                        homeWelcomeLinearLayout.setVisibility(View.GONE);
+                        homeSaftyQuizLinearLayout.setVisibility(View.VISIBLE);
+                        QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
+                                homeSaftyQuizLangValuesNextButton,
+                                homeSafetyQuizQuizStepQuizChoicesRadioButton_0,homeSafetyQuizQuizStepQuizChoicesRadioButton_1,homeSafetyQuizQuizStepQuizChoicesRadioButton_2,homeSafetyQuizQuizStepQuizChoicesRadioButton_3,
+                                jsonIndex, jsonViewModel.getQuizStep(), jsonViewModel.getQuiz());
+                        return;
+                    }
 
-        next3Button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n3linearLayout.setVisibility(View.GONE);
-                n4linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
+                    InfoView(homeWelcomeInfoStepTextView,homeWelcomeInfoStepInfoTileTextView,homeWelcomeInfoStepInfoDescTextView,
+                            homeWelcomeLangValuesNextButton,
+                            jsonIndex + 1 , jsonViewModel.getInfoStep(), jsonViewModel.getInfo());
 
-        next4Button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n4linearLayout.setVisibility(View.GONE);
-                n5linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
+                    jsonIndex = jsonIndex + 1;
 
-        ok5Button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n5linearLayout.setVisibility(View.GONE);
-                n6linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        submit6Button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Bundle bundleRoute = new Bundle();
-
-                if(radioButton_3.isChecked() == true){
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle((CharSequence) "").setView((int)
-                                    R.layout.safety_quiz_alert_dialog_fragment).create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-
-                    TextView textViewOk = (TextView) dialog.findViewById(
-                            R.id.textView_safety_quiz_alert_dialog_ok);
-
-                    textViewOk.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            n6linearLayout.setVisibility(View.GONE);
-                            n7linearLayout.setVisibility(View.VISIBLE);
-                            dialog.dismiss();
-                        }
-                    });
-
-                } else {
-                    bundleRoute.putString("message", getResources().getString(R.string.home_safety_quiz_message_wrong));
-                    FragmentManager fragmentManager  = getFragmentManager();
-                    MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
-                    messageDialogFragment.setCancelable(false);
-                    messageDialogFragment.setArguments(bundleRoute);
-                    messageDialogFragment.show(fragmentManager, "");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
 
-        newWallet.setOnClickListener(new View.OnClickListener() {
+        homeSaftyQuizLangValuesNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mHomeNewListener.onHomeNewComplete(0);
-            }
-        });
+                try {
 
-        importWallet.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mHomeNewListener.onHomeNewComplete(1);
+                    if(jsonIndex + 1 >= jsonViewModel.getQuiz().length()-1){
+                        jsonIndex = 0;
+                        return;
+                    }
+
+                    QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
+                            homeWelcomeLangValuesNextButton,
+                            homeSafetyQuizQuizStepQuizChoicesRadioButton_0,homeSafetyQuizQuizStepQuizChoicesRadioButton_1,homeSafetyQuizQuizStepQuizChoicesRadioButton_2,homeSafetyQuizQuizStepQuizChoicesRadioButton_3,
+                            jsonIndex + 1, jsonViewModel.getQuizStep(), jsonViewModel.getQuiz());
+
+                    jsonIndex = jsonIndex + 1;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -172,7 +145,7 @@ public class HomeNewFragment extends Fragment  {
     }
 
     public static interface OnHomeNewCompleteListener {
-        public abstract void onHomeNewComplete(int status);
+        public abstract void onHomeNewComplete();
     }
 
     public void onAttach(Context context) {
@@ -185,4 +158,48 @@ public class HomeNewFragment extends Fragment  {
         }
     }
 
+
+    private void InfoView(TextView infoStepTextView,TextView infoStepInfoTileTextView,TextView infoStepInfoDescTextView, Button  langValuesNextButton,
+                      int index, String infoStep, JSONArray info){
+        try {
+            infoStepTextView.setText(infoStep.replace(GlobalMethods.Step, String.valueOf(index +1))
+                    .replace(GlobalMethods.Total_Steps,String.valueOf(info.length()-1)));
+
+            final JSONObject i = info.getJSONObject(index);
+
+            infoStepInfoTileTextView.setText(i.getString(GlobalMethods.Title));
+            infoStepInfoDescTextView.setText(i.getString(GlobalMethods.Desc));
+
+            langValuesNextButton.setText(jsonViewModel.getLangValues().getString(GlobalMethods.Next));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void QuizView(TextView quizStepTextView, TextView quizStepQuizeTitleTextView, TextView quizStepQuizQuestionTextView, Button  langValuesNextButton,
+                       RadioButton quizStepQuizChoicesRadioButton_0, RadioButton quizStepQuizChoicesRadioButton_1, RadioButton quizStepQuizChoicesRadioButton_2,
+                      RadioButton quizStepQuizChoicesRadioButton_3, int index,String quizStep, JSONArray quiz){
+        try {
+           quizStepTextView.setText(quizStep.toString().replace(GlobalMethods.Step, String.valueOf(index +1))
+                    .replace(GlobalMethods.Total_Steps,String.valueOf(quiz.length()-1)));
+
+            final JSONObject q = quiz.getJSONObject(index);
+
+            quizStepQuizeTitleTextView.setText(q.getString(GlobalMethods.Title));
+            quizStepQuizQuestionTextView.setText(q.getString(GlobalMethods.Question));
+
+            final JSONArray choiceData = q.getJSONArray(GlobalMethods.Choices);
+
+            quizStepQuizChoicesRadioButton_0.setText(choiceData.getString(0));
+            quizStepQuizChoicesRadioButton_1.setText(choiceData.getString(1));
+            quizStepQuizChoicesRadioButton_2.setText(choiceData.getString(2));
+            quizStepQuizChoicesRadioButton_3.setText(choiceData.getString(3));
+
+            langValuesNextButton.setText(jsonViewModel.getLangValues().getString(GlobalMethods.Next));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

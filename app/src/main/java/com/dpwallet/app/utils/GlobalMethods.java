@@ -14,13 +14,41 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RawRes;
+
 import com.dpwallet.app.R;
 
+import java.io.InputStream;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class GlobalMethods {
 
     public static Toast toast;
+
+    //joson field
+    public static String Info = "info";
+    public static String InfoStep = "infoStep";
+    public static String Step = "[STEP]";
+    public static String Total_Steps = "[TOTAL_STEPS]";
+
+    public static String QuizStep = "quizStep";
+    public static String QuizWrongAnswer = "quizWrongAnswer";
+    public static String QuizNoChoice = "quizNoChoice";
+    public static String Quiz = "quiz";
+
+    public static String Title = "title";
+    public static String Desc = "desc";
+    public static String Question = "question";
+    public static String Choices = "choices";
+    public static String CorrectChoice = "correctChoice";
+    public static String AfterQuizInfo = "afterQuizInfo";
+
+    public static String LangValues = "langValues";
+    public static String Next = "next";
+
+
+
 
     //URL
     public static String READ_API_URL = "https://scan.dpapi.org";
@@ -41,8 +69,8 @@ public class GlobalMethods {
     //public static String NONCE = "0";
 
     public static int DURATION = 20;
-    public static int MINIMUM_PASSWORD_LENGTH = 15;
-    public static int ADDRESS_LENGTH = 42;
+    public static int MINIMUM_PASSWORD_LENGTH = 12;
+    public static int ADDRESS_LENGTH = 66;
     public static String ADDRESS_START_PREFIX = "0x";
 
    // public static int TOAST_SHOW_LENGTH = 1;
@@ -54,11 +82,29 @@ public class GlobalMethods {
     public static final String mainUrl = "https://dpscan.app/demo/";
 
 
+    public static String LocaleLanguage(Context context, String languageKey){
+        if (languageKey.equals("en")) {
+            return readRawResource(context, R.raw.en_us);
+        }
+        return readRawResource(context, R.raw.en_us);
+    }
+
+    public static String readRawResource(Context context,  @RawRes int res) {
+        return readStream(context.getResources().openRawResource(res));
+    }
+
+    private static String readStream(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
+    /*
     public static void LocaleLanguage(Context context, String TAG, String languagekey){
         try {
             if (TextUtils.isEmpty(languagekey)) {
                 languagekey = "en";
             }
+
 
             Locale locale = new Locale(languagekey);
             Locale.setDefault(locale);
@@ -70,9 +116,8 @@ public class GlobalMethods {
         }catch(Exception ex){
             GlobalMethods.ExceptionError(context, TAG, ex);
         }
-        //getBaseContext().getResources().updateConfiguration(config,
-        //                                                    getBaseContext().getResources().getDisplayMetrics());
     }
+*/
 
     public static boolean IsNetworkAvailable(Context context) {
         if (context == null) {
@@ -186,16 +231,6 @@ public class GlobalMethods {
         toast.show();
         toastCountDown.start();
     }
-
-   // private static void toast(Context context, String Message) {
-   //     Toast.makeText(context, Message, Toast.LENGTH_SHORT).show();
-   // }
-
-   // private static void toast(Context context, String Message, int xOffset, int yOffset) {
-   //     Toast toast = Toast.makeText(context, Message, Toast.LENGTH_LONG);
-   //     toast.setGravity(Gravity.TOP | Gravity.LEFT, xOffset, yOffset);
-   //     toast.show();
-   // }
 
 }
 
