@@ -59,8 +59,11 @@ import com.dpwallet.app.view.fragment.AccountTransactionsFragment;
 
 import com.dpwallet.app.view.fragment.TestnetCoinsFragment;
 
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -87,7 +90,7 @@ public class HomeActivity extends FragmentActivity implements
     private String walletAddress = "";
 
     private TextView walletAddressTextView;
-    private TextView balanceTextView;
+    private TextView balanceValueTextView;
     private ProgressBar progressBar;
     private BottomNavigationView bottomNavigationView;
 
@@ -95,6 +98,8 @@ public class HomeActivity extends FragmentActivity implements
     private ImageView imageViewRetry;
     private TextView textViewTitleRetry;
     private TextView textViewSubTitleRetry;
+
+    private JsonViewModel jsonViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,18 +109,17 @@ public class HomeActivity extends FragmentActivity implements
 
             String languageKey = getIntent().getStringExtra("languageKey");
             languageKey="en";
-            String jsonString = GlobalMethods.LocaleLanguage(getBaseContext(),  languageKey);
 
             //Bundle
             bundle = new Bundle();
             bundle.putString("languageKey", languageKey);
-            bundle.putString("jsonString", jsonString);
 
             setContentView(R.layout.home_activity);
 
             //Linear top layout
             topLinearLayout = (LinearLayout) findViewById(R.id.top_linear_layout_home_id);
             topLinearLayoutParams = topLinearLayout.getLayoutParams();
+            TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
 
             //Center Relative layout & Image Button
             centerRelativeLayout = (RelativeLayout) findViewById(R.id.center_relative_layout_home_id);
@@ -123,7 +127,8 @@ public class HomeActivity extends FragmentActivity implements
             ImageButton copyClipboardImageButton = (ImageButton) findViewById(R.id.imageButton_home_copy_clipboard);
             ImageButton qrCodeImageButton = (ImageButton) findViewById(R.id.imageButton_home_qr_code);
 
-            balanceTextView = (TextView) findViewById(R.id.textView_home_balance_value);
+            TextView balanceTitleTextView = (TextView) findViewById(R.id.textView_home_balance_title);
+            balanceValueTextView = (TextView) findViewById(R.id.textView_home_balance_value);
             ImageButton refreshImageButton = (ImageButton) findViewById(R.id.imageButton_home_refresh);
             progressBar = (ProgressBar) findViewById(R.id.progress_home_loader);
 
@@ -140,6 +145,9 @@ public class HomeActivity extends FragmentActivity implements
             textViewTitleRetry = (TextView) findViewById(R.id.textview_title_retry);
             textViewSubTitleRetry = (TextView) findViewById(R.id.textview_subtitle_retry);
             Button buttonRetry = (Button) findViewById(R.id.button_retry);
+
+            titleTextView.setText(jsonViewModel.getTitleByLangValues());
+            balanceTitleTextView.setText(jsonViewModel.getBalanceByLangValues());
 
             setWalletAddress();
 
@@ -169,7 +177,7 @@ public class HomeActivity extends FragmentActivity implements
 
             refreshImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    getBalanceByAccount(walletAddress, balanceTextView, progressBar);
+                    getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
                 }
             });
 
@@ -284,7 +292,7 @@ public class HomeActivity extends FragmentActivity implements
         try {
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.nav_home);
             item.setChecked(true);
-            getBalanceByAccount(walletAddress, balanceTextView, progressBar);
+            getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -483,7 +491,7 @@ public class HomeActivity extends FragmentActivity implements
     //Open downloaded folder
 
     //Get balance task
-    private void getBalanceByAccount(String address, TextView balanceTextView, ProgressBar progressBar) {
+    private void getBalanceByAccount(String address, TextView balanceValueTextView, ProgressBar progressBar) {
         try {
             linerLayoutOffline.setVisibility(View.GONE);
 
@@ -504,7 +512,7 @@ public class HomeActivity extends FragmentActivity implements
                             KeyViewModel keyViewModel = new KeyViewModel();
                             String quantity = (String) keyViewModel.getWeiToDogeProtocol(value);
 
-                            balanceTextView.setText(quantity);
+                            balanceValueTextView.setText(quantity);
                         }
                         progressBar.setVisibility(View.GONE);
                     }
@@ -693,7 +701,7 @@ public class HomeActivity extends FragmentActivity implements
                                         currentQuantity[0] = (String) keyViewModel.getWeiToDogeProtocol(value);
                                         if (previewsQuantity[0] != null) {
                                             if (!previewsQuantity[0].equals(currentQuantity[0])) {
-                                                balanceTextView.setText(currentQuantity[0]);
+                                                balanceValueTextView.setText(currentQuantity[0]);
                                                 sendNotificationChannel(getApplicationContext().getString(R.string.notification_description) + " " + currentQuantity[0]);
                                             }
                                         }

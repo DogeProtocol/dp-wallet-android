@@ -215,8 +215,8 @@ public class HomeNewFragment extends Fragment  {
     }
     private void InfoView(TextView infoStepTextView,TextView infoStepInfoTileTextView,TextView infoStepInfoDescTextView, Button  langValuesNextButton,
                           String infoStep, int index, int length){
-        infoStepTextView.setText(infoStep.replace(GlobalMethods.Step, String.valueOf(index +1))
-                .replace(GlobalMethods.Total_Steps,String.valueOf(length-1)));
+        infoStepTextView.setText(infoStep.replace(GlobalMethods.step, String.valueOf(index +1))
+                .replace(GlobalMethods.totalSteps,String.valueOf(length-1)));
 
         infoStepInfoTileTextView.setText(jsonViewModel.getTitleByInfo(index));
         infoStepInfoDescTextView.setText(jsonViewModel.getDescByInfo(index));
@@ -226,8 +226,8 @@ public class HomeNewFragment extends Fragment  {
     private void QuizView(TextView quizStepTextView, TextView quizStepQuizeTitleTextView, TextView quizStepQuizQuestionTextView, Button  langValuesNextButton,
                        RadioButton quizStepQuizChoicesRadioButton_0, RadioButton quizStepQuizChoicesRadioButton_1, RadioButton quizStepQuizChoicesRadioButton_2,
                       RadioButton quizStepQuizChoicesRadioButton_3, String quizStep, int index, int length){
-           quizStepTextView.setText(quizStep.toString().replace(GlobalMethods.Step, String.valueOf(index +1))
-                    .replace(GlobalMethods.Total_Steps,String.valueOf(length-1)));
+           quizStepTextView.setText(quizStep.toString().replace(GlobalMethods.step, String.valueOf(index +1))
+                    .replace(GlobalMethods.totalSteps,String.valueOf(length-1)));
 
             quizStepQuizeTitleTextView.setText(jsonViewModel.getTitleByQuiz(index));
             quizStepQuizQuestionTextView.setText(jsonViewModel.getQuestionByQuiz(index));

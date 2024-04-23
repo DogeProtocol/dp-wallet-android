@@ -27,30 +27,71 @@ public class GlobalMethods {
     public static Toast toast;
 
     //joson field
-    public static String Info = "info";
-    public static String InfoStep = "infoStep";
-    public static String Step = "[STEP]";
-    public static String Total_Steps = "[TOTAL_STEPS]";
+    public static String info = "info";
+    public static String infoStep = "infoStep";
+    public static String step = "[STEP]";
+    public static String totalSteps = "[TOTAL_STEPS]";
 
-    public static String QuizStep = "quizStep";
+    public static String quizStep = "quizStep";
 
-    public static String QuizWrongAnswer = "quizWrongAnswer";
-    public static String QuizNoChoice = "quizNoChoice";
-    public static String Quiz = "quiz";
+    public static String quizWrongAnswer = "quizWrongAnswer";
+    public static String quizNoChoice = "quizNoChoice";
+    public static String quiz = "quiz";
 
-    public static String Title = "title";
-    public static String Desc = "desc";
-    public static String Question = "question";
-    public static String Choices = "choices";
-    public static String CorrectChoice = "correctChoice";
-    public static String AfterQuizInfo = "afterQuizInfo";
+    public static String title = "title";
+    public static String desc = "desc";
+    public static String question = "question";
+    public static String choices = "choices";
+    public static String correctChoice = "correctChoice";
+    public static String afterQuizInfo = "afterQuizInfo";
 
-    public static String LangValues = "langValues";
-    public static String Next = "next";
-    public static String Ok = "ok";
-    public static String Cancel = "cancel";
-    public static String Close = "close";
-    public static String Submit = "submit";
+    public static String langValues = "langValues";
+    public static String next = "next";
+    public static String ok = "ok";
+    public static String cancel = "cancel";
+    public static String close = "close";
+    public static String submit = "submit";
+    public static String send = "Send";
+    public static String receive = "Receive";
+    public static String transactions = "Transactions";
+    public static String copy = "Copy";
+    public static String back = "Back";
+
+    public static String balance = "Balance";
+    public static String refresh = "Refresh";
+    public static String completedTransactions = "Completed Transactions";
+    public static String pendingTransactions = "Pending Transactions";
+    public static String backup = "Backup";
+    public static String restore = "Restore";
+    public static String wallets = "Wallets";
+
+    public static String settings = "Settings";
+    public static String unlock = "Unlock";
+    public static String unlockWallet = "Unlock wallet";
+    public static String scan = "DpScan";
+    public static String blockExplorer = "Block Explorer";
+    public static String selectNetwork=" selectNetwork";
+    public static String enterWalletPassword = "Enter Quantum Wallet Password";
+    public static String enterApassword = "Enter a password";
+    public static String showPassword = "Show Password";
+
+    public static String password = "Password";
+    public static String setWalletPassowrd = "Set Wallet Password";
+    public static String quizLangValue = "quiz";
+    public static String getCoinsForDogePTokens = "Get Coins For DogeP Tokens";
+    public static String walletPath = "Wallet Path";
+    public static String setWalletPassword = "Set Wallet Password";
+    public static String useStrongPassword = "Use a strong and long password. And do not forget it!";
+    public static String retypePassword = "Retype Password";
+    public static String retypeThePassword = "Retype the password";
+    public static String createRestoreWallet = "Create or Restore Quantum Wallet";
+    public static String selectAnOption = "Select an option";
+    public static String createNewWallet = "Create New Quantum Wallet";
+    public static String restoreWalletFromSeed = "Restore A Quantum Wallet From Seed Words";
+    public static String restoreWalletFromBackupFile = "Restore A Quantum Wallet From a Backup File";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //URL
     public static String READ_API_URL = "https://scan.dpapi.org";
