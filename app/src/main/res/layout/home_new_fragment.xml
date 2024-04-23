@@ -137,6 +137,7 @@
                         android:textSize="16sp"/>
 
                     <RadioGroup
+                        android:id="@+id/radioGroup_home_safety_quiz_quizStep_quiz"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">

@@ -33,6 +33,7 @@ public class GlobalMethods {
     public static String Total_Steps = "[TOTAL_STEPS]";
 
     public static String QuizStep = "quizStep";
+
     public static String QuizWrongAnswer = "quizWrongAnswer";
     public static String QuizNoChoice = "quizNoChoice";
     public static String Quiz = "quiz";
@@ -46,9 +47,10 @@ public class GlobalMethods {
 
     public static String LangValues = "langValues";
     public static String Next = "next";
-
-
-
+    public static String Ok = "ok";
+    public static String Cancel = "cancel";
+    public static String Close = "close";
+    public static String Submit = "submit";
 
     //URL
     public static String READ_API_URL = "https://scan.dpapi.org";
