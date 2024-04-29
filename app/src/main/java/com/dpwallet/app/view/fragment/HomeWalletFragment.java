@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,11 +21,16 @@ import com.dpwallet.app.R;
 import com.dpwallet.app.entity.ServiceException;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 
 public class HomeWalletFragment extends Fragment  {
 
     private static final String TAG = "HomeWalletFragment";
+
+    private int homeCreateRestoreWalletRadio = -1;
+
+    private JsonViewModel jsonViewModel;
 
     private OnHomeWalletCompleteListener mHomeWalletListener;
 
@@ -51,22 +58,42 @@ public class HomeWalletFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton backImageButton = (ImageButton) getView().findViewById(R.id.imageButton_home_wallet_back_arrow);
+        ImageButton homeWalletBackArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_home_wallet_back_arrow);
 
-        LinearLayout setWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_set_wallet);
-        EditText setWalletPasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_password);
-        EditText setWalletRetypePasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_retype_password);
-      //  Button setWalletButton = (Button) getView().findViewById(R.id.button_home_set_wallet_next);
+        LinearLayout homeSetWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_set_wallet);
+        TextView homeSetWalletTitleTextView = (TextView) getView().findViewById(R.id.textView_home_set_wallet_title);
+        TextView homeSetWalletDescriptionTextView = (TextView) getView().findViewById(R.id.textView_home_set_wallet_description);
+        TextView homeSetWalletPasswordTitleTextView = (TextView) getView().findViewById(R.id.textView_home_set_wallet_password_title);
+        EditText homeSetWalletPasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_password);
+        TextView homeSetWalletRetypePasswordTitleTextView = (TextView) getView().findViewById(R.id.textView_home_set_wallet_retype_password_title);
+        EditText homeSetWalletRetypePasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_retype_password);
+        Button homeSetWalletNextButton = (Button) getView().findViewById(R.id.button_home_set_wallet_next);
 
-        LinearLayout createRestoreWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_create_restore_wallet);
-        RadioButton createRestoreWalletRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_create_restore_wallet_1);
-        RadioButton createRestoreWalletRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_create_restore_wallet_2);
-        RadioButton createRestoreWalletRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_create_restore_wallet_3);
-        Button createRestoreWalletButton = (Button) getView().findViewById(R.id.button_create_restore_next);
+        LinearLayout homeCreateRestoreWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_create_restore_wallet);
+        TextView homeCreateRestoreWalletTitleTextView = (TextView) getView().findViewById(R.id.textView_home_create_restore_wallet_title);
+        TextView homeCreateRestoreWalletDescriptionTextView = (TextView) getView().findViewById(R.id.textView_home_create_restore_wallet_description);
 
+        RadioGroup homeCreateRestoreWalletRadioGroup = (RadioGroup) getView().findViewById(R.id.radioGroup_home_create_restore_wallet);
+        RadioButton homeCreateRestoreWalletRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_1);
+        RadioButton homeCreateRestoreWalletRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_2);
+        RadioButton homeCreateRestoreWalletRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_3);
+        Button homeCreateRestoreWalletNextButton = (Button) getView().findViewById(R.id.button_home_create_restore_wallet_next);
 
+        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
-      //  ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_set_wallet);
+        homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
+
+        SetWalletView(homeSetWalletTitleTextView, homeSetWalletDescriptionTextView, homeSetWalletPasswordTitleTextView,
+                homeSetWalletPasswordEditText, homeSetWalletRetypePasswordTitleTextView, homeSetWalletRetypePasswordEditText, homeSetWalletNextButton);
+
+        homeCreateRestoreWalletRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                homeCreateRestoreWalletRadio = (int) radioButton.getTag();
+            }
+        });
+
 
         /*
         backImageButton.setOnClickListener(new View.OnClickListener() {
@@ -171,5 +198,22 @@ public class HomeWalletFragment extends Fragment  {
         catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }
+    }
+
+    private void SetWalletView(TextView setWalletTitleTextView, TextView setWalletDescriptionTextView,
+                               TextView  setWalletPasswordTitleTextView, EditText setWalletPasswordEditText,
+                               TextView setWalletRetypePasswordTitleTextView, EditText setWalletRetypePasswordEditText,
+                               Button setWalletNextButton){
+
+        setWalletTitleTextView.setText(jsonViewModel.getSetWalletPasswordByLangValues());
+        setWalletDescriptionTextView.setText(jsonViewModel.getUseStrongPasswordByLangValues());
+
+        setWalletPasswordTitleTextView.setText(jsonViewModel.getPasswordByLangValues());
+        setWalletPasswordEditText.setHint(jsonViewModel.getEnterApasswordByLangValues());
+
+        setWalletRetypePasswordTitleTextView.setText(jsonViewModel.getRetypePasswordByLangValues());
+        setWalletRetypePasswordEditText.setHint(jsonViewModel.getRetypeThePasswordByLangValues());
+
+        setWalletNextButton.setText(jsonViewModel.getNextByLangValues());
     }
 }

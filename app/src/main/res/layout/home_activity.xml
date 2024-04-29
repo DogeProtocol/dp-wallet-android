@@ -163,17 +163,19 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textView_home_balance_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="Poppins"
-                        android:textColor="@color/colorCommon6" />
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|clip_horizontal"
                         android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textView_home_balance_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="Poppins"
+                            android:textColor="@color/colorCommon6" />
 
                         <TextView
                             android:id="@+id/textView_home_balance_value"
@@ -251,11 +253,11 @@
                             </androidx.cardview.widget.CardView>
 
                             <TextView
+                                android:id="@+id/textView_home_send_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/nav_send_title"
                                 android:textAppearance="@style/transaction_list_headings"
                                 android:textColor="@color/colorCommon6" />
 
@@ -290,11 +292,11 @@
                             </androidx.cardview.widget.CardView>
 
                             <TextView
+                                android:id="@+id/textView_home_receive_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/nav_receive_title"
                                 android:textAppearance="@style/transaction_list_headings"
                                 android:textColor="@color/colorCommon6" />
 
@@ -329,11 +331,11 @@
                             </androidx.cardview.widget.CardView>
 
                             <TextView
+                                android:id="@+id/textView_home_transactions_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/nav_transactions_title"
                                 android:textAppearance="@style/transaction_list_headings"
                                 android:textColor="@color/colorCommon6" />
 
@@ -368,11 +370,11 @@
                             </androidx.cardview.widget.CardView>
 
                             <TextView
+                                android:id="@+id/textView_home_dpscan_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/nav_dp_scan_title"
                                 android:textAppearance="@style/transaction_list_headings"
                                 android:textColor="@color/colorCommon6" />
 

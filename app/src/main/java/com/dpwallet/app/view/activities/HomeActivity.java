@@ -107,12 +107,14 @@ public class HomeActivity extends FragmentActivity implements
         try {
             //locale language
 
-            String languageKey = getIntent().getStringExtra("languageKey");
-            languageKey="en";
+            //String languageKey = getIntent().getStringExtra("languageKey");
+            String languageKey="en";
 
             //Bundle
             bundle = new Bundle();
             bundle.putString("languageKey", languageKey);
+
+            jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
 
             setContentView(R.layout.home_activity);
 
@@ -132,9 +134,13 @@ public class HomeActivity extends FragmentActivity implements
             ImageButton refreshImageButton = (ImageButton) findViewById(R.id.imageButton_home_refresh);
             progressBar = (ProgressBar) findViewById(R.id.progress_home_loader);
 
+            TextView sendTitleTextView = (TextView) findViewById(R.id.textView_home_send_title);
             ImageButton sendImageButton = (ImageButton) findViewById(R.id.imageButton_home_send);
+            TextView receiveTitleTextView = (TextView) findViewById(R.id.textView_home_receive_title);
             ImageButton receiveImageButton = (ImageButton) findViewById(R.id.imageButton_home_receive);
+            TextView transactionsTitleTextView = (TextView) findViewById(R.id.textView_home_transactions_title);
             ImageButton transactionsImageButton = (ImageButton) findViewById(R.id.imageButton_home_transactions);
+            TextView dpscanTitleTextView = (TextView) findViewById(R.id.textView_home_dpscan_title);
             ImageButton dpScanImageButton = (ImageButton) findViewById(R.id.imageButton_home_dpscan);
 
             //Bottom navigation
@@ -148,6 +154,12 @@ public class HomeActivity extends FragmentActivity implements
 
             titleTextView.setText(jsonViewModel.getTitleByLangValues());
             balanceTitleTextView.setText(jsonViewModel.getBalanceByLangValues());
+
+            sendTitleTextView.setText(jsonViewModel.getSendByLangValues());
+            receiveTitleTextView.setText(jsonViewModel.getReceiveByLangValues());
+            transactionsTitleTextView.setText(jsonViewModel.getTransactionsByLangValues());
+            dpscanTitleTextView.setText("R-DPSCAN");
+
 
             setWalletAddress();
 

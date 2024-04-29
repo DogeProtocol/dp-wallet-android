@@ -26,6 +26,11 @@ public class GlobalMethods {
 
     public static Toast toast;
 
+    public static String step = "[STEP]";
+    public static String totalSteps = "[TOTAL_STEPS]";
+
+
+/*
     //joson field
     public static String info = "info";
     public static String infoStep = "infoStep";
@@ -89,8 +94,31 @@ public class GlobalMethods {
     public static String createNewWallet = "Create New Quantum Wallet";
     public static String restoreWalletFromSeed = "Restore A Quantum Wallet From Seed Words";
     public static String restoreWalletFromBackupFile = "Restore A Quantum Wallet From a Backup File";
+    public static String seedWords = "Seed Words";
+    public static String seedWordsInfo1 = "Ensure that no one is looking at the screen other than you.";
+    public static String seedWordsInfo2 = "Ensure that there is no camera pointed at this screen, including from your phone.";
+    public static String seedWordsInfo3 = "You should save the seed words safely offline and keep multiple copies in a trustworthy and safe location.";
+    public static String seedWordsInfo4 = "If these seed words are stolen or someone else gets access to them, your wallet is compromised.";
+    public static String seedWordsShow = "Click here to reveal the seed words.";
+    public static String verifySeedWords = "Verify Seed Words";
+    public static String verifyWalletPassword = "Verify Current Quantum Wallet Password";
+    public static String verifyWalletPasswordInfo = "Retype your current quantum wallet password, to verify that you remember it. Upon verification, your wallet will be saved.";
+    public static String waitWalletSave = "Please wait while your wallet is being saved with strong encryption. This can take upto a minute or so to complete..";
+    public static String walletSaved = "Your wallet has been saved successfully.";
 
+    public static String backupWallet = "Backup Wallet";
+    public static String backupWalletInfo1 = "For additional safety, please make sure that you keep backup copies in atleast three different devices offline.";
+    public static String backupWalletInfo2 = "And remember you need your wallet password to restore the backup!";
+    public static String backupWalletSkip = "Click here to skip this step";
+    public static String backupWait = "Please wait while your wallet is being backed up with strong encryption. This can take upto a minute or so to complete...";
+    public static String walletBackedUp = "Your wallet has been backed up successfully. Remember you need your wallet password in order to restore it.";
+    public static String restoreWalletFromBackup = "Restore Quantum Wallet From Backup File";
+    public static String enterAboveWalletPassword = "Enter the above wallet's password";
+    public static String walletFileRestoreWait = "Please wait while your wallet is being decrypted and opened. This can take upto a minute.";
+    public static String waitRevealSeed = "Please wait while your wallet seed words are being decrypted and opened. This can take upto a minute.";
+    public static String waitWalletOpen = "Please wait while your wallet is being decrypted and opened. This can take upto a minute.";
 
+*/
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //URL

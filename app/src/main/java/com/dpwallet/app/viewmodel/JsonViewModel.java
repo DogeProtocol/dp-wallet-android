@@ -478,5 +478,971 @@ public class JsonViewModel extends ViewModel{
         }
         return null;
     }
+    public String getSeedWordsByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedWordsInfo1ByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsInfo1ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedWordsInfo2ByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsInfo2ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedWordsInfo3ByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsInfo3ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedWordsInfo4ByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsInfo4ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedWordsShowByLangValues() {
+        try {
+            return _jsonInteract.getSeedWordsShowByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getVerifySeedWordsByLangValues() {
+        try {
+            return _jsonInteract.getVerifySeedWordsByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getVerifyWalletPasswordByLangValues() {
+        try {
+            return _jsonInteract.getVerifyWalletPasswordByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getVerifyWalletPasswordInfoByLangValues() {
+        try {
+            return _jsonInteract.getVerifyWalletPasswordInfoByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWaitWalletSaveByLangValues() {
+        try {
+            return _jsonInteract.getWaitWalletSaveByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public String getWalletSavedByLangValues() {
+        try {
+            return _jsonInteract.getWalletSavedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBackupWalletByLangValues() {
+        try {
+            return _jsonInteract.getBackupWalletByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBackupWalletInfo1ByLangValues() {
+        try {
+            return _jsonInteract.getBackupWalletInfo1ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBackupWalletInfo2ByLangValues() {
+        try {
+            return _jsonInteract.getBackupWalletInfo2ByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBackupWalletSkipByLangValues() {
+        try {
+            return _jsonInteract.getBackupWalletSkipByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBackupWaitByLangValues() {
+        try {
+            return _jsonInteract.getBackupWaitByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletBackedUpByLangValues() {
+        try {
+            return _jsonInteract.getWalletBackedUpByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getRestoreWalletFromBackupByLangValues() {
+        try {
+            return _jsonInteract.getRestoreWalletFromBackupByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterAboveWalletPasswordByLangValues() {
+        try {
+            return _jsonInteract.getEnterAboveWalletPasswordByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletFileRestoreWaitByLangValues() {
+        try {
+            return _jsonInteract.getWalletFileRestoreWaitByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getWaitRevealSeedByLangValues() {
+        try {
+            return _jsonInteract.getWaitRevealSeedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWaitWalletOpenByLangValues() {
+        try {
+            return _jsonInteract.getWaitWalletOpenByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getOpenByLangValues() {
+        try {
+            return _jsonInteract.getOpenByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getTotal_balanceByLangValues() {
+        try {
+            return _jsonInteract.getTotal_balanceByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getHelpByLangValues() {
+        try {
+            return _jsonInteract.getHelpByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getDpscanByLangValues() {
+        try {
+            return _jsonInteract.getDpscanByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAddressByLangValues() {
+        try {
+            return _jsonInteract.getAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getCoinsByLangValues() {
+        try {
+            return _jsonInteract.getCoinsByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getRevealSeedByLangValues() {
+        try {
+            return _jsonInteract.getRevealSeedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getCreateOrRestoreWalletByLangValues() {
+        try {
+            return _jsonInteract.getCreateOrRestoreWalletByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getRevealByLangValues() {
+        try {
+            return _jsonInteract.getRevealByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWaitUnlockByLangValues() {
+        try {
+            return _jsonInteract.getWaitUnlockByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNetworksByLangValues() {
+        try {
+            return _jsonInteract.getNetworksByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getIdByLangValues() {
+        try {
+            return _jsonInteract.getIdByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNameByLangValues() {
+        try {
+            return _jsonInteract.getNameByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getScanApiUrlByLangValues() {
+        try {
+            return _jsonInteract.getScanApiUrlByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getTxnApiUrlByLangValues() {
+        try {
+            return _jsonInteract.getTxnApiUrlByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBlockExplorerUrlByLangValues() {
+        try {
+            return _jsonInteract.getBlockExplorerUrlByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAddNetworkByLangValues() {
+        try {
+            return _jsonInteract.getAddNetworkByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAddByLangValues() {
+        try {
+            return _jsonInteract.getAddByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterNetwork_jsonByLangValues() {
+        try {
+            return _jsonInteract.getEnterNetwork_jsonByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAddNetworkWarnByLangValues() {
+        try {
+            return _jsonInteract.getAddNetworkWarnByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNetworkAddedByLangValues() {
+        try {
+            return _jsonInteract.getNetworkAddedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getGetCoinsForTokensByLangValues() {
+        try {
+            return _jsonInteract.getGetCoinsForTokensByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getGetCoinsForTokensInfoByLangValues() {
+        try {
+            return _jsonInteract.getGetCoinsForTokensInfoByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getChooseEthWalletOptionByLangValues() {
+        try {
+            return _jsonInteract.getChooseEthWalletOptionByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthOptionSeedByLangValues() {
+        try {
+            return _jsonInteract.getEthOptionSeedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthOptionPrivateKeyByLangValues() {
+        try {
+            return _jsonInteract.getEthOptionPrivateKeyByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthOptionKeystoreByLangValues() {
+        try {
+            return _jsonInteract.getEthOptionKeystoreByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthOptionManualByLangValues() {
+        try {
+            return _jsonInteract.getEthOptionManualByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterEthSeedByLangValues() {
+        try {
+            return _jsonInteract.getEnterEthSeedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getVerifyConversionAddressByLangValues() {
+        try {
+            return _jsonInteract.getVerifyConversionAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getConversionAgreeByLangValues() {
+        try {
+            return _jsonInteract.getConversionAgreeByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthAddressByLangValues() {
+        try {
+            return _jsonInteract.getEthAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getQuantumAddressByLangValues() {
+        try {
+            return _jsonInteract.getQuantumAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNetworkByLangValues() {
+        try {
+            return _jsonInteract.getNetworkByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterQuantumWalletPasswordByLangValues() {
+        try {
+            return _jsonInteract.getEnterQuantumWalletPasswordByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getTypeTheWordsByLangValues() {
+        try {
+            return _jsonInteract.getTypeTheWordsByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getConversionMessageByLangValues() {
+        try {
+            return _jsonInteract.getConversionMessageByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getConversionRequestByLangValues() {
+        try {
+            return _jsonInteract.getConversionRequestByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getPleaseWaitSubmitByLangValues() {
+        try {
+            return _jsonInteract.getPleaseWaitSubmitByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterEthKeyByLangValues() {
+        try {
+            return _jsonInteract.getEnterEthKeyByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSelectEthKeyJsonByLangValues() {
+        try {
+            return _jsonInteract.getSelectEthKeyJsonByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterPasswordEthKeyJsonByLangValues() {
+        try {
+            return _jsonInteract.getEnterPasswordEthKeyJsonByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterEthPasswordByLangValues() {
+        try {
+            return _jsonInteract.getEnterEthPasswordByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getCopyEthAddressByLangValues() {
+        try {
+            return _jsonInteract.getCopyEthAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterEthAddressByLangValues() {
+        try {
+            return _jsonInteract.getEnterEthAddressByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getCopyMessageByLangValues() {
+        try {
+            return _jsonInteract.getCopyMessageByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getPasteSignatureInfoByLangValues() {
+        try {
+            return _jsonInteract.getPasteSignatureInfoByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getPasteSignatureByLangValues() {
+        try {
+            return _jsonInteract.getPasteSignatureByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBalanceChangedByLangValues() {
+        try {
+            return _jsonInteract.getBalanceChangedByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAddressToSendByLangValues() {
+        try {
+            return _jsonInteract.getAddressToSendByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getQuantityToSendByLangValues() {
+        try {
+            return _jsonInteract.getQuantityToSendByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSendRequestByLangValues() {
+        try {
+            return _jsonInteract.getSendRequestByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getReceive_coinsByLangValues() {
+        try {
+            return _jsonInteract.getReceive_coinsByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSendOnlyByLangValues() {
+        try {
+            return _jsonInteract.getSendOnlyByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getInoutByLangValues() {
+        try {
+            return _jsonInteract.getInoutByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getDateByLangValues() {
+        try {
+            return _jsonInteract.getDateByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getFromByLangValues() {
+        try {
+            return _jsonInteract.getFromByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getToByLangValues() {
+        try {
+            return _jsonInteract.getToByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getHashByLangValues() {
+        try {
+            return _jsonInteract.getHashByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getBlockByLangValues() {
+        try {
+            return _jsonInteract.getBlockByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSendConfirmByLangValues() {
+        try {
+            return _jsonInteract.getSendConfirmByLangValues();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getErrorByErrors() {
+        try {
+            return _jsonInteract.getErrorByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWrongAnswerByErrors() {
+        try {
+            return _jsonInteract.getWrongAnswerByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSelectOptionByErrors() {
+        try {
+            return _jsonInteract.getSelectOptionByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getRetypePasswordMismatchByErrors() {
+        try {
+            return _jsonInteract.getRetypePasswordMismatchByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getPasswordSpecByErrors() {
+        try {
+            return _jsonInteract.getPasswordSpecByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getPasswordSpaceByErrors() {
+        try {
+            return _jsonInteract.getPasswordSpaceByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedInitErrorByErrors() {
+        try {
+            return _jsonInteract.getSeedInitErrorByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedEmptyByErrors() {
+        try {
+            return _jsonInteract.getSeedEmptyByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedDoesNotExistByErrors() {
+        try {
+            return _jsonInteract.getSeedDoesNotExistByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSeedMismatchByErrors() {
+        try {
+            return _jsonInteract.getSeedMismatchByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletPasswordMismatchByErrors() {
+        try {
+            return _jsonInteract.getWalletPasswordMismatchByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWordToSeedByErrors() {
+        try {
+            return _jsonInteract.getWordToSeedByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSelectWalletFileByErrors() {
+        try {
+            return _jsonInteract.getSelectWalletFileByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterWalletFilePasswordByErrors() {
+        try {
+            return _jsonInteract.getEnterWalletFilePasswordByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletFileOpenErrorByErrors() {
+        try {
+            return _jsonInteract.getWalletFileOpenErrorByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterWalletPassordByErrors() {
+        try {
+            return _jsonInteract.getEnterWalletPassordByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletOpenErrorByErrors() {
+        try {
+            return _jsonInteract.getWalletOpenErrorByErrors();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getNoSeed() {
+        try {
+            return _jsonInteract.getNoSeed();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getWalletAddressExists() {
+        try {
+            return _jsonInteract.getWalletAddressExists();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getInvalidNetworkJson() {
+        try {
+            return _jsonInteract.getInvalidNetworkJson();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getInvalidApiResponse() {
+        try {
+            return _jsonInteract.getInvalidApiResponse();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthSeedEmpty() {
+        try {
+            return _jsonInteract.getEthSeedEmpty();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthSeedError() {
+        try {
+            return _jsonInteract.getEthSeedError();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNoEthConversionWallets() {
+        try {
+            return _jsonInteract.getNoEthConversionWallets();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNoEthConversionWallet() {
+        try {
+            return _jsonInteract.getNoEthConversionWallet();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getSelectEthAddress() {
+        try {
+            return _jsonInteract.getSelectEthAddress();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterQuantumPassword() {
+        try {
+            return _jsonInteract.getEnterQuantumPassword();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getInvalidEthPrivateKey() {
+        try {
+            return _jsonInteract.getInvalidEthPrivateKey();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthSigMatch() {
+        try {
+            return _jsonInteract.getEthSigMatch();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterEthSig() {
+        try {
+            return _jsonInteract.getEnterEthSig();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEnterAmount() {
+        try {
+            return _jsonInteract.getEnterAmount();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getAmountLarge() {
+        try {
+            return _jsonInteract.getAmountLarge();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getEthAddr() {
+        try {
+            return _jsonInteract.getEthAddr();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getQuantumAddr() {
+        try {
+            return _jsonInteract.getQuantumAddr();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getNoMoreTxns() {
+        try {
+            return _jsonInteract.getNoMoreTxns();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getInternetDisconnected() {
+        try {
+            return _jsonInteract.getInternetDisconnected();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String getUnexpectedError() {
+        try {
+            return _jsonInteract.getUnexpectedError();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

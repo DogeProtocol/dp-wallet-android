@@ -62,9 +62,9 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/textView_home_set_wallet_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/home_set_wallet_title"
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:textColor="@color/colorCommon6"/>
@@ -78,17 +78,17 @@
                             android:background="@drawable/line_2_shape" />
 
                         <TextView
+                            android:id="@+id/textView_home_set_wallet_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp"
-                            android:textSize="16dp"
-                            android:text="@string/home_set_wallet_description"/>
+                            android:textSize="16dp"/>
 
                         <TextView
+                            android:id="@+id/textView_home_set_wallet_password_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
-                            android:text="@string/home_set_wallet_password_title" />
+                            android:textSize="16dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -118,11 +118,11 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
+                            android:id="@+id/textView_home_set_wallet_retype_password_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:textSize="16dp"
-                            android:text="@string/home_set_wallet_retype_password_title" />
+                            android:textSize="16dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
-                            android:id="@+id/button_home_set_wallet_create"
+                            android:id="@+id/button_home_set_wallet_next"
                             android:background="@drawable/button_green_selector"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -160,7 +160,6 @@
                             android:layout_gravity="center_vertical|right"
                             android:padding="15dp"
                             android:textAllCaps="false"
-                            android:text="@string/home_set_wallet_next_title"
                             android:textColor="@color/colorCommon7" />
 
                     </LinearLayout>
@@ -175,9 +174,9 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/textView_home_create_restore_wallet_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/home_create_restore_wallet_title"
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:textColor="@color/colorCommon6"/>
@@ -191,42 +190,40 @@
                             android:background="@drawable/line_2_shape" />
 
                         <TextView
+                            android:id="@+id/textView_home_create_restore_wallet_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="20dp"
-                            android:textSize="16dp"
-                            android:text="@string/home_create_restore_wallet_description"/>
+                            android:textSize="16dp" />
 
                         <RadioGroup
+                            android:id="@+id/radioGroup_home_create_restore_wallet"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <RadioButton
-                                android:id="@+id/radioButton_create_restore_wallet_1"
+                                android:id="@+id/radioButton_home_create_restore_wallet_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
                                 android:layout_marginBottom="2dp"
                                 android:alpha="0.6"
-                                android:textAppearance="@style/regular_text"
-                                android:text="@string/home_create_restore_wallet_option_1" />
+                                android:textAppearance="@style/regular_text" />
 
                             <RadioButton
-                                android:id="@+id/radioButton_create_restore_wallet_2"
+                                android:id="@+id/radioButton_home_create_restore_wallet_2"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
                                 android:layout_marginBottom="2dp"
                                 android:alpha="0.6"
-                                android:textAppearance="@style/regular_text"
-                                android:text="@string/home_create_restore_wallet_option_2" />
+                                android:textAppearance="@style/regular_text" />
 
                             <RadioButton
-                                android:id="@+id/radioButton_create_restore_wallet_3"
+                                android:id="@+id/radioButton_home_create_restore_wallet_3"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
                                 android:layout_marginBottom="2dp"
                                 android:alpha="0.6"
-                                android:textAppearance="@style/regular_text"
-                                android:text="@string/home_create_restore_wallet_option_3" />
+                                android:textAppearance="@style/regular_text" />
 
                         </RadioGroup>
 
@@ -239,17 +236,17 @@
                             android:background="@drawable/line_2_shape" />
 
                         <Button
-                            android:id="@+id/button_create_restore_next"
+                            android:id="@+id/button_home_create_restore_wallet_next"
                             android:background="@drawable/button_green_selector"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|right"
                             android:padding="5dp"
                             android:textAllCaps="false"
-                            android:text="@string/home_create_restore_wallet_next_title"
                             android:textColor="@color/colorCommon7" />
 
                     </LinearLayout>
+
 
 
                 </RelativeLayout>
@@ -269,8 +266,6 @@
                 android:progress="0"
                 android:background="@android:color/transparent"
                 android:indeterminateDrawable="@drawable/progress" />
-
-
 
         </RelativeLayout>
 
