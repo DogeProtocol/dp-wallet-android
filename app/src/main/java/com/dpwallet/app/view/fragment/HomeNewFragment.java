@@ -151,13 +151,13 @@ public class HomeNewFragment extends Fragment  {
                             TextView homeSaftyQuizAlertDialogMessageTextView = (TextView) dialog.findViewById(R.id.textView_safety_quiz_alert_dialog_message);
                             homeSaftyQuizAlertDialogMessageTextView.setText(jsonViewModel.getAfterQuizInfoByQuiz(jsonIndex));
 
-                            TextView textViewOk = (TextView) dialog.findViewById(
-                                    R.id.textView_safety_quiz_alert_dialog_ok);
+                            TextView textViewOk = (TextView) dialog.findViewById(R.id.textView_safety_quiz_alert_dialog_ok);
                             textViewOk.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     dialog.dismiss();
 
                                     if(jsonIndex +1 >= jsonViewModel.getQuizLength()-1) {
+                                        mHomeNewListener.onHomeNewComplete();
                                         return;
                                     }
 
@@ -204,15 +204,16 @@ public class HomeNewFragment extends Fragment  {
     public static interface OnHomeNewCompleteListener {
         public abstract void onHomeNewComplete();
     }
+
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            this.mHomeNewListener = (OnHomeNewCompleteListener)context;
-        }
-        catch (final ClassCastException e) {
+            this.mHomeNewListener = (HomeNewFragment.OnHomeNewCompleteListener)context;
+        } catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }
     }
+
     private void InfoView(TextView infoStepTextView,TextView infoStepInfoTileTextView,TextView infoStepInfoDescTextView, Button  langValuesNextButton,
                           String infoStep, int index, int length){
         infoStepTextView.setText(infoStep.replace(GlobalMethods.step, String.valueOf(index +1))

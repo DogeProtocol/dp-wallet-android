@@ -320,7 +320,7 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onHomeSetWalletComplete() {
+    public void OnHomeWalletComplete() {
         try {
 
         } catch (Exception e) {

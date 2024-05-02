@@ -58,6 +58,9 @@ public class HomeWalletFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
+
+        LinearLayout homeSetWalletTopLinearLayout = (LinearLayout) getView().findViewById(R.id.top_linear_layout_home_wallet_id);
         ImageButton homeWalletBackArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_home_wallet_back_arrow);
 
         LinearLayout homeSetWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_set_wallet);
@@ -74,9 +77,8 @@ public class HomeWalletFragment extends Fragment  {
         TextView homeCreateRestoreWalletDescriptionTextView = (TextView) getView().findViewById(R.id.textView_home_create_restore_wallet_description);
 
         RadioGroup homeCreateRestoreWalletRadioGroup = (RadioGroup) getView().findViewById(R.id.radioGroup_home_create_restore_wallet);
+        RadioButton homeCreateRestoreWalletRadioButton_0 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_0);
         RadioButton homeCreateRestoreWalletRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_1);
-        RadioButton homeCreateRestoreWalletRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_2);
-        RadioButton homeCreateRestoreWalletRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_3);
         Button homeCreateRestoreWalletNextButton = (Button) getView().findViewById(R.id.button_home_create_restore_wallet_next);
 
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
@@ -86,6 +88,40 @@ public class HomeWalletFragment extends Fragment  {
         SetWalletView(homeSetWalletTitleTextView, homeSetWalletDescriptionTextView, homeSetWalletPasswordTitleTextView,
                 homeSetWalletPasswordEditText, homeSetWalletRetypePasswordTitleTextView, homeSetWalletRetypePasswordEditText, homeSetWalletNextButton);
 
+        homeSetWalletNextButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String message = jsonViewModel.getPasswordSpecByErrors();
+                if (homeSetWalletPasswordEditText.getText().length() > GlobalMethods.MINIMUM_PASSWORD_LENGTH) {
+                    if (homeSetWalletPasswordEditText.getText().toString().equals(homeSetWalletRetypePasswordEditText.getText().toString())) {
+                        homeSetWalletLinearLayout.setVisibility(View.GONE);
+                        homeSetWalletTopLinearLayout.setVisibility(View.VISIBLE);
+                        homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
+                        CreateRestoreWalletView(homeCreateRestoreWalletTitleTextView, homeCreateRestoreWalletDescriptionTextView, homeCreateRestoreWalletRadioButton_0,
+                                homeCreateRestoreWalletRadioButton_1,  homeCreateRestoreWalletNextButton);
+                        return;
+                    }
+                    message = jsonViewModel.getRetypePasswordMismatchByErrors();
+                }
+                Bundle bundleRoute = new Bundle();
+                bundleRoute.putString("message", message);
+                FragmentManager fragmentManager  = getFragmentManager();
+                MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
+                messageDialogFragment.setCancelable(false);
+                messageDialogFragment.setArguments(bundleRoute);
+                messageDialogFragment.show(fragmentManager, "");
+            }
+        });
+
+        homeWalletBackArrowImageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (homeCreateRestoreWalletLinearLayout.getVisibility() == View.VISIBLE) {
+                    homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
+                    homeSetWalletTopLinearLayout.setVisibility(View.GONE);
+                    homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         homeCreateRestoreWalletRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -94,27 +130,28 @@ public class HomeWalletFragment extends Fragment  {
             }
         });
 
-
-        /*
-        backImageButton.setOnClickListener(new View.OnClickListener() {
+        homeCreateRestoreWalletNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                try {
-                    switch (View.VISIBLE) {
-                        case createRestoreWalletLinearLayout.VISIBLE:
-                            createRestoreWalletLinearLayout.setVisibility(View.GONE);
-                            setWalletLinearLayout.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                            setWalletLinearLayout.setVisibility(View.VISIBLE);
-                            break;
-                    }
 
-                }catch (ServiceException e) {
-                    GlobalMethods.ExceptionError(getContext(), TAG, e);
+                Bundle bundleRoute = new Bundle();
+                String message = "";
+
+                if(homeCreateRestoreWalletRadioButton_0.isChecked() == true) {
+
+                } else if(homeCreateRestoreWalletRadioButton_1.isChecked() == true) {
+
+                }  else {
+                    message = jsonViewModel.getSelectOptionByErrors();
+                    bundleRoute.putString("message", message);
+                    FragmentManager fragmentManager  = getFragmentManager();
+                    MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
+                    messageDialogFragment.setCancelable(false);
+                    messageDialogFragment.setArguments(bundleRoute);
+                    messageDialogFragment.show(fragmentManager, "");
                 }
             }
         });
-        */
 
 /*
         setWalletButton.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +163,7 @@ public class HomeWalletFragment extends Fragment  {
                         return;
                     }
 */
+
                     /*
                     String message = getResources().getString(R.string.home_set_wallet_message_exits);
                     if (progressBar.getVisibility() == View.VISIBLE) {
@@ -174,6 +212,7 @@ public class HomeWalletFragment extends Fragment  {
             }
         });
 */
+
     }
 
     @Override
@@ -187,7 +226,7 @@ public class HomeWalletFragment extends Fragment  {
     }
 
     public static interface OnHomeWalletCompleteListener {
-        public abstract void onHomeSetWalletComplete();
+        public abstract void OnHomeWalletComplete();
     }
 
     public void onAttach(Context context) {
@@ -198,7 +237,7 @@ public class HomeWalletFragment extends Fragment  {
         catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }
-    }
+   }
 
     private void SetWalletView(TextView setWalletTitleTextView, TextView setWalletDescriptionTextView,
                                TextView  setWalletPasswordTitleTextView, EditText setWalletPasswordEditText,
@@ -215,5 +254,24 @@ public class HomeWalletFragment extends Fragment  {
         setWalletRetypePasswordEditText.setHint(jsonViewModel.getRetypeThePasswordByLangValues());
 
         setWalletNextButton.setText(jsonViewModel.getNextByLangValues());
+    }
+
+    private void CreateRestoreWalletView(TextView createRestoreWalletTitleTextView, TextView createRestoreWalletDescriptionTextView,
+                             RadioButton  createRestoreWalletRadioButton_0, RadioButton createRestoreWalletRadioButton_1,
+                                         Button createRestoreWalletNextButton){
+
+        createRestoreWalletTitleTextView.setText(jsonViewModel.getCreateRestoreWalletByLangValues());
+        createRestoreWalletDescriptionTextView.setText(jsonViewModel.getSelectAnOptionByLangValues());
+
+        createRestoreWalletRadioButton_0.setChecked(false);
+        createRestoreWalletRadioButton_1.setChecked(false);
+
+        createRestoreWalletRadioButton_0.setText(jsonViewModel.getCreateNewWalletByLangValues());
+        createRestoreWalletRadioButton_1.setText(jsonViewModel.getRestoreWalletFromSeedByLangValues());
+
+        createRestoreWalletRadioButton_0.setTag(0);
+        createRestoreWalletRadioButton_1.setTag(1);
+
+        createRestoreWalletNextButton.setText(jsonViewModel.getNextByLangValues());
     }
 }
