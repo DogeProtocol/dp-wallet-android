@@ -152,7 +152,6 @@ public class GlobalMethods {
     public static final String downloadDirectory = "dpWallet";
     public static final String mainUrl = "https://dpscan.app/demo/";
 
-
     public static String LocaleLanguage(Context context, String languageKey){
         if (languageKey.equals("en")) {
             return readRawResource(context, R.raw.en_us);

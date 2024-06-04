@@ -72,7 +72,6 @@ public class JsonViewModel extends ViewModel{
         }
         return null;
     }
-
     public String getQuizStep() {
         try {
             return _jsonInteract.getQuizStep();

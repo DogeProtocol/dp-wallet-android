@@ -2,6 +2,8 @@ package com.dpwallet.app.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +83,15 @@ public class HomeWalletFragment extends Fragment  {
         RadioButton homeCreateRestoreWalletRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_create_restore_wallet_1);
         Button homeCreateRestoreWalletNextButton = (Button) getView().findViewById(R.id.button_home_create_restore_wallet_next);
 
+
+        LinearLayout homeSeedWordsLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words);
+        TextView homeSeedWordsTitleTextView = (TextView) getView().findViewById(R.id.textView_home_seed_words_title);
+        TextView homeSeedWords1 = (TextView) getView().findViewById(R.id.textView_home_seed_words_1);
+        TextView homeSeedWords2 = (TextView) getView().findViewById(R.id.textView_home_seed_words_2);
+        TextView homeSeedWords3 = (TextView) getView().findViewById(R.id.textView_home_seed_words_3);
+        TextView homeSeedWords4 = (TextView) getView().findViewById(R.id.textView_home_seed_words_4);
+        TextView homeSeedWordsShow = (TextView) getView().findViewById(R.id.textView_home_seed_words_show);
+
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
         homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
@@ -119,6 +130,12 @@ public class HomeWalletFragment extends Fragment  {
                     homeSetWalletTopLinearLayout.setVisibility(View.GONE);
                     homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
                 }
+                if(homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
+                    homeSeedWordsLinearLayout.setVisibility(View.GONE);
+                    homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
+                    //homeCreateRestoreWalletRadioButton_0.setChecked(false);
+                    //homeCreateRestoreWalletRadioButton_1.setChecked(false);
+                }
             }
         });
 
@@ -138,7 +155,9 @@ public class HomeWalletFragment extends Fragment  {
                 String message = "";
 
                 if(homeCreateRestoreWalletRadioButton_0.isChecked() == true) {
-
+                    homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
+                    homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
+                    SeedWordsView(homeSeedWordsTitleTextView, homeSeedWords1, homeSeedWords2, homeSeedWords3, homeSeedWords4, homeSeedWordsShow);
                 } else if(homeCreateRestoreWalletRadioButton_1.isChecked() == true) {
 
                 }  else {
@@ -263,8 +282,8 @@ public class HomeWalletFragment extends Fragment  {
         createRestoreWalletTitleTextView.setText(jsonViewModel.getCreateRestoreWalletByLangValues());
         createRestoreWalletDescriptionTextView.setText(jsonViewModel.getSelectAnOptionByLangValues());
 
-        createRestoreWalletRadioButton_0.setChecked(false);
-        createRestoreWalletRadioButton_1.setChecked(false);
+        //createRestoreWalletRadioButton_0.setChecked(false);
+        //createRestoreWalletRadioButton_1.setChecked(false);
 
         createRestoreWalletRadioButton_0.setText(jsonViewModel.getCreateNewWalletByLangValues());
         createRestoreWalletRadioButton_1.setText(jsonViewModel.getRestoreWalletFromSeedByLangValues());
@@ -273,5 +292,21 @@ public class HomeWalletFragment extends Fragment  {
         createRestoreWalletRadioButton_1.setTag(1);
 
         createRestoreWalletNextButton.setText(jsonViewModel.getNextByLangValues());
+    }
+
+    private void SeedWordsView(TextView seedWordsTitleTextView, TextView seedWords1TextView,
+                               TextView seedWords2TextView, TextView seedWords3TextView, TextView seedWords4TextView, TextView seedWordsShowTextView){
+
+        seedWordsTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
+        seedWords1TextView.setText(jsonViewModel.getSeedWordsInfo1ByLangValues());
+        seedWords2TextView.setText(jsonViewModel.getSeedWordsInfo2ByLangValues());
+        seedWords3TextView.setText(jsonViewModel.getSeedWordsInfo3ByLangValues());
+        seedWords4TextView.setText(jsonViewModel.getSeedWordsInfo4ByLangValues());
+
+
+        SpannableString content = new SpannableString(jsonViewModel.getSeedWordsShowByLangValues());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        seedWordsShowTextView.setText(content);
+
     }
 }

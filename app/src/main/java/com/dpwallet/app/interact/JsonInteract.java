@@ -203,8 +203,6 @@ public class JsonInteract {
     private static final String data_lang_key_internetDisconnected = "internetDisconnected";
     private static final String data_lang_key_unexpectedError = "unexpectedError";
 
-
-
     public JsonInteract(String jsonString) throws JSONException {
         jsonObject  = new JSONObject(jsonString);
     }
