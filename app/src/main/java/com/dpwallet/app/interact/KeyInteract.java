@@ -23,6 +23,22 @@ public class KeyInteract {
         this._iKeyStore = iKeyStore;
     }
 
+    public int[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.newAccountFromSeed(expandedSeedArray);
+            if (result.getException() != null) {
+                Timber.tag("newAccountFromSeed").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("newAccountFromSeed").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
     public int[] newAccount() throws ServiceException {
         try {
             Result<Object> result = _iKeyService.newAccount();
@@ -71,6 +87,38 @@ public class KeyInteract {
         }
     }
 
+    public int[] seedExpander(int[] seed) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.seedExpander(seed);
+            if (result.getException() != null) {
+                Timber.tag("newAccountFromSeed").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("newAccountFromSeed").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+    public int[] random() throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.random();
+            if (result.getException() != null) {
+                Timber.tag("random").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("random").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("random catch").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
     public int[] publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.publicKeyFromPrivateKey(skKey);
@@ -86,6 +134,23 @@ public class KeyInteract {
             throw new ServiceException((String) ex.getMessage());
         }
     }
+
+    public int[] scrypt(int[] skKey, int[] salt) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.scrypt(skKey, salt);
+            if (result.getException() != null) {
+                Timber.tag("scrypt").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("scrypt").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("scrypt catch").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
 
     public String getAccountAddress(int[] pkKey) throws ServiceException {
         try {
@@ -157,6 +222,22 @@ public class KeyInteract {
         }
     }
 
+    public String getParseBigFloat(String value) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.getParseBigFloat(value);
+            if (result.getException() != null) {
+                Timber.tag("getParseBigFloat").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("getParseBigFloat").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("getParseBigFloat").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
     public String getDogeProtocolToWei(String value) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getDogeProtocolToWei(value);
@@ -173,21 +254,6 @@ public class KeyInteract {
         }
     }
 
-    public String getParseBigFloat(String value) throws ServiceException {
-        try {
-            Result<Object> result = _iKeyService.getParseBigFloat(value);
-            if (result.getException() != null) {
-                Timber.tag("getParseBigFloat").d("error %s", result.getException());
-                throw new ServiceException((String) result.getException());
-            }
-            Timber.tag("getParseBigFloat").d("success");
-            return (String) result.getResult();
-        }
-        catch(Exception ex) {
-            Timber.tag("getParseBigFloat").d("error %s", ex.getMessage());
-            throw new ServiceException((String) ex.getMessage());
-        }
-    }
 
     public String getWeiToDogeProtocol(String value) throws ServiceException {
         try {

@@ -92,6 +92,9 @@ public class HomeWalletFragment extends Fragment  {
         TextView homeSeedWords4 = (TextView) getView().findViewById(R.id.textView_home_seed_words_4);
         TextView homeSeedWordsShow = (TextView) getView().findViewById(R.id.textView_home_seed_words_show);
 
+        LinearLayout homeSeedWordsViewLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words_view);
+        TextView[] homeSeedWordsViewTextViews = HomeSeedWordsViewTextViews();
+
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
         homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
@@ -309,4 +312,69 @@ public class HomeWalletFragment extends Fragment  {
         seedWordsShowTextView.setText(content);
 
     }
+
+    private TextView[] HomeSeedWordsViewTextViews(){
+        TextView[] homeSeedWordsViewTextViews = new TextView[] {
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_b1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_b2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_b3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_b4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_c1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_c2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_c3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_c4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_d1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_d2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_d3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_d4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_e1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_e2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_e3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_e4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_f1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_f2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_f3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_f4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_g1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_g2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_g3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_g4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_h1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_h2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_h3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_h4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_i1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_i2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_i3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_i4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_j1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_j2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_j3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_j4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_k1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_k2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_k3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_k4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_l1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_l2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_l3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_l4),
+
+        };
+        return homeSeedWordsViewTextViews;
+    }
+
+    private void ShowNewSeedScreen(TextView[] textViews) {
+        //Random
+
+        for (int i = 0; i < textViews.length; i++)
+        {
+            textViews[i].setText("some text");
+        }
+    }
+
 }

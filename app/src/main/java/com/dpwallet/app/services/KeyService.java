@@ -20,6 +20,13 @@ public class KeyService implements IKeyService
     }
 
     @Override
+    public Result<Object> newAccountFromSeed(int[] expandedSeedArray)
+    {
+        String[] keys = _iHybridPqcJNI.KeypairSeed(expandedSeedArray);
+        return new Result<Object>(getIntDataArray(keys[0]), null);
+    }
+
+    @Override
     public Result<Object> newAccount()
     {
         String[] keys = _iHybridPqcJNI.Keypair();
@@ -41,10 +48,45 @@ public class KeyService implements IKeyService
     }
 
     @Override
+    public Result<Object> seedExpander(int[] seed)
+    {
+        String[] seededExpander = _iHybridPqcJNI.SeedExpander(seed);
+        return new Result<Object>(getIntDataArray(seededExpander[0]), null);
+    }
+
+    @Override
+    public Result<Object> random()
+    {
+        String[] rnd = _iHybridPqcJNI.Random();
+        return new Result<Object>(getIntDataArray(rnd[0]), null);
+    }
+
+    @Override
     public Result<Object> publicKeyFromPrivateKey(int[] skKey)
     {
         String pk = _iHybridPqcJNI.PublicKeyFromPrivateKey(skKey);
         return new Result<Object>(getIntDataArray(pk), null);
+    }
+
+    @Override
+    public Result<Object> scrypt(int[] skKey, int[] salt)
+    {
+        String[] scrypt = _iHybridPqcJNI.Scrypt(skKey, salt);
+        int length = scrypt[0].length();
+        int[] result = new int[length];
+        String error = scrypt[1];
+
+
+        for (int i = 0; i < length; i++) {
+            int codePointAt = Character.codePointAt(scrypt[0], i);
+            result[i] = codePointAt;
+        }
+
+        if(length > 0 )
+        {
+            return new Result<Object>(result, null);
+        }
+        return new Result<Object>(null, error);
     }
 
     @Override
@@ -59,6 +101,21 @@ public class KeyService implements IKeyService
         }
         return new Result<Object>(null, addressError);
    }
+
+    @Override
+    public Result<Object> isValidAddress(String address)
+    {
+        String[] validAddress = _iHybridPqcJNI.IsValidAddress(address);
+
+        String result = validAddress[0];
+        String error = validAddress[1];
+
+        if(!result.isEmpty()){
+            return new Result<Object>(result, null);
+        }
+        return new Result<Object>(null, error);
+    }
+
 
     @Override
     public Result<Object> getTxnSigningHash(String fromAddress, String nonce, String toAddress,
@@ -112,6 +169,18 @@ public class KeyService implements IKeyService
         return new Result<Object>(null, dataError);
     }
 
+    @Override
+    public Result<Object> ContractData(String method, String abiData, String argument1, String argument2)
+    {
+        String[] data = _iHybridPqcJNI.ContractData(method, abiData, argument1, argument2);
+        String dataResult = data[0];
+        String dataError = data[1];
+        if(!dataResult.isEmpty())
+        {
+            return new Result<Object>(dataResult, null);
+        }
+        return new Result<Object>(null, dataError);
+    }
 
     @Override
     public Result<Object> unLockAccount(String encrypted_skKey, String password)
@@ -132,6 +201,19 @@ public class KeyService implements IKeyService
     }
 
     @Override
+    public Result<Object> getParseBigFloat(String value)
+    {
+        String[] parse = _iHybridPqcJNI.ParseBigFloat(value);
+        String parseResult = parse[0];
+        String parseError = parse[1];
+        if(!parseResult.isEmpty())
+        {
+            return new Result<Object>(parseResult, null);
+        }
+        return new Result<Object>(null, parseError);
+    }
+
+    @Override
     public Result<Object> getDogeProtocolToWei(String value)
     {
         String[] wei = _iHybridPqcJNI.DogeProtocolToWei(value);
@@ -144,18 +226,7 @@ public class KeyService implements IKeyService
         return new Result<Object>(null, weiError);
     }
 
-    @Override
-    public Result<Object> getParseBigFloat(String value)
-    {
-        String[] parse = _iHybridPqcJNI.ParseBigFloat(value);
-        String parseResult = parse[0];
-        String parseError = parse[1];
-        if(!parseResult.isEmpty())
-        {
-            return new Result<Object>(parseResult, null);
-        }
-        return new Result<Object>(null, parseError);
-    }
+
 
     @Override
     public Result<Object> getWeiToDogeProtocol(String value)

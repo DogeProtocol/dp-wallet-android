@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class seedwords {
+public class SeedWords {
     private static  int SEED_LENGTH = 96;
     private static  Map<String, String> SEED_MAP = new HashMap<>(); //key is word, items are string corresponding to index1 and index2
     private static  Map<String, String> SEED_REVERSE_MAP = new HashMap<>(); //vice-versa of SEED_MAP
@@ -16,7 +16,7 @@ public class seedwords {
     private static  ArrayList<String> SEED_WORD_LIST = new ArrayList<String>();
     private String SEED_WORDS_RAW = null;
 
-    public seedwords(String seedWordsRaw) {
+    public SeedWords(String seedWordsRaw) {
         SEED_WORDS_RAW  = seedWordsRaw;
     }
 
