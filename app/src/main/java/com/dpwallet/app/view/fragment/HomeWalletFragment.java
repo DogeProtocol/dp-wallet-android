@@ -93,7 +93,14 @@ public class HomeWalletFragment extends Fragment  {
         TextView homeSeedWordsShow = (TextView) getView().findViewById(R.id.textView_home_seed_words_show);
 
         LinearLayout homeSeedWordsViewLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words_view);
+        TextView homeSeedWordsViewTitleTextView = (TextView) getView().findViewById(R.id.textView_home_seed_words_view_title);
         TextView[] homeSeedWordsViewTextViews = HomeSeedWordsViewTextViews();
+        Button homeSeedWordsViewNextButton = (Button) getView().findViewById(R.id.button_home_seed_words_view_next);
+
+        LinearLayout homeSeedWordsEditLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words_edit);
+        TextView homeSeedWordsEditTitleTextView = (TextView) getView().findViewById(R.id.textView_home_seed_words_edit_title);
+        EditText[] homeSeedWordsEditTextViews = HomeSeedWordsViewEditText();
+        Button homeSeedWordsEditNextButton = (Button) getView().findViewById(R.id.button_home_seed_words_edit_next);
 
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
@@ -174,6 +181,35 @@ public class HomeWalletFragment extends Fragment  {
                 }
             }
         });
+
+        homeSeedWordsShow.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 homeSeedWordsLinearLayout.setVisibility(View.GONE);
+                 homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
+                 ShowNewSeedScreen(homeSeedWordsViewTitleTextView, homeSeedWordsViewTextViews, homeSeedWordsViewNextButton);
+             }
+        });
+
+
+        homeSeedWordsViewNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
+                homeSeedWordsEditLinearLayout.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        homeSeedWordsEditNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
+            }
+        });
+
+
+
 
 /*
         setWalletButton.setOnClickListener(new View.OnClickListener() {
@@ -306,11 +342,9 @@ public class HomeWalletFragment extends Fragment  {
         seedWords3TextView.setText(jsonViewModel.getSeedWordsInfo3ByLangValues());
         seedWords4TextView.setText(jsonViewModel.getSeedWordsInfo4ByLangValues());
 
-
         SpannableString content = new SpannableString(jsonViewModel.getSeedWordsShowByLangValues());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         seedWordsShowTextView.setText(content);
-
     }
 
     private TextView[] HomeSeedWordsViewTextViews(){
@@ -368,13 +402,84 @@ public class HomeWalletFragment extends Fragment  {
         return homeSeedWordsViewTextViews;
     }
 
-    private void ShowNewSeedScreen(TextView[] textViews) {
+    private void ShowNewSeedScreen(TextView homeSeedWordsViewTitleTextView, TextView[] textViews, Button homeSeedWordsViewNextButton) {
+
+        homeSeedWordsViewTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
         //Random
 
         for (int i = 0; i < textViews.length; i++)
         {
-            textViews[i].setText("some text");
+            textViews[i].setText("SOMETEXT");
         }
+
+        homeSeedWordsViewNextButton.setText(jsonViewModel.getNextByLangValues());
+    }
+
+    private EditText[] HomeSeedWordsViewEditText(){
+        EditText[] homeSeedWordsViewEditText = new EditText[] {
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_b1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_b2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_b3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_b4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_c1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_c2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_c3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_c4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_d1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_d2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_d3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_d4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_e1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_e2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_e3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_e4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_f1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_f2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_f3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_f4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_g1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_g2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_g3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_g4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_h1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_h2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_h3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_h4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_i1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_i2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_i3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_i4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_j1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_j2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_j3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_j4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_k1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_k2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_k3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_k4),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_l1),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_l2),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_l3),
+                (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_l4),
+        };
+        return homeSeedWordsViewEditText;
+    }
+
+    private void ShowEditSeedScreen(TextView homeSeedWordsEditTitleTextView, Button homeSeedWordsEditNextButton) {
+        homeSeedWordsEditTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
+        homeSeedWordsEditNextButton.setText(jsonViewModel.getNextByLangValues());
+    }
+
+    private boolean CheckSeed(TextView[] textViews, EditText[] editTexts, int index) {
+
+        if (textViews[index].getText() != editTexts[index].getText()){
+            return false;
+        }
+        return true;
     }
 
 }

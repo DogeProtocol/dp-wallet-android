@@ -38,7 +38,7 @@ public interface IHybridPqcJNIImpl {
 
     String[] ParseBigFloatInner(String quantity);
 
-    String[] DogeProtocolToWei(String quantity);
-
     String[] WeiToDogeProtocol(String quantity);
+
+    String[] DogeProtocolToWei(String quantity);
 }

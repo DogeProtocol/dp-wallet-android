@@ -42,8 +42,8 @@ public class HybridPqcJNIImpl implements IHybridPqcJNIImpl {
 
     public native String[] ParseBigFloatInner(String quantity);
 
-    public native String[] DogeProtocolToWei(String quantity);
-
     public native String[] WeiToDogeProtocol(String quantity);
+
+    public native String[] DogeProtocolToWei(String quantity);
 
 }

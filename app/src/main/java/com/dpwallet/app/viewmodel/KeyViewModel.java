@@ -45,6 +45,10 @@ public class KeyViewModel  extends ViewModel{
 
     //}
 
+    public int[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
+        return _keyInteract.newAccountFromSeed(expandedSeedArray);
+    }
+
     public int[] newAccount() throws ServiceException {
             return _keyInteract.newAccount();
     }
@@ -56,7 +60,15 @@ public class KeyViewModel  extends ViewModel{
     public int verifyAccount(int[] message, int[] sign, int[] pkKey) throws ServiceException {
         return _keyInteract.verifyAccount(message, sign, pkKey);
     }
-
+    public int[] seedExpander(int[] seed) throws ServiceException {
+        return _keyInteract.seedExpander(seed);
+    }
+    public int[] random() throws ServiceException {
+        return _keyInteract.random();
+    }
+    public int[] scrypt(int[] skKey, int[] salt) throws ServiceException {
+        return _keyInteract.scrypt(skKey, salt);
+    }
     public int[] publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
         return _keyInteract.publicKeyFromPrivateKey(skKey);
     }
@@ -83,12 +95,12 @@ public class KeyViewModel  extends ViewModel{
                 amount, gasLimit, chainId, pkKey, sig);
     }
 
-    public String getDogeProtocolToWei(String value) throws ServiceException {
-        return _keyInteract.getDogeProtocolToWei(value);
-    }
-
     public String getParseBigFloat(String value) throws ServiceException {
         return _keyInteract.getParseBigFloat(value);
+    }
+
+    public String getDogeProtocolToWei(String value) throws ServiceException {
+        return _keyInteract.getDogeProtocolToWei(value);
     }
 
     public String getWeiToDogeProtocol(String value) throws ServiceException {
