@@ -88,19 +88,19 @@ public class KeyInteract {
     }
 
     public int[] seedExpander(int[] seed) throws ServiceException {
-        try {
+        //try {
             Result<Object> result = _iKeyService.seedExpander(seed);
             if (result.getException() != null) {
                 Timber.tag("newAccountFromSeed").d("error %s", result.getException());
-                throw new ServiceException((String) result.getException());
+                //throw new ServiceException((String) result.getException());
             }
             Timber.tag("newAccountFromSeed").d("success");
             return (int[]) result.getResult();
-        }
-        catch(Exception ex) {
-            Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
-            throw new ServiceException((String) ex.getMessage());
-        }
+       // }
+        //catch(Exception ex) {
+            //Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
+            //throw new ServiceException((String) ex.getMessage());
+        //}
     }
 
     public int[] random() throws ServiceException {

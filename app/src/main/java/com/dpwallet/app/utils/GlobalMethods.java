@@ -158,11 +158,9 @@ public class GlobalMethods {
         }
         return readRawResource(context, R.raw.en_us);
     }
-
     public static String readRawResource(Context context,  @RawRes int res) {
         return readStream(context.getResources().openRawResource(res));
     }
-
     private static String readStream(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";

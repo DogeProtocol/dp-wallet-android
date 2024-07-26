@@ -25,8 +25,16 @@ import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
+import com.dpwallet.app.seedwords.SeedWords;
 
-public class HomeWalletFragment extends Fragment  {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+public class HomeWalletFragment extends Fragment {
 
     private static final String TAG = "HomeWalletFragment";
 
@@ -60,7 +68,9 @@ public class HomeWalletFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
+
+
+        jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
 
         LinearLayout homeSetWalletTopLinearLayout = (LinearLayout) getView().findViewById(R.id.top_linear_layout_home_wallet_id);
         ImageButton homeWalletBackArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_home_wallet_back_arrow);
@@ -73,6 +83,9 @@ public class HomeWalletFragment extends Fragment  {
         TextView homeSetWalletRetypePasswordTitleTextView = (TextView) getView().findViewById(R.id.textView_home_set_wallet_retype_password_title);
         EditText homeSetWalletRetypePasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_retype_password);
         Button homeSetWalletNextButton = (Button) getView().findViewById(R.id.button_home_set_wallet_next);
+
+        homeSetWalletPasswordEditText.setText("Test123$$Test123$$");
+        homeSetWalletRetypePasswordEditText.setText("Test123$$Test123$$");
 
         LinearLayout homeCreateRestoreWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_create_restore_wallet);
         TextView homeCreateRestoreWalletTitleTextView = (TextView) getView().findViewById(R.id.textView_home_create_restore_wallet_title);
@@ -118,14 +131,14 @@ public class HomeWalletFragment extends Fragment  {
                         homeSetWalletTopLinearLayout.setVisibility(View.VISIBLE);
                         homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
                         CreateRestoreWalletView(homeCreateRestoreWalletTitleTextView, homeCreateRestoreWalletDescriptionTextView, homeCreateRestoreWalletRadioButton_0,
-                                homeCreateRestoreWalletRadioButton_1,  homeCreateRestoreWalletNextButton);
+                                homeCreateRestoreWalletRadioButton_1, homeCreateRestoreWalletNextButton);
                         return;
                     }
                     message = jsonViewModel.getRetypePasswordMismatchByErrors();
                 }
                 Bundle bundleRoute = new Bundle();
                 bundleRoute.putString("message", message);
-                FragmentManager fragmentManager  = getFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
                 MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
                 messageDialogFragment.setCancelable(false);
                 messageDialogFragment.setArguments(bundleRoute);
@@ -140,11 +153,17 @@ public class HomeWalletFragment extends Fragment  {
                     homeSetWalletTopLinearLayout.setVisibility(View.GONE);
                     homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
                 }
-                if(homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
+                if (homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
                     homeSeedWordsLinearLayout.setVisibility(View.GONE);
                     homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
-                    //homeCreateRestoreWalletRadioButton_0.setChecked(false);
-                    //homeCreateRestoreWalletRadioButton_1.setChecked(false);
+                }
+                if (homeSeedWordsViewLinearLayout.getVisibility() == View.VISIBLE) {
+                    homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
+                    homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
+                }
+                if (homeSeedWordsEditLinearLayout.getVisibility() == View.VISIBLE) {
+                    homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
+                    homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -164,16 +183,16 @@ public class HomeWalletFragment extends Fragment  {
                 Bundle bundleRoute = new Bundle();
                 String message = "";
 
-                if(homeCreateRestoreWalletRadioButton_0.isChecked() == true) {
+                if (homeCreateRestoreWalletRadioButton_0.isChecked() == true) {
                     homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
                     homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
                     SeedWordsView(homeSeedWordsTitleTextView, homeSeedWords1, homeSeedWords2, homeSeedWords3, homeSeedWords4, homeSeedWordsShow);
-                } else if(homeCreateRestoreWalletRadioButton_1.isChecked() == true) {
+                } else if (homeCreateRestoreWalletRadioButton_1.isChecked() == true) {
 
-                }  else {
+                } else {
                     message = jsonViewModel.getSelectOptionByErrors();
                     bundleRoute.putString("message", message);
-                    FragmentManager fragmentManager  = getFragmentManager();
+                    FragmentManager fragmentManager = getFragmentManager();
                     MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
                     messageDialogFragment.setCancelable(false);
                     messageDialogFragment.setArguments(bundleRoute);
@@ -183,12 +202,20 @@ public class HomeWalletFragment extends Fragment  {
         });
 
         homeSeedWordsShow.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 homeSeedWordsLinearLayout.setVisibility(View.GONE);
-                 homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
-                 ShowNewSeedScreen(homeSeedWordsViewTitleTextView, homeSeedWordsViewTextViews, homeSeedWordsViewNextButton);
-             }
+            @Override
+            public void onClick(View v) {
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+                    homeSeedWordsLinearLayout.setVisibility(View.GONE);
+                    homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
+
+                    ShowNewSeedScreen(homeSeedWordsViewTitleTextView, homeSeedWordsViewTextViews, homeSeedWordsViewNextButton);
+                    progressBar.setVisibility(View.GONE);
+                } catch (ServiceException e) {
+                    progressBar.setVisibility(View.GONE);
+                    GlobalMethods.ExceptionError(getContext(), TAG, e);
+                }
+            }
         });
 
 
@@ -279,7 +306,7 @@ public class HomeWalletFragment extends Fragment  {
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
@@ -290,17 +317,16 @@ public class HomeWalletFragment extends Fragment  {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            this.mHomeWalletListener = (OnHomeWalletCompleteListener)context;
-        }
-        catch (final ClassCastException e) {
+            this.mHomeWalletListener = (OnHomeWalletCompleteListener) context;
+        } catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }
-   }
+    }
 
     private void SetWalletView(TextView setWalletTitleTextView, TextView setWalletDescriptionTextView,
-                               TextView  setWalletPasswordTitleTextView, EditText setWalletPasswordEditText,
+                               TextView setWalletPasswordTitleTextView, EditText setWalletPasswordEditText,
                                TextView setWalletRetypePasswordTitleTextView, EditText setWalletRetypePasswordEditText,
-                               Button setWalletNextButton){
+                               Button setWalletNextButton) {
 
         setWalletTitleTextView.setText(jsonViewModel.getSetWalletPasswordByLangValues());
         setWalletDescriptionTextView.setText(jsonViewModel.getUseStrongPasswordByLangValues());
@@ -315,8 +341,8 @@ public class HomeWalletFragment extends Fragment  {
     }
 
     private void CreateRestoreWalletView(TextView createRestoreWalletTitleTextView, TextView createRestoreWalletDescriptionTextView,
-                             RadioButton  createRestoreWalletRadioButton_0, RadioButton createRestoreWalletRadioButton_1,
-                                         Button createRestoreWalletNextButton){
+                                         RadioButton createRestoreWalletRadioButton_0, RadioButton createRestoreWalletRadioButton_1,
+                                         Button createRestoreWalletNextButton) {
 
         createRestoreWalletTitleTextView.setText(jsonViewModel.getCreateRestoreWalletByLangValues());
         createRestoreWalletDescriptionTextView.setText(jsonViewModel.getSelectAnOptionByLangValues());
@@ -334,7 +360,7 @@ public class HomeWalletFragment extends Fragment  {
     }
 
     private void SeedWordsView(TextView seedWordsTitleTextView, TextView seedWords1TextView,
-                               TextView seedWords2TextView, TextView seedWords3TextView, TextView seedWords4TextView, TextView seedWordsShowTextView){
+                               TextView seedWords2TextView, TextView seedWords3TextView, TextView seedWords4TextView, TextView seedWordsShowTextView) {
 
         seedWordsTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
         seedWords1TextView.setText(jsonViewModel.getSeedWordsInfo1ByLangValues());
@@ -347,8 +373,8 @@ public class HomeWalletFragment extends Fragment  {
         seedWordsShowTextView.setText(content);
     }
 
-    private TextView[] HomeSeedWordsViewTextViews(){
-        TextView[] homeSeedWordsViewTextViews = new TextView[] {
+    private TextView[] HomeSeedWordsViewTextViews() {
+        TextView[] homeSeedWordsViewTextViews = new TextView[]{
                 (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a1),
                 (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a2),
                 (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a3),
@@ -402,21 +428,38 @@ public class HomeWalletFragment extends Fragment  {
         return homeSeedWordsViewTextViews;
     }
 
-    private void ShowNewSeedScreen(TextView homeSeedWordsViewTitleTextView, TextView[] textViews, Button homeSeedWordsViewNextButton) {
-
+    private void ShowNewSeedScreen(TextView homeSeedWordsViewTitleTextView, TextView[] textViews,
+                                   Button homeSeedWordsViewNextButton) throws ServiceException {
         homeSeedWordsViewTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
-        //Random
 
-        for (int i = 0; i < textViews.length; i++)
-        {
-            textViews[i].setText("SOMETEXT");
+
+        int[] tempSeedArray = cryptoNewSeed();
+
+        String[] stringArray = new String[tempSeedArray.length];
+        for (int i = 0; i < tempSeedArray.length; i++) {
+            stringArray[i] = String.valueOf(tempSeedArray[i]);
+        }
+
+        //List<String> seedList = Arrays.asList(stringArray);
+        //ArrayList<String> arrayList = new ArrayList<>(seedList);
+        //PrefConnect.saveArrayMap(getContext(), "1", arrayList);
+
+
+
+        SeedWords seedWords = new SeedWords(getContext());
+        String[] wordList = seedWords.getWordListFromSeedArray(stringArray);
+
+        if(wordList.length>0) {
+            for (int i = 0; i < textViews.length; i++) {
+                textViews[i].setText(wordList[i].toUpperCase());
+            }
         }
 
         homeSeedWordsViewNextButton.setText(jsonViewModel.getNextByLangValues());
     }
 
-    private EditText[] HomeSeedWordsViewEditText(){
-        EditText[] homeSeedWordsViewEditText = new EditText[] {
+    private EditText[] HomeSeedWordsViewEditText() {
+        EditText[] homeSeedWordsViewEditText = new EditText[]{
                 (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a1),
                 (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a2),
                 (EditText) getView().findViewById(R.id.editText_home_seed_words_edit_a3),
@@ -475,11 +518,48 @@ public class HomeWalletFragment extends Fragment  {
     }
 
     private boolean CheckSeed(TextView[] textViews, EditText[] editTexts, int index) {
-
-        if (textViews[index].getText() != editTexts[index].getText()){
+        if (textViews[index].getText() != editTexts[index].getText()) {
             return false;
         }
         return true;
     }
 
+    //Wallet
+    private void walletCreateNewWallet() throws ServiceException {
+        int[] seedArray = cryptoNewSeed();
+        int[] wallet = walletKeyPairFromSeed(seedArray);
+
+        //PrefConnect.writeString(getActivity(), PrefConnect.walletAddress, address);
+        //progressBar.setVisibility(View.GONE);
+
+      //  return wallet;
+    }
+
+    private void walletSave(int[] wallet, String password) throws ServiceException {
+        KeyViewModel keyViewModel = new KeyViewModel();
+        int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(wallet);
+        String address = (String) keyViewModel.getAccountAddress(PK_KEY);
+        keyViewModel.encryptDataByAccount(getActivity(), address, password, wallet, PK_KEY);
+    }
+
+    private int[] walletKeyPairFromSeed(int[] seedArray) throws ServiceException{
+        int[] expandedSeedArray = cryptoExpandSeed(seedArray);
+        return cryptoNewKeyPairFromSeed(expandedSeedArray);
+    }
+
+    //Crypto
+    private int[] cryptoNewSeed() throws ServiceException {
+        KeyViewModel keyViewModel = new KeyViewModel();
+        return (int[]) keyViewModel.random();
+    }
+
+    private int[] cryptoExpandSeed(int[] seedArray) throws ServiceException {
+        KeyViewModel keyViewModel = new KeyViewModel();
+        return (int[]) keyViewModel.seedExpander(seedArray);
+    }
+
+    private int[] cryptoNewKeyPairFromSeed(int[] expandedSeedArray) throws ServiceException {
+        KeyViewModel keyViewModel = new KeyViewModel();
+        return (int[]) keyViewModel.newAccountFromSeed(expandedSeedArray);
+    }
 }

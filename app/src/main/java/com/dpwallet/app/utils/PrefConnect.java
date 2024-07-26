@@ -4,6 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 public class PrefConnect {
 
     //Key
@@ -70,4 +81,62 @@ public class PrefConnect {
     public static Editor getEditor(Context context) {
         return getPreferences(context).edit();
     }
+
+    public static void saveHasMap(Context context, String key, Map<String,String> inputMap){
+        SharedPreferences pSharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        if (pSharedPref != null){
+            Gson gson = new Gson();
+            String jsonText = gson.toJson(inputMap);
+
+            SharedPreferences.Editor editor = pSharedPref.edit();
+            editor.putString(key, jsonText);
+            editor.apply();
+        }
+    }
+
+    public static void saveArrayMap(Context context, String key, ArrayList<String> data){
+        SharedPreferences pSharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        if (pSharedPref != null) {
+            Gson gson = new Gson();
+            List<String> textList = new ArrayList<String>(data);
+            String jsonText = gson.toJson(textList);
+
+            SharedPreferences.Editor editor = pSharedPref.edit();
+            editor.putString(key, jsonText);
+            editor.apply();
+        }
+    }
+
+    public static Map<String,String> loadHashMap(Context context, String key){
+        Map<String,String> outputMap = new HashMap<String,String>();
+        SharedPreferences pSharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        try{
+            if (pSharedPref != null){
+                Gson gson = new Gson();
+                String json = pSharedPref.getString(key,"");
+                java.lang.reflect.Type type = new TypeToken<HashMap<String,String>>(){}.getType();
+                outputMap = gson.fromJson(json, type);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return outputMap;
+    }
+
+    public static ArrayList<String> loadArrayMap(Context context, String key){
+        SharedPreferences pSharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        try{
+            if (pSharedPref != null){
+                Gson gson = new Gson();
+                String jsonText =  pSharedPref.getString(key, (new JSONObject()).toString());
+                if(jsonText.length()>3) {
+                    return gson.fromJson(jsonText, ArrayList.class);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
 }

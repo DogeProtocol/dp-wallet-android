@@ -1,9 +1,16 @@
 package com.dpwallet.app.seedwords;
 
+import android.content.Context;
+import androidx.annotation.RawRes;
+import com.dpwallet.app.R;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import com.dpwallet.app.utils.PrefConnect;
+import com.dpwallet.app.utils.GlobalMethods;
 
 public class SeedWords {
     private static  int SEED_LENGTH = 96;
@@ -14,10 +21,18 @@ public class SeedWords {
     private static ArrayList<int[]> SEED_FRIENDLY_INDEX_REVERSE_ARRAY = new ArrayList<int[]>();
     private static boolean SEED_INITIALIZED = false;
     private static  ArrayList<String> SEED_WORD_LIST = new ArrayList<String>();
-    private String SEED_WORDS_RAW = null;
 
-    public SeedWords(String seedWordsRaw) {
-        SEED_WORDS_RAW  = seedWordsRaw;
+    public SeedWords(Context context) {
+
+        SEED_MAP = PrefConnect.loadHashMap(context,"seed");
+        SEED_REVERSE_MAP = PrefConnect.loadHashMap(context,"seedRevers");
+        SEED_WORD_LIST = PrefConnect.loadArrayMap(context,"seedWordList");
+        if(SEED_WORD_LIST != null){
+            SEED_INITIALIZED = true;
+        } else {
+            initializeSeedWordsFromJson(context);
+        }
+
     }
 
     public String sha256digestMessage(String msg) {
@@ -51,17 +66,45 @@ public class SeedWords {
         return null;
     }
 
-    public boolean initializeSeedWordsFromUrl() {
-        boolean ret = initializeSeedWordsFromString(SEED_WORDS_RAW);
-        return ret;
+    public void initializeSeedWordsFromJson(Context context){
+        @RawRes int seed = R.raw.seed;
+        String seedJsonString = GlobalMethods.readRawResource(context, seed);
+        PrefConnect.writeString(context,"seed",   seedJsonString);
+
+        @RawRes int seedRevers = R.raw.seed_revers;
+        String seedReversJsonString = GlobalMethods.readRawResource(context, seedRevers);
+        PrefConnect.writeString(context,"seedRevers",   seedReversJsonString);
+
+        @RawRes int seedWordList = R.raw.seed_word_list;
+        String seedWordListString = GlobalMethods.readRawResource(context, seedWordList);
+        PrefConnect.writeString(context,"seedWordList",   seedWordListString);
+
+        SEED_MAP = PrefConnect.loadHashMap(context,"seed");
+        SEED_REVERSE_MAP = PrefConnect.loadHashMap(context,"seedRevers");
+        SEED_WORD_LIST = PrefConnect.loadArrayMap(context,"seedWordList");
+
+        SEED_INITIALIZED = true;
     }
 
-    public boolean initializeSeedWordsFromString(String seedWordsRaw) {
+    /*
+    public boolean initializeSeedWordsFromUrl(Context context) {
+        @RawRes int res = R.raw.seedwords;
+        InputStream inputStream = context.getResources().openRawResource(res);
+        Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+        String seedWordsRaw = s.hasNext() ? s.next() : "";
+        return initializeSeedWordsFromString(context, seedWordsRaw);
+    }
+
+    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw) {
 
         String filedata = seedWordsRaw;
         String seedMapHashMessage = "";
 
-        String[] lines = filedata.split("\n");
+        String[] lines = filedata.split("\r\n");
+        if(lines.length == 0)
+        {
+            lines = filedata.split("\n");
+        }
 
         for(int i=0; i<lines.length; i++) {
             String[] columns = lines[i].split(",");
@@ -89,7 +132,7 @@ public class SeedWords {
             return false;
         }
 
-        if (seedhashstr == SEED_HASH) {
+        if (seedhashstr.equalsIgnoreCase(SEED_HASH)) {
         } else {
             return false;
         }
@@ -116,9 +159,14 @@ public class SeedWords {
         }
 
         SEED_INITIALIZED = true;
+
+        PrefConnect.saveHasMap(context, "seed", SEED_MAP);
+        PrefConnect.saveHasMap(context, "seedRevers", SEED_REVERSE_MAP);
+        PrefConnect.saveArrayMap(context, "seedWordList", SEED_WORD_LIST);
+
         return true;
     }
-
+*/
     public  ArrayList<String> getAllSeedWords() {
         return SEED_WORD_LIST;
     }
@@ -130,7 +178,6 @@ public class SeedWords {
         String key = getSeedKey(String.valueOf(num1), String.valueOf(num2));
         return SEED_REVERSE_MAP.get(key);
     }
-
 
     public String[] getWordListFromSeedArray(String[] seedArray) {
         if (SEED_INITIALIZED == false) {
@@ -256,5 +303,4 @@ public class SeedWords {
 
         return false;
     }
-
 }
