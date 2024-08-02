@@ -41,6 +41,7 @@ import com.dpwallet.app.api.read.model.BalanceResponse;
 import com.dpwallet.app.asynctask.download.DownloadingTask;
 import com.dpwallet.app.asynctask.read.AccountBalanceRestTask;
 import com.dpwallet.app.entity.ServiceException;
+import com.dpwallet.app.seedwords.SeedWords;
 import com.dpwallet.app.utils.CheckForSDCard;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
@@ -62,6 +63,8 @@ import com.dpwallet.app.view.fragment.TestnetCoinsFragment;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Text;
 
@@ -115,6 +118,8 @@ public class HomeActivity extends FragmentActivity implements
             bundle.putString("languageKey", languageKey);
 
             jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
+
+            loadSeedsThread ();
 
             setContentView(R.layout.home_activity);
 
@@ -275,6 +280,8 @@ public class HomeActivity extends FragmentActivity implements
                 screenViewType(1);
                 beginTransaction(HomeNewFragment.newInstance(), bundle);
             }
+
+
             //  }
 
         } catch (Exception e) {
@@ -792,6 +799,32 @@ public class HomeActivity extends FragmentActivity implements
             return;
         }
         notificationManager.notify(notificationID, notificationBuilder.build());
+    }
+
+    private void loadSeedsThread() {
+        try {
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                           GlobalMethods.seedWords = new SeedWords();
+                           boolean seed = GlobalMethods.seedWords.initializeSeedWordsFromUrl(getApplicationContext());
+                           if (seed){
+                               GlobalMethods.seedLoaded = true;
+                               return;
+                           }
+                           Thread.sleep(1000);
+                        }
+                    } catch (Exception e) {
+                        GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
+                    }
+                }
+            };
+            thread.start();
+        }catch (Exception e) {
+            GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
+        }
     }
 
 /*

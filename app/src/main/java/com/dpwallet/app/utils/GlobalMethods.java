@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.RawRes;
 
 import com.dpwallet.app.R;
+import com.dpwallet.app.seedwords.SeedWords;
 
 import java.io.InputStream;
 import java.util.Locale;
@@ -151,6 +152,9 @@ public class GlobalMethods {
     //String Values to be Used in App
     public static final String downloadDirectory = "dpWallet";
     public static final String mainUrl = "https://dpscan.app/demo/";
+
+    public static SeedWords seedWords;
+    public static boolean seedLoaded = false;
 
     public static String LocaleLanguage(Context context, String languageKey){
         if (languageKey.equals("en")) {

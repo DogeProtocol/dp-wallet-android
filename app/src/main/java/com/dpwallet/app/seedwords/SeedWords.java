@@ -22,16 +22,7 @@ public class SeedWords {
     private static boolean SEED_INITIALIZED = false;
     private static  ArrayList<String> SEED_WORD_LIST = new ArrayList<String>();
 
-    public SeedWords(Context context) {
-
-        SEED_MAP = PrefConnect.loadHashMap(context,"seed");
-        SEED_REVERSE_MAP = PrefConnect.loadHashMap(context,"seedRevers");
-        SEED_WORD_LIST = PrefConnect.loadArrayMap(context,"seedWordList");
-        if(SEED_WORD_LIST != null){
-            SEED_INITIALIZED = true;
-        } else {
-            initializeSeedWordsFromJson(context);
-        }
+    public SeedWords() {
 
     }
 
@@ -66,6 +57,7 @@ public class SeedWords {
         return null;
     }
 
+/*
     public void initializeSeedWordsFromJson(Context context){
         @RawRes int seed = R.raw.seed;
         String seedJsonString = GlobalMethods.readRawResource(context, seed);
@@ -85,8 +77,8 @@ public class SeedWords {
 
         SEED_INITIALIZED = true;
     }
+*/
 
-    /*
     public boolean initializeSeedWordsFromUrl(Context context) {
         @RawRes int res = R.raw.seedwords;
         InputStream inputStream = context.getResources().openRawResource(res);
@@ -160,13 +152,9 @@ public class SeedWords {
 
         SEED_INITIALIZED = true;
 
-        PrefConnect.saveHasMap(context, "seed", SEED_MAP);
-        PrefConnect.saveHasMap(context, "seedRevers", SEED_REVERSE_MAP);
-        PrefConnect.saveArrayMap(context, "seedWordList", SEED_WORD_LIST);
-
         return true;
     }
-*/
+
     public  ArrayList<String> getAllSeedWords() {
         return SEED_WORD_LIST;
     }

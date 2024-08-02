@@ -22,7 +22,7 @@ public class PrefConnect {
 
     public static String walletAddress = "walletAddress";
 
-    public static final String PREF_NAME = "DP_WALLET_APP_PREF";
+    public static final String PREF_NAME = "DP_QUANTUM_COIN_WALLET_APP_PREF";
 
     public static void clearAllPrefs(Context context) {
         getEditor(context).clear().commit();
@@ -82,6 +82,7 @@ public class PrefConnect {
         return getPreferences(context).edit();
     }
 
+
     public static void saveHasMap(Context context, String key, Map<String,String> inputMap){
         SharedPreferences pSharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         if (pSharedPref != null){
@@ -106,6 +107,8 @@ public class PrefConnect {
             editor.apply();
         }
     }
+
+    /*
 
     public static Map<String,String> loadHashMap(Context context, String key){
         Map<String,String> outputMap = new HashMap<String,String>();
@@ -138,5 +141,7 @@ public class PrefConnect {
         }
         return  null;
     }
+
+    */
 
 }
