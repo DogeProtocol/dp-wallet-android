@@ -48,7 +48,6 @@ import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
 import com.dpwallet.app.view.fragment.ExportWalletFragment;
 import com.dpwallet.app.view.fragment.HomeFragment;
-import com.dpwallet.app.view.fragment.HomeImportWalletFragment;
 import com.dpwallet.app.view.fragment.HomeNewFragment;
 import com.dpwallet.app.view.fragment.HomeWalletFragment;
 import com.dpwallet.app.view.fragment.QrCodeDialogFragment;
@@ -62,26 +61,25 @@ import com.dpwallet.app.view.fragment.TestnetCoinsFragment;
 
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class HomeActivity extends FragmentActivity implements
         HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeWalletFragment.OnHomeWalletCompleteListener,
-        HomeImportWalletFragment.OnHomeImportWalletCompleteListener,
         QrCodeDialogFragment.OnQrCodeDialogCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, ExportWalletFragment.OnExportWalletCompleteListener,
         TestnetCoinsFragment.OnTestnetCoinsCompleteListener, SettingsFragment.OnSettingsCompleteListener {
 
     private static final String TAG = "HomeActivity";
+
     private final int notificationRequestCode = 112;
 
     private LinearLayout topLinearLayout;
@@ -120,6 +118,12 @@ public class HomeActivity extends FragmentActivity implements
             jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
 
             loadSeedsThread ();
+
+            PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP = PrefConnect.loadHashMap(getApplicationContext(),
+                    PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX);
+
+            PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP = PrefConnect.loadHashMap(getApplicationContext(),
+                    PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_INDEX_ADDRESS);
 
             setContentView(R.layout.home_activity);
 
@@ -165,8 +169,7 @@ public class HomeActivity extends FragmentActivity implements
             transactionsTitleTextView.setText(jsonViewModel.getTransactionsByLangValues());
             dpscanTitleTextView.setText("R-DPSCAN");
 
-
-            setWalletAddress();
+            getCurrentWallet("0");
 
             //Notification permission
             if (Build.VERSION.SDK_INT >= 33) {
@@ -271,7 +274,7 @@ public class HomeActivity extends FragmentActivity implements
             });
 
             // if (savedInstanceState == null) {
-            if (walletAddress.length() == 66) {
+            if(walletAddress.length()>=64) {
                 screenViewType(0);
                 beginTransaction(HomeFragment.newInstance(), bundle);
                 notificationThread(1);
@@ -280,8 +283,6 @@ public class HomeActivity extends FragmentActivity implements
                 screenViewType(1);
                 beginTransaction(HomeNewFragment.newInstance(), bundle);
             }
-
-
             //  }
 
         } catch (Exception e) {
@@ -320,6 +321,7 @@ public class HomeActivity extends FragmentActivity implements
     @Override
     public void onHomeNewComplete() {
         try {
+            screenViewType(1);
             beginTransaction(HomeWalletFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
@@ -327,14 +329,18 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void OnHomeWalletComplete() {
+    public void OnHomeWalletComplete(String indexKey) {
         try {
-
+            getCurrentWallet(indexKey);
+            screenViewType(0);
+            beginTransaction(HomeFragment.newInstance(), bundle);
+            notificationThread(1);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
+/*
     @Override
     public void onHomeImportWalletComplete(int status) {
         try {
@@ -354,6 +360,7 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
+*/
 
     @Override
     public void onTestnetCoinsComplete() {
@@ -382,7 +389,7 @@ public class HomeActivity extends FragmentActivity implements
                     beginTransaction(HomeNewFragment.newInstance(), bundle);
                     break;
                 case 1:
-                    ExportKey(walletAddress, progressBar);
+                    //ExportKey(walletAddress, progressBar);
                     break;
             }
         } catch (Exception e) {
@@ -442,7 +449,7 @@ public class HomeActivity extends FragmentActivity implements
                     break;
                 case 3:
                     screenViewType(1);
-                    removeWalletAddress();
+                   //// removeWalletAddress();
 
                     Intent intent = getIntent();
                     finish();
@@ -494,18 +501,25 @@ public class HomeActivity extends FragmentActivity implements
         }
     }
 
-    private void setWalletAddress() {
-        walletAddress = (String) PrefConnect.readString(getApplicationContext(), PrefConnect.walletAddress, "");
+    private void getCurrentWallet(String indexKey) {
+        if(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP != null) {
+            for (Map.Entry<String, String> entry : PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP.entrySet()) {
+                if (Objects.equals(indexKey, entry.getKey())) {
+                    walletAddress = entry.getValue();
+                    break;
+                }
+            }
+        }
         bundle.putString("walletAddress", walletAddress);
         walletAddressTextView.setText(walletAddress);
     }
 
-    private void removeWalletAddress() {
-        PrefConnect.writeString(getApplicationContext(), PrefConnect.walletAddress, "");
-        walletAddress = (String) PrefConnect.readString(getApplicationContext(), PrefConnect.walletAddress, "");
-        bundle.putString("walletAddress", walletAddress);
-        walletAddressTextView.setText(walletAddress);
-    }
+   // private void removeWalletAddress() {
+   //     PrefConnect.writeString(getApplicationContext(), PrefConnect.walletAddress, "");
+   //     walletAddress = (String) PrefConnect.readString(getApplicationContext(), PrefConnect.walletAddress, "");
+   //     bundle.putString("walletAddress", walletAddress);
+   //     walletAddressTextView.setText(walletAddress);
+    //}
 
     //Open downloaded folder
 
@@ -564,63 +578,6 @@ public class HomeActivity extends FragmentActivity implements
         }
     }
 
-    //Get Export
-    private void ExportKey(String address, ProgressBar progressBar) {
-        KeyViewModel keyViewModel = new KeyViewModel();
-        String jsonDocument = keyViewModel.exportKeyByAccount(getApplicationContext(), address);
-
-        String isoStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date());
-        isoStr = isoStr.replaceAll(":", "-");
-        String a = address.toLowerCase().substring(2, address.length());
-        String fileName = "UTC--" + isoStr + "--" + a + ".wallet";
-
-        String downloadUrl = GlobalMethods.mainUrl + fileName;
-        downloadWallet(downloadUrl, jsonDocument, progressBar);
-
-        //Intent sendIntent = new Intent();
-        //sendIntent.setAction(Intent.ACTION_SEND);
-        //sendIntent.putExtra(Intent.EXTRA_TEXT, jsonDocument);
-        //sendIntent.setType("text/json");
-        //Intent shareIntent = Intent.createChooser(sendIntent, null);
-        //startActivity(shareIntent);
-
-         /*
-         ArrayList<String> myList = new ArrayList<>();
-         ListView listview;
-         listview = findViewById(R.id.list);
-         String state = Environment.getExternalStorageState();
-         if (Environment.MEDIA_MOUNTED.equals(state)) {
-             if (Build.VERSION.SDK_INT >= 23) {
-                 if (checkPermission()) {
-                     File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
-                     if (dir.exists()) {
-                         Log.d("path", dir.toString());
-                         File list[] = dir.listFiles();
-                         for (int i = 0; i < list.length; i++) {
-                             myList.add(list[i].getName());
-                         }
-                         ArrayAdapter arrayAdapter = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, myList);
-                         //listview.setAdapter(arrayAdapter);
-                     }
-                 } else {
-                     requestPermission(); // Code for permission
-                 }
-             } else {
-                 File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
-                 if (dir.exists()) {
-                     Log.d("path", dir.toString());
-                     File list[] = dir.listFiles();
-                     for (int i = 0; i < list.length; i++) {
-                         myList.add(list[i].getName());
-                     }
-                     ArrayAdapter arrayAdapter = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, myList);
-                     //listview.setAdapter(arrayAdapter);
-                 }
-             }
-         }
-
-          */
-    }
 
     // download task
     private void downloadWallet(String downloadUrl, String jsonDocument, ProgressBar progressBar) {

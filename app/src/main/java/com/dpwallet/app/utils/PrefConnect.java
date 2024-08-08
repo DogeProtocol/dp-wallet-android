@@ -16,13 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 public class PrefConnect {
-
     //Key
     //public static String privatekey = "privatekey";
 
     public static String walletAddress = "walletAddress";
-
     public static final String PREF_NAME = "DP_QUANTUM_COIN_WALLET_APP_PREF";
+
+    public static final int MAX_WALLETS = 128;
+    public static String MAX_WALLET_INDEX_KEY = "MaxWalletIndex";
+    public static String WALLET_KEY_PREFIX = "WALLET_";
+    public static String WALLET_KEY_ADDRESS_INDEX = "ADDRESS_INDEX";
+    public static String WALLET_KEY_INDEX_ADDRESS = "INDEX_ADDRESS";
+    public static Map<String, String> WALLET_ADDRESS_TO_INDEX_MAP = new HashMap<>(); //key is address, value is index
+    public static Map<String, String> WALLET_INDEX_TO_ADDRESS_MAP = new HashMap<>(); //key is index, value is address
+    public static boolean  WALLET_ADDRESS_TO_INDEX_MAP_LOADED = false;
 
     public static void clearAllPrefs(Context context) {
         getEditor(context).clear().commit();
@@ -108,7 +115,6 @@ public class PrefConnect {
         }
     }
 
-    /*
 
     public static Map<String,String> loadHashMap(Context context, String key){
         Map<String,String> outputMap = new HashMap<String,String>();
@@ -117,8 +123,11 @@ public class PrefConnect {
             if (pSharedPref != null){
                 Gson gson = new Gson();
                 String json = pSharedPref.getString(key,"");
-                java.lang.reflect.Type type = new TypeToken<HashMap<String,String>>(){}.getType();
-                outputMap = gson.fromJson(json, type);
+                if(json.length()>3) {
+                    java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>() {
+                    }.getType();
+                    outputMap = gson.fromJson(json, type);
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -141,7 +150,4 @@ public class PrefConnect {
         }
         return  null;
     }
-
-    */
-
 }

@@ -34,6 +34,7 @@ import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.dpwallet.app.seedwords.SeedWords;
+import com.dpwallet.app.utils.PrefConnect;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -140,7 +141,7 @@ public class HomeWalletFragment extends Fragment {
                 public void  onFocusChange(View view, boolean hasFocus) {
                     if (hasFocus) {
                         if(autoCompleteIndexStatus == true){
-                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 3){
+                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 5){
                                 homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
                             }
                         }
@@ -157,7 +158,7 @@ public class HomeWalletFragment extends Fragment {
             });
         }
 
-        Button homeSeedWordsEditNextButton = (Button) getView().findViewById(R.id.button_home_seed_words_edit_next);
+        Button homeSeedWordsAutoCompleteNextButton = (Button) getView().findViewById(R.id.button_home_seed_words_autoComplete_next);
 
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
@@ -290,13 +291,17 @@ public class HomeWalletFragment extends Fragment {
             public void onClick(View v) {
                 homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
                 homeSeedWordsEditLinearLayout.setVisibility(View.VISIBLE);
-                ShowEditSeedScreen(homeSeedWordsEditTitleTextView, homeSeedWordsEditNextButton);
+                ShowEditSeedScreen(homeSeedWordsEditTitleTextView, homeSeedWordsAutoCompleteNextButton);
 
                 homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
 
                 ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
+
+                for (int index = 0; index < 48; index++){
+                    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                }
             }
         });
 
@@ -318,113 +323,52 @@ public class HomeWalletFragment extends Fragment {
         });
         */
 
-        homeSeedWordsEditNextButton.setOnClickListener(new View.OnClickListener() {
+        homeSeedWordsAutoCompleteNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                String[] stringArray = Arrays.toString(tempSeedArray).split("[\\[\\]]")[1].split(", ");
 
-                String message = getResources().getString(R.string.home_new_wallet_message_exits);
-                if (progressBar.getVisibility() == View.VISIBLE) {
-                    GlobalMethods.ShowToast(getContext(), message);
-                    return;
-                }
-
-                message = getResources().getString(R.string.home_new_wallet_password_minimum_message);
-                if (newWalletPassword.getText().length() > GlobalMethods.MINIMUM_PASSWORD_LENGTH) {
-                    if (newWalletPassword.getText().toString().equals(newWalletRetypePassword.getText().toString())) {
-
-                        progressBar.setVisibility(View.VISIBLE);
-
-                        KeyViewModel keyViewModel = new KeyViewModel();
-                        int[] SK_KEY = (int[]) keyViewModel.newAccount();
-                        int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
-                        String address = (String) keyViewModel.getAccountAddress(PK_KEY);
-                        String password = (String) newWalletPassword.getText().toString();
-                        keyViewModel.encryptDataByAccount(getActivity(), address, password, SK_KEY, PK_KEY);
-
-                        PrefConnect.writeString(getActivity(), PrefConnect.walletAddress, address);
-
-                        progressBar.setVisibility(View.GONE);
-
-                        mHomeNewWalletListener.onHomeNewWalletComplete(1);
-
-                        return;
-                    }
-                    message = getResources().getString(R.string.home_new_wallet_password_mismatch_message);
-                }
-
-                Bundle bundleRoute = new Bundle();
-                bundleRoute.putString("message", message);
-                FragmentManager fragmentManager  = getFragmentManager();
-                MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
-                messageDialogFragment.setCancelable(false);
-                messageDialogFragment.setArguments(bundleRoute);
-                messageDialogFragment.show(fragmentManager, "");
-                */
-
-            }
-        });
-
-/*
-        setWalletButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
                 try {
-                    String message = getResources().getString(R.string.home_set_wallet_message_exits);
-                    if (progressBar.getVisibility() == View.VISIBLE) {
-                        GlobalMethods.ShowToast(getContext(), message);
-                        return;
+                    progressBar.setVisibility(View.VISIBLE);
+                    //Seed array
+                    int[] seed = tempSeedArray;
+
+                    //Expand seed array
+                    int[] expandSeed = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoExpandSeed(seed));
+                    String[] keyPair = keyViewModel.cryptoNewKeyPairFromSeed(expandSeed);
+                    int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyPair[1]);
+
+                    String address =  keyViewModel.getAccountAddress(PK_KEY);
+                    String password = homeSetWalletPasswordEditText.getText().toString();
+
+                    keyViewModel.encryptDataByAccount(getContext(), address, password, keyPair);
+
+                    String indexKey = "0";
+                    if(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP != null){
+                        indexKey = String.valueOf(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.size());
                     }
-*/
+                    PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.put(address, indexKey);
 
-                    /*
-                    String message = getResources().getString(R.string.home_set_wallet_message_exits);
-                    if (progressBar.getVisibility() == View.VISIBLE) {
-                        GlobalMethods.ShowToast(getContext(), message);
-                        return;
-                    }
+                    PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP.put(indexKey, address);
 
-                    message = getResources().getString(R.string.home_set_wallet_password_minimum_message);
-                    if (newWalletPassword.getText().length() > GlobalMethods.MINIMUM_PASSWORD_LENGTH) {
-                        if (newWalletPassword.getText().toString().equals(newWalletRetypePassword.getText().toString())) {
+                    PrefConnect.saveHasMap(getContext(),
+                            PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX, PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP);
+                    PrefConnect.saveHasMap(getContext(),
+                            PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_INDEX_ADDRESS, PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP);
 
-                            progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
-                            KeyViewModel keyViewModel = new KeyViewModel();
-                            int[] SK_KEY = (int[]) keyViewModel.newAccount();
-                            int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
-                            String address = (String) keyViewModel.getAccountAddress(PK_KEY);
-                            String password = (String) newWalletPassword.getText().toString();
-                            keyViewModel.encryptDataByAccount(getActivity(), address, password, SK_KEY, PK_KEY);
-
-                            PrefConnect.writeString(getActivity(), PrefConnect.walletAddress, address);
-
-                            progressBar.setVisibility(View.GONE);
-
-                            mHomeSetWalletListener.onHomeSetWalletComplete();
-
-                            return;
-                        }
-                         message = getResources().getString(R.string.home_set_wallet_password_mismatch_message);
-                    }
-
-                    Bundle bundleRoute = new Bundle();
-                    bundleRoute.putString("message", message);
-                    FragmentManager fragmentManager  = getFragmentManager();
-                    MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
-                    messageDialogFragment.setCancelable(false);
-                    messageDialogFragment.setArguments(bundleRoute);
-                    messageDialogFragment.show(fragmentManager, "");
-                    */
-
-/*
+                    mHomeWalletListener.OnHomeWalletComplete(indexKey);
 
                 } catch (ServiceException e) {
+                    progressBar.setVisibility(View.GONE);
                     GlobalMethods.ExceptionError(getContext(), TAG, e);
                 }
+
+
+
+
             }
         });
-*/
 
     }
 
@@ -439,7 +383,7 @@ public class HomeWalletFragment extends Fragment {
     }
 
     public static interface OnHomeWalletCompleteListener {
-        public abstract void OnHomeWalletComplete();
+        public abstract void OnHomeWalletComplete(String indexKey);
     }
 
     public void onAttach(Context context) {
@@ -474,9 +418,6 @@ public class HomeWalletFragment extends Fragment {
 
         createRestoreWalletTitleTextView.setText(jsonViewModel.getCreateRestoreWalletByLangValues());
         createRestoreWalletDescriptionTextView.setText(jsonViewModel.getSelectAnOptionByLangValues());
-
-        //createRestoreWalletRadioButton_0.setChecked(false);
-        //createRestoreWalletRadioButton_1.setChecked(false);
 
         createRestoreWalletRadioButton_0.setText(jsonViewModel.getCreateNewWalletByLangValues());
         createRestoreWalletRadioButton_1.setText(jsonViewModel.getRestoreWalletFromSeedByLangValues());
@@ -562,7 +503,7 @@ public class HomeWalletFragment extends Fragment {
         homeSeedWordsViewTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
 
         if(tempSeedArray == null) {
-            tempSeedArray = cryptoNewSeed();
+            tempSeedArray = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoNewSeed());
         }
 
         String[] stringArray = Arrays.toString(tempSeedArray).split("[\\[\\]]")[1].split(", ");
@@ -624,7 +565,11 @@ public class HomeWalletFragment extends Fragment {
                 (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_k1),
                 (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_k2),
                 (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_k3),
-                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_k4)
+                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_k4),
+                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l1),
+                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l2),
+                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l3),
+                (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l4)
         };
     }
     private TextWatcher GetTextWatcher(final AutoCompleteTextView autoCompleteTextView, int index) {
@@ -655,41 +600,6 @@ public class HomeWalletFragment extends Fragment {
             return false;
         }
         return true;
-    }
-
-    //Wallet
-    private void walletCreateNewWallet() throws ServiceException {
-        int[] seedArray = cryptoNewSeed();
-        int[] wallet = walletKeyPairFromSeed(seedArray);
-
-        //PrefConnect.writeString(getActivity(), PrefConnect.walletAddress, address);
-        //progressBar.setVisibility(View.GONE);
-
-      //  return wallet;
-    }
-
-    private void walletSave(int[] wallet, String password) throws ServiceException {
-        int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(wallet);
-        String address = (String) keyViewModel.getAccountAddress(PK_KEY);
-        keyViewModel.encryptDataByAccount(getActivity(), address, password, wallet, PK_KEY);
-    }
-
-    private int[] walletKeyPairFromSeed(int[] seedArray) throws ServiceException{
-        int[] expandedSeedArray = cryptoExpandSeed(seedArray);
-        return cryptoNewKeyPairFromSeed(expandedSeedArray);
-    }
-
-    //Crypto
-    private int[] cryptoNewSeed() throws ServiceException {
-        return (int[]) keyViewModel.random();
-    }
-
-    private int[] cryptoExpandSeed(int[] seedArray) throws ServiceException {
-        return (int[]) keyViewModel.seedExpander(seedArray);
-    }
-
-    private int[] cryptoNewKeyPairFromSeed(int[] expandedSeedArray) throws ServiceException {
-        return (int[]) keyViewModel.newAccountFromSeed(expandedSeedArray);
     }
 
 }

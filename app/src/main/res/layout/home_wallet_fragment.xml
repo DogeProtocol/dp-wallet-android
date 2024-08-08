@@ -3338,7 +3338,7 @@
                                 android:background="@drawable/line_2_shape" />
 
                             <Button
-                                android:id="@+id/button_home_seed_words_edit_next"
+                                android:id="@+id/button_home_seed_words_autoComplete_next"
                                 android:background="@drawable/button_green_selector"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

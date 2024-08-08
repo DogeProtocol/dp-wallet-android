@@ -108,58 +108,6 @@ public class SettingsFragment extends Fragment  {
             }
         });
 
-        deleteWallet.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (progressBarDeleteWallet.getVisibility() == View.VISIBLE) {
-                    String message = getResources().getString(R.string.setting_dialog_message_exits);
-                    GlobalMethods.ShowToast(getContext(), message);
-                    return;
-                }
-
-                if(walletAddress.trim().length() != 0)
-                {
-                    progressBarDeleteWallet.setVisibility(View.VISIBLE);
-
-                    //Alert Yes or No
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle((CharSequence) "").setView((int)
-                                    R.layout.delete_dialog_fragment).create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-
-                    TextView textViewYes = (TextView) dialog.findViewById(
-                            R.id.textView_delete_dialog_yes);
-
-                    TextView textViewNo = (TextView) dialog.findViewById(
-                            R.id.textView_delete_dialog_no);
-
-                    textViewYes.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            progressBarDeleteWallet.setVisibility(View.GONE);
-                            dialog.dismiss();
-                            keyViewModel.deleteKeyByAccount(getContext(), walletAddress);
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            mSettingsListener.onSettingsComplete(3);
-                        }
-                    });
-
-                    textViewNo.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            progressBarDeleteWallet.setVisibility(View.GONE);
-                            dialog.dismiss();
-                        }
-                    });
-
-                } else {
-                    showInformationDialog();
-                }
-            }
-        });
-
         buttonRetry.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);

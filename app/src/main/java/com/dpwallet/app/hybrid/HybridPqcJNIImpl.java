@@ -15,9 +15,9 @@ public class HybridPqcJNIImpl implements IHybridPqcJNIImpl {
 
     public native int SignVerify(int[] m, int[] sign, int[] pkKey);
 
-    public native String[] SeedExpander(int[] seed);
+    public native String SeedExpander(int[] seed);
 
-    public native String[] Random();
+    public native String Random();
 
     public native String PublicKeyFromPrivateKey(int[] skKey);
 

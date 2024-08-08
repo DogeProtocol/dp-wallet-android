@@ -31,97 +31,6 @@ public class GlobalMethods {
     public static String totalSteps = "[TOTAL_STEPS]";
 
 
-/*
-    //joson field
-    public static String info = "info";
-    public static String infoStep = "infoStep";
-    public static String step = "[STEP]";
-    public static String totalSteps = "[TOTAL_STEPS]";
-
-    public static String quizStep = "quizStep";
-
-    public static String quizWrongAnswer = "quizWrongAnswer";
-    public static String quizNoChoice = "quizNoChoice";
-    public static String quiz = "quiz";
-
-    public static String title = "title";
-    public static String desc = "desc";
-    public static String question = "question";
-    public static String choices = "choices";
-    public static String correctChoice = "correctChoice";
-    public static String afterQuizInfo = "afterQuizInfo";
-
-    public static String langValues = "langValues";
-    public static String next = "next";
-    public static String ok = "ok";
-    public static String cancel = "cancel";
-    public static String close = "close";
-    public static String submit = "submit";
-    public static String send = "Send";
-    public static String receive = "Receive";
-    public static String transactions = "Transactions";
-    public static String copy = "Copy";
-    public static String back = "Back";
-
-    public static String balance = "Balance";
-    public static String refresh = "Refresh";
-    public static String completedTransactions = "Completed Transactions";
-    public static String pendingTransactions = "Pending Transactions";
-    public static String backup = "Backup";
-    public static String restore = "Restore";
-    public static String wallets = "Wallets";
-
-    public static String settings = "Settings";
-    public static String unlock = "Unlock";
-    public static String unlockWallet = "Unlock wallet";
-    public static String scan = "DpScan";
-    public static String blockExplorer = "Block Explorer";
-    public static String selectNetwork=" selectNetwork";
-    public static String enterWalletPassword = "Enter Quantum Wallet Password";
-    public static String enterApassword = "Enter a password";
-    public static String showPassword = "Show Password";
-
-    public static String password = "Password";
-    public static String setWalletPassowrd = "Set Wallet Password";
-    public static String quizLangValue = "quiz";
-    public static String getCoinsForDogePTokens = "Get Coins For DogeP Tokens";
-    public static String walletPath = "Wallet Path";
-    public static String setWalletPassword = "Set Wallet Password";
-    public static String useStrongPassword = "Use a strong and long password. And do not forget it!";
-    public static String retypePassword = "Retype Password";
-    public static String retypeThePassword = "Retype the password";
-    public static String createRestoreWallet = "Create or Restore Quantum Wallet";
-    public static String selectAnOption = "Select an option";
-    public static String createNewWallet = "Create New Quantum Wallet";
-    public static String restoreWalletFromSeed = "Restore A Quantum Wallet From Seed Words";
-    public static String restoreWalletFromBackupFile = "Restore A Quantum Wallet From a Backup File";
-    public static String seedWords = "Seed Words";
-    public static String seedWordsInfo1 = "Ensure that no one is looking at the screen other than you.";
-    public static String seedWordsInfo2 = "Ensure that there is no camera pointed at this screen, including from your phone.";
-    public static String seedWordsInfo3 = "You should save the seed words safely offline and keep multiple copies in a trustworthy and safe location.";
-    public static String seedWordsInfo4 = "If these seed words are stolen or someone else gets access to them, your wallet is compromised.";
-    public static String seedWordsShow = "Click here to reveal the seed words.";
-    public static String verifySeedWords = "Verify Seed Words";
-    public static String verifyWalletPassword = "Verify Current Quantum Wallet Password";
-    public static String verifyWalletPasswordInfo = "Retype your current quantum wallet password, to verify that you remember it. Upon verification, your wallet will be saved.";
-    public static String waitWalletSave = "Please wait while your wallet is being saved with strong encryption. This can take upto a minute or so to complete..";
-    public static String walletSaved = "Your wallet has been saved successfully.";
-
-    public static String backupWallet = "Backup Wallet";
-    public static String backupWalletInfo1 = "For additional safety, please make sure that you keep backup copies in atleast three different devices offline.";
-    public static String backupWalletInfo2 = "And remember you need your wallet password to restore the backup!";
-    public static String backupWalletSkip = "Click here to skip this step";
-    public static String backupWait = "Please wait while your wallet is being backed up with strong encryption. This can take upto a minute or so to complete...";
-    public static String walletBackedUp = "Your wallet has been backed up successfully. Remember you need your wallet password in order to restore it.";
-    public static String restoreWalletFromBackup = "Restore Quantum Wallet From Backup File";
-    public static String enterAboveWalletPassword = "Enter the above wallet's password";
-    public static String walletFileRestoreWait = "Please wait while your wallet is being decrypted and opened. This can take upto a minute.";
-    public static String waitRevealSeed = "Please wait while your wallet seed words are being decrypted and opened. This can take upto a minute.";
-    public static String waitWalletOpen = "Please wait while your wallet is being decrypted and opened. This can take upto a minute.";
-
-*/
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
     //URL
     public static String READ_API_URL = "https://scan.dpapi.org";
     public static String WRITE_API_URL = "https://txn.dpapi.org";
@@ -155,6 +64,8 @@ public class GlobalMethods {
 
     public static SeedWords seedWords;
     public static boolean seedLoaded = false;
+
+
 
     public static String LocaleLanguage(Context context, String languageKey){
         if (languageKey.equals("en")) {
@@ -304,5 +215,14 @@ public class GlobalMethods {
         toastCountDown.start();
     }
 
+    public static int[] GetIntDataArrayByString(String d) {
+        String[] data = d.split(",");
+        int[] intData = new int[data.length];
+        for(int i = 0;i < intData.length;i++)
+        {
+            intData[i] = Integer.parseInt(data[i]);
+        }
+        return intData;
+    }
 }
 

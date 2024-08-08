@@ -9,9 +9,9 @@ public interface IHybridPqcJNIImpl {
 
     int SignVerify(int[] m, int[] sign, int[] pkKey);
 
-    String[] SeedExpander(int[] seed);
+    String SeedExpander(int[] seed);
 
-    String[] Random();
+    String Random();
 
     String PublicKeyFromPrivateKey(int[] skKey);
 

@@ -23,7 +23,7 @@ public class KeyInteract {
         this._iKeyStore = iKeyStore;
     }
 
-    public int[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
+    public String[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.newAccountFromSeed(expandedSeedArray);
             if (result.getException() != null) {
@@ -31,7 +31,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("newAccountFromSeed").d("success");
-            return (int[]) result.getResult();
+            return (String[]) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
@@ -39,7 +39,7 @@ public class KeyInteract {
         }
     }
 
-    public int[] newAccount() throws ServiceException {
+    public String[] newAccount() throws ServiceException {
         try {
             Result<Object> result = _iKeyService.newAccount();
             if (result.getException() != null) {
@@ -47,7 +47,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("newAccount").d("success");
-            return (int[]) result.getResult();
+            return (String[]) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("newAccount catch").d("error %s", ex.getMessage());
@@ -55,7 +55,7 @@ public class KeyInteract {
         }
     }
 
-    public int[] signAccount(int[] message, int[] skKey) throws ServiceException {
+    public String signAccount(int[] message, int[] skKey) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.signAccount(message, skKey);
             if (result.getException() != null) {
@@ -63,7 +63,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("signAccount").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("signAccount catch").d("error %s", ex.getMessage());
@@ -87,7 +87,7 @@ public class KeyInteract {
         }
     }
 
-    public int[] seedExpander(int[] seed) throws ServiceException {
+    public String seedExpander(int[] seed) throws ServiceException {
         //try {
             Result<Object> result = _iKeyService.seedExpander(seed);
             if (result.getException() != null) {
@@ -95,7 +95,7 @@ public class KeyInteract {
                 //throw new ServiceException((String) result.getException());
             }
             Timber.tag("newAccountFromSeed").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
        // }
         //catch(Exception ex) {
             //Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
@@ -103,7 +103,7 @@ public class KeyInteract {
         //}
     }
 
-    public int[] random() throws ServiceException {
+    public String random() throws ServiceException {
         try {
             Result<Object> result = _iKeyService.random();
             if (result.getException() != null) {
@@ -111,7 +111,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("random").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("random catch").d("error %s", ex.getMessage());
@@ -271,23 +271,13 @@ public class KeyInteract {
         }
     }
 
-    public boolean encryptDataByAccount(Context context, String address, String password, byte[] SK_KEY, byte[] PK_KEY){
-        return _iKeyStore.EncryptData(context, address, password, SK_KEY, PK_KEY);
+    public boolean encryptDataByAccount(Context context, String address, String password, String keyPair){
+        return _iKeyStore.EncryptData(context, address, password, keyPair);
     }
 
     public byte[] decryptDataByAccount(Context context, String address, String password) throws InvalidKeyException, KeyServiceException {
         return _iKeyStore.DecryptData(context, address, password);
     }
 
-    public String exportKeyByAccount(Context context, String address)  {
-        return _iKeyStore.ExportKey(context, address);
-    }
 
-    public byte[] importKeyByAccount(Context context, String jsonString, String password)  {
-        return _iKeyStore.ImportKey(context, jsonString, password);
-    }
-
-    public void deleteKeyByAccount(Context context, String address) {
-        _iKeyStore.DeleteKey(context, address);
-    }
 }

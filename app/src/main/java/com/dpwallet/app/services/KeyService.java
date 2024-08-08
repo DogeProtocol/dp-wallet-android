@@ -6,7 +6,6 @@ import android.content.Context;
 import com.dpwallet.app.entity.Result;
 import com.dpwallet.app.hybrid.IHybridPqcJNIImpl;
 
-
 public class KeyService implements IKeyService
 {
     private Context context;
@@ -23,21 +22,21 @@ public class KeyService implements IKeyService
     public Result<Object> newAccountFromSeed(int[] expandedSeedArray)
     {
         String[] keys = _iHybridPqcJNI.KeypairSeed(expandedSeedArray);
-        return new Result<Object>(getIntDataArray(keys[0]), null);
+        return new Result<Object>(keys, null);
     }
 
     @Override
     public Result<Object> newAccount()
     {
         String[] keys = _iHybridPqcJNI.Keypair();
-        return new Result<Object>(getIntDataArray(keys[0]), null);
+        return new Result<Object>(keys, null);
     }
 
     @Override
     public Result<Object> signAccount(int[] message, int[] skKey)
     {
         String sign = _iHybridPqcJNI.Sign(message, skKey);
-        return new Result<Object>(getIntDataArray(sign), null);
+        return new Result<Object>(sign, null);
     }
 
     @Override
@@ -50,22 +49,22 @@ public class KeyService implements IKeyService
     @Override
     public Result<Object> seedExpander(int[] seed)
     {
-        String[] seededExpander = _iHybridPqcJNI.SeedExpander(seed);
-        return new Result<Object>(getIntDataArray(seededExpander[0]), null);
+        String seededExpander = _iHybridPqcJNI.SeedExpander(seed);
+        return new Result<Object>(seededExpander, null);
     }
 
     @Override
     public Result<Object> random()
     {
-        String[] rnd = _iHybridPqcJNI.Random();
-        return new Result<Object>(getIntDataArray(rnd[0]), null);
+        String rnd = _iHybridPqcJNI.Random();
+        return new Result<Object>(rnd, null);
     }
 
     @Override
     public Result<Object> publicKeyFromPrivateKey(int[] skKey)
     {
         String pk = _iHybridPqcJNI.PublicKeyFromPrivateKey(skKey);
-        return new Result<Object>(getIntDataArray(pk), null);
+        return new Result<Object>(pk, null);
     }
 
     @Override
@@ -240,16 +239,4 @@ public class KeyService implements IKeyService
         }
         return new Result<Object>(null, dpError);
     }
-
-
-    private int[] getIntDataArray(String d) {
-        String[] data = d.split(",");
-        int[] intData = new int[data.length];
-        for(int i = 0;i < intData.length;i++)
-        {
-            intData[i] = Integer.parseInt(data[i]);
-        }
-        return intData;
-    }
-
 }

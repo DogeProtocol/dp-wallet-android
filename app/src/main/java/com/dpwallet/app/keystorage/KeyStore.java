@@ -56,10 +56,10 @@ public class KeyStore implements IKeyStore {
 
     private Toast toast = null;
 
-    public static final int SALT_LENGTH = 128; //20;
+    public static final int SALT_LENGTH = 128; //16;
     public static final int IV_LENGTH = 128; //16;
 
-    public static final int KEY_LENGTH = 256; //20;
+    public static final int KEY_LENGTH = 256; //32;
     public static final int ITERATION_COUNT = 100;
 
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
@@ -73,8 +73,8 @@ public class KeyStore implements IKeyStore {
     }
 
     @Override
-    public boolean EncryptData(Context context, String address, String password, byte[] SK_KEY, byte[] PK_KEY) {
-        return encrypt(context, address, password, SK_KEY, PK_KEY);
+    public boolean EncryptData(Context context, String address, String password, String keyPair) {
+        return encrypt(context, address, password, keyPair);
     }
 
     @Override
@@ -82,6 +82,7 @@ public class KeyStore implements IKeyStore {
         return decrypt(context, address, password);
     }
 
+    /*
     @Override
     public void DeleteKey(Context context, String address) {
         deleteKey(context, address.toLowerCase().substring(2));
@@ -164,9 +165,9 @@ public class KeyStore implements IKeyStore {
         }
         return null;
     }
-
+*/
     private synchronized boolean encrypt(Context context, String address, String password,
-                                         byte[] SK_KEY, byte[] PK_KEY) {
+                                         String keyPair) {
         try
         {
             byte[] salt = generateSalt();
@@ -178,19 +179,19 @@ public class KeyStore implements IKeyStore {
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
 
-            byte[] skKeyEncryptedData = cipher.doFinal(SK_KEY);
-            byte[] skKeyMessage = new byte[salt.length + iv.length + skKeyEncryptedData.length];
-            skKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv),skKeyEncryptedData);
-
+            //sk key
+            byte[] keyEncryptedData = cipher.doFinal(keyPair.getBytes());
+            byte[] keyMessage = new byte[salt.length + iv.length + keyEncryptedData.length];
+            keyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv),keyEncryptedData);
             String skKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2));
-            writeBytesToFile(skKeyEncryptedPath, skKeyMessage);
+            writeBytesToFile(skKeyEncryptedPath, keyMessage);
 
             //pk key
-            byte[] pkKeyEncryptedData = cipher.doFinal(PK_KEY);
-            byte[] pkKeyMessage = new byte[salt.length + iv.length + pkKeyEncryptedData.length];
-            pkKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv), pkKeyEncryptedData);
-            String pkKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2) + "-pk-key");
-            writeBytesToFile(pkKeyEncryptedPath, pkKeyMessage);
+            //byte[] pkKeyEncryptedData = cipher.doFinal(PK_KEY);
+            //byte[] pkKeyMessage = new byte[salt.length + iv.length + pkKeyEncryptedData.length];
+            //pkKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv), pkKeyEncryptedData);
+            //String pkKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2) + "-pk-key");
+            //writeBytesToFile(pkKeyEncryptedPath, pkKeyMessage);
 
             return true;
         }

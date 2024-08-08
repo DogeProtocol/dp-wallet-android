@@ -401,7 +401,7 @@ public class SendFragment extends Fragment  {
             int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
             int[] message  = (int[]) keyViewModel.getTxnSigningHash(fromAddress,  NONCE,
                     toAddress, dp_wei, GlobalMethods.GAS_LIMIT,  GlobalMethods.CHAIN_ID);
-            int[] SIGN = (int[]) keyViewModel.signAccount(message, SK_KEY);
+            int[] SIGN = GlobalMethods.GetIntDataArrayByString(keyViewModel.signAccount(message, SK_KEY));
             int verify = (int) keyViewModel.verifyAccount(message, SIGN, PK_KEY);
 
             if(verify==0){

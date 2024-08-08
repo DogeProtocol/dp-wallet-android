@@ -12,6 +12,7 @@ import com.dpwallet.app.keystorage.IKeyStore;
 import com.dpwallet.app.keystorage.KeyStore;
 import com.dpwallet.app.services.IKeyService;
 import com.dpwallet.app.services.KeyService;
+import com.google.gson.Gson;
 
 import androidx.lifecycle.ViewModel;
 
@@ -19,6 +20,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 //@HiltViewModel
 public class KeyViewModel  extends ViewModel{
@@ -35,37 +39,28 @@ public class KeyViewModel  extends ViewModel{
         _keyInteract = new KeyInteract(iKeyService, iKeyStore);
     }
 
-    //@Inject
-    //public KeyViewModel(KeyInteract keyInteract) {
-    //    this._keyInteract = keyInteract;
-    //}
-
-    //@Inject
-    //public KeyViewModel() {
-
-    //}
-
-    public int[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
-        return _keyInteract.newAccountFromSeed(expandedSeedArray);
-    }
-
-    public int[] newAccount() throws ServiceException {
-            return _keyInteract.newAccount();
-    }
-
-    public int[] signAccount(int[] message, int[] skKey) throws ServiceException {
-        return _keyInteract.signAccount(message, skKey);
-    }
-
-    public int verifyAccount(int[] message, int[] sign, int[] pkKey) throws ServiceException {
-        return _keyInteract.verifyAccount(message, sign, pkKey);
-    }
-    public int[] seedExpander(int[] seed) throws ServiceException {
-        return _keyInteract.seedExpander(seed);
-    }
-    public int[] random() throws ServiceException {
+    public String cryptoNewSeed() throws ServiceException {
         return _keyInteract.random();
     }
+
+    public String cryptoExpandSeed(int[] seed) throws ServiceException {
+        return _keyInteract.seedExpander(seed);
+    }
+
+    public String[] cryptoNewKeyPairFromSeed(int[] expandedSeedArray) throws ServiceException {
+        return (String[]) newAccountFromSeed(expandedSeedArray);
+    }
+
+    public String cryptoSign(int[] message, int[] skKey) throws ServiceException {
+        return (String) _keyInteract.signAccount(message, skKey);
+    }
+
+    public int cryptoVerify(int[] message, int[] sign, int[] pkKey) throws ServiceException {
+        return _keyInteract.verifyAccount(message, sign, pkKey);
+    }
+
+
+
     public int[] scrypt(int[] skKey, int[] salt) throws ServiceException {
         return _keyInteract.scrypt(skKey, salt);
     }
@@ -108,8 +103,8 @@ public class KeyViewModel  extends ViewModel{
     }
 
     public boolean encryptDataByAccount(Context context, String address, String password,
-                                        int[] SK_KEY, int[] PK_KEY) {
-        ByteBuffer sk_key_byteBuffer = ByteBuffer.allocate(SK_KEY.length * 4);
+                                        String[] keyPair) {
+       /* ByteBuffer sk_key_byteBuffer = ByteBuffer.allocate(SK_KEY.length * 4);
         IntBuffer sk_key_intBuffer = sk_key_byteBuffer.asIntBuffer();
         sk_key_intBuffer.put(SK_KEY);
 
@@ -119,7 +114,12 @@ public class KeyViewModel  extends ViewModel{
 
         byte[] sk_key = sk_key_byteBuffer.array();
         byte[] pk_key = pk_key_byteBuffer.array();
-        return _keyInteract.encryptDataByAccount(context, address, password, sk_key, pk_key);
+        */
+        Gson gson = new Gson();
+        List<String> textList = new ArrayList<String>(Arrays.asList(keyPair));
+        String jsonText = gson.toJson(textList);
+
+        return _keyInteract.encryptDataByAccount(context, address, password, jsonText);
     }
 
     public int[] decryptDataByAccount(Context context, String address, String password) throws InvalidKeyException, KeyServiceException {
@@ -133,23 +133,27 @@ public class KeyViewModel  extends ViewModel{
         return array;
     }
 
-    public String exportKeyByAccount(Context context, String address) {
-        return _keyInteract.exportKeyByAccount(context, address);
+    public String[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
+        return _keyInteract.newAccountFromSeed(expandedSeedArray);
     }
 
-    public int[] importKeyByAccount(Context context, String jsonString, String password)  {
-        byte[] byteArray = _keyInteract.importKeyByAccount(context, jsonString, password);
-        IntBuffer intBuf =
-                ByteBuffer.wrap(byteArray)
-                        .order(ByteOrder.BIG_ENDIAN)
-                        .asIntBuffer();
-        int[] array = new int[intBuf.remaining()];
-        intBuf.get(array);
-        return array;
+    public String[] newAccount() throws ServiceException {
+        return _keyInteract.newAccount();
     }
 
-    public void deleteKeyByAccount(Context context, String address) {
-      _keyInteract.deleteKeyByAccount(context, address);
+    public String signAccount(int[] message, int[] skKey) throws ServiceException {
+        return _keyInteract.signAccount(message, skKey);
     }
 
+    public int verifyAccount(int[] message, int[] sign, int[] pkKey) throws ServiceException {
+        return _keyInteract.verifyAccount(message, sign, pkKey);
+    }
+
+//    public int[] seedExpander(int[] seed) throws ServiceException {
+//        return _keyInteract.seedExpander(seed);
+//    }
+//    public int[] random() throws ServiceException {
+//        return _keyInteract.random();
+//    }
 }
+
