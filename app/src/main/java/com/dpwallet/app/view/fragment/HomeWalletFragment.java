@@ -37,6 +37,8 @@ import com.dpwallet.app.seedwords.SeedWords;
 import com.dpwallet.app.utils.PrefConnect;
 
 import java.lang.reflect.Array;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +61,8 @@ public class HomeWalletFragment extends Fragment {
     private AutoCompleteTextView[] homeSeedWordsViewAutoCompleteTextViews;
     private boolean autoCompleteIndexStatus = false;
     private int autoCompleteCurrentIndex = 0;
+    private  String  walletPassword = null;
+    private String walletIndexKey = "0";
     private OnHomeWalletCompleteListener mHomeWalletListener;
 
     public static HomeWalletFragment newInstance() {
@@ -84,6 +88,8 @@ public class HomeWalletFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        walletPassword = getArguments().getString("walletPassword");
 
         tempSeedArray = null;
         jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
@@ -162,10 +168,17 @@ public class HomeWalletFragment extends Fragment {
 
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_home_wallet);
 
-        homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
-
-        SetWalletView(homeSetWalletTitleTextView, homeSetWalletDescriptionTextView, homeSetWalletPasswordTitleTextView,
-                homeSetWalletPasswordEditText, homeSetWalletRetypePasswordTitleTextView, homeSetWalletRetypePasswordEditText, homeSetWalletNextButton);
+        if (walletPassword==null || walletPassword.isEmpty()) {
+            homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
+            SetWalletView(homeSetWalletTitleTextView, homeSetWalletDescriptionTextView, homeSetWalletPasswordTitleTextView,
+                    homeSetWalletPasswordEditText, homeSetWalletRetypePasswordTitleTextView, homeSetWalletRetypePasswordEditText, homeSetWalletNextButton);
+        } else {
+            homeSetWalletLinearLayout.setVisibility(View.GONE);
+            homeSetWalletTopLinearLayout.setVisibility(View.VISIBLE);
+            homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
+            CreateRestoreWalletView(homeCreateRestoreWalletTitleTextView, homeCreateRestoreWalletDescriptionTextView, homeCreateRestoreWalletRadioButton_0,
+                    homeCreateRestoreWalletRadioButton_1, homeCreateRestoreWalletNextButton);
+        }
 
         homeSetWalletNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -193,23 +206,28 @@ public class HomeWalletFragment extends Fragment {
 
         homeWalletBackArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (homeCreateRestoreWalletLinearLayout.getVisibility() == View.VISIBLE) {
-                    homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
-                    homeSetWalletTopLinearLayout.setVisibility(View.GONE);
-                    homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
-                }
-                if (homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
-                    homeSeedWordsLinearLayout.setVisibility(View.GONE);
-                    homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
-                }
-                if (homeSeedWordsViewLinearLayout.getVisibility() == View.VISIBLE) {
-                    homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
-                    homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
-                }
-                if (homeSeedWordsEditLinearLayout.getVisibility() == View.VISIBLE) {
-                    homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
-                    homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
-                }
+
+                    if (homeCreateRestoreWalletLinearLayout.getVisibility() == View.VISIBLE) {
+                        if (walletPassword==null || walletPassword.isEmpty()) {
+                            homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
+                            homeSetWalletTopLinearLayout.setVisibility(View.GONE);
+                            homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            mHomeWalletListener.OnHomeWalletComplete(2, "");
+                        }
+                    }
+                    if (homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
+                        homeSeedWordsLinearLayout.setVisibility(View.GONE);
+                        homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                    if (homeSeedWordsViewLinearLayout.getVisibility() == View.VISIBLE) {
+                        homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
+                        homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                    if (homeSeedWordsEditLinearLayout.getVisibility() == View.VISIBLE) {
+                        homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
+                        homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
+                    }
             }
         });
 
@@ -305,23 +323,6 @@ public class HomeWalletFragment extends Fragment {
             }
         });
 
-        /*
-        homeSeedWordsEditTextViews.setInputType(InputType.TYPE_NULL);
-        homeSeedWordsEditTextViews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // showMyDialog();
-            }
-        });
-        homeSeedWordsEditTextViews.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    // showMyDialog();
-                }
-            }
-        });
-        */
 
         homeSeedWordsAutoCompleteNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,6 +330,11 @@ public class HomeWalletFragment extends Fragment {
 
                 try {
                     progressBar.setVisibility(View.VISIBLE);
+
+                    if(walletPassword==null || walletPassword.isEmpty()) {
+                        walletPassword = homeSetWalletPasswordEditText.getText().toString();
+                    }
+
                     //Seed array
                     int[] seed = tempSeedArray;
 
@@ -338,38 +344,35 @@ public class HomeWalletFragment extends Fragment {
                     int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyPair[1]);
 
                     String address =  keyViewModel.getAccountAddress(PK_KEY);
-                    String password = homeSetWalletPasswordEditText.getText().toString();
 
-                    keyViewModel.encryptDataByAccount(getContext(), address, password, keyPair);
+                    String passwordSHA256 = PrefConnect.getSha256Hash(walletPassword);
+                    keyViewModel.encryptDataByString(getContext(), PrefConnect.WALLET_KEY_PASSWORD, walletPassword, passwordSHA256);
+                    keyViewModel.encryptDataByAccount(getContext(), address, walletPassword, keyPair);
 
-                    String indexKey = "0";
+
                     if(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP != null){
-                        indexKey = String.valueOf(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.size());
+                        walletIndexKey = String.valueOf(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.size());
                     }
-                    PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.put(address, indexKey);
+                    PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.put(address, walletIndexKey);
 
-                    PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP.put(indexKey, address);
+                    PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP.put(walletIndexKey, address);
 
                     PrefConnect.saveHasMap(getContext(),
                             PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX, PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP);
+
                     PrefConnect.saveHasMap(getContext(),
                             PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_INDEX_ADDRESS, PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP);
 
                     progressBar.setVisibility(View.GONE);
 
-                    mHomeWalletListener.OnHomeWalletComplete(indexKey);
+                    mHomeWalletListener.OnHomeWalletComplete(1, walletIndexKey);
 
                 } catch (ServiceException e) {
                     progressBar.setVisibility(View.GONE);
                     GlobalMethods.ExceptionError(getContext(), TAG, e);
                 }
-
-
-
-
             }
         });
-
     }
 
     @Override
@@ -383,7 +386,7 @@ public class HomeWalletFragment extends Fragment {
     }
 
     public static interface OnHomeWalletCompleteListener {
-        public abstract void OnHomeWalletComplete(String indexKey);
+        public abstract void OnHomeWalletComplete(int status, String indexKey);
     }
 
     public void onAttach(Context context) {

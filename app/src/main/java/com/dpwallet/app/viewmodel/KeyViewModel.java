@@ -102,7 +102,18 @@ public class KeyViewModel  extends ViewModel{
         return _keyInteract.getWeiToDogeProtocol(value);
     }
 
-    public boolean encryptDataByAccount(Context context, String address, String password,
+    public boolean encryptDataByString(Context context, String key, String password, String passwordSHA256) {
+        return _keyInteract.encryptDataByAccount(context, key, password, passwordSHA256);
+    }
+
+
+    public String decryptDataByString(Context context, String key, String password) throws InvalidKeyException, KeyServiceException {
+        byte[] byteArray = _keyInteract.decryptDataByAccount(context, key, password);
+        String str = new String(byteArray); // for UTF-8 encoding
+        return str;
+    }
+
+    public boolean encryptDataByAccount(Context context, String key, String password,
                                         String[] keyPair) {
        /* ByteBuffer sk_key_byteBuffer = ByteBuffer.allocate(SK_KEY.length * 4);
         IntBuffer sk_key_intBuffer = sk_key_byteBuffer.asIntBuffer();
@@ -119,11 +130,11 @@ public class KeyViewModel  extends ViewModel{
         List<String> textList = new ArrayList<String>(Arrays.asList(keyPair));
         String jsonText = gson.toJson(textList);
 
-        return _keyInteract.encryptDataByAccount(context, address, password, jsonText);
+        return _keyInteract.encryptDataByAccount(context, key, password, jsonText);
     }
 
-    public int[] decryptDataByAccount(Context context, String address, String password) throws InvalidKeyException, KeyServiceException {
-        byte[] byteArray = _keyInteract.decryptDataByAccount(context, address, password);
+    public int[] decryptDataByAccount(Context context, String key, String password) throws InvalidKeyException, KeyServiceException {
+        byte[] byteArray = _keyInteract.decryptDataByAccount(context, key, password);
         IntBuffer intBuf =
                 ByteBuffer.wrap(byteArray)
                         .order(ByteOrder.BIG_ENDIAN)

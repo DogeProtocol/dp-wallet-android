@@ -121,8 +121,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
-                            android:textSize="14dp"
+                            android:textSize="16dp"
                             android:textAlignment="center"
+                            android:textStyle="bold"
                             android:textColor="@color/colorCommon3" />
                     </HorizontalScrollView>
 
@@ -130,17 +131,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal|center_vertical"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
 
                         <ImageButton
                             android:id="@+id/imageButton_home_copy_clipboard"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:layout_gravity="center_vertical|left"
                             android:background="@drawable/image_selector"
@@ -148,49 +147,22 @@
                             app:tint="@color/colorCommon6" />
 
                         <ImageButton
-                            android:id="@+id/imageButton_home_qr_code"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
+                            android:id="@+id/imageButton_home_block_explore"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:layout_gravity="center_vertical|left"
                             android:background="@drawable/image_selector"
-                            android:src="@drawable/qr_code_outline"
+                            android:src="@drawable/address_explore"
                             app:tint="@color/colorCommon6" />
-
-                    </LinearLayout>
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|clip_horizontal"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/textView_home_balance_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="Poppins"
-                            android:textColor="@color/colorCommon6" />
-
-                        <TextView
-                            android:id="@+id/textView_home_balance_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="20dp"
-                            android:textColor="@color/colorCommon6" />
 
                         <ImageButton
                             android:id="@+id/imageButton_home_refresh"
-                            android:layout_width="40dp"
-                            android:layout_height="41dp"
-                            android:paddingBottom="10dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical|left"
+                            android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:background="@drawable/image_selector"
                             android:src="@drawable/retry"
@@ -198,8 +170,9 @@
 
                         <ProgressBar
                             android:id="@+id/progress_home_loader"
-                            android:layout_width="30dp"
-                            android:layout_height="31dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical|left"
                             android:padding="5dp"
                             android:indeterminate="true"
                             android:visibility="gone"
@@ -208,6 +181,35 @@
                             android:background="@android:color/transparent"
                             android:indeterminateDrawable="@drawable/progress" />
 
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textView_home_balance_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:paddingLeft="5dp"
+                            android:paddingBottom="5dp"
+                            android:fontFamily="Poppins"
+                            android:textColor="@color/colorCommon6" />
+
+                        <TextView
+                            android:id="@+id/textView_home_balance_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:textColor="@color/colorCommon6" />
 
                     </LinearLayout>
 
@@ -332,45 +334,6 @@
 
                             <TextView
                                 android:id="@+id/textView_home_transactions_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:textAppearance="@style/transaction_list_headings"
-                                android:textColor="@color/colorCommon6" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="55dp"
-                                android:layout_height="55dp"
-                                android:layout_gravity="center_horizontal"
-                                app:cardBackgroundColor="#FF396F"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="12dp">
-
-                                <ImageButton
-                                    android:id="@+id/imageButton_home_dpscan"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitCenter"
-                                    android:padding="15dp"
-                                    android:layout_gravity="center_vertical|left"
-                                    android:layout_centerInParent="true"
-                                    android:background="@drawable/image_selector"
-                                    android:src="@drawable/open" />
-
-
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
-                                android:id="@+id/textView_home_dpscan_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"

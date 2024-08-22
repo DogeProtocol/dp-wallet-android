@@ -21,6 +21,7 @@ import com.dpwallet.app.api.faucet.ApiException;
 import com.dpwallet.app.api.faucet.model.FaucetTransactionSummaryResponse;
 import com.dpwallet.app.asynctask.faucet.FaucetTransactionRestTask;
 import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 
 public class SettingsFragment extends Fragment  {
@@ -33,6 +34,8 @@ public class SettingsFragment extends Fragment  {
     private ImageView imageViewRetry;
     private TextView textViewTitleRetry;
     private TextView textViewSubTitleRetry;
+
+    private JsonViewModel jsonViewModel;
 
     private OnSettingsCompleteListener mSettingsListener;
 
@@ -60,13 +63,16 @@ public class SettingsFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_setting_back_arrow);
-        Button exportWallet = (Button) getView().findViewById(R.id.button_settings_export_wallet);
-        Button requestTestCoins = (Button) getView().findViewById(R.id.button_settings_request_test_coins);
-        Button deleteWallet = (Button) getView().findViewById(R.id.button_settings_delete_wallet);
+        jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
 
-        ProgressBar progressBarRequestTestCoins = (ProgressBar) getView().findViewById(R.id.progress_settings_request_test_loader);
-        ProgressBar progressBarDeleteWallet = (ProgressBar) getView().findViewById(R.id.progress_settings_delete_wallet_loader);
+        ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_setting_back_arrow);
+        TextView settings = (TextView) getView().findViewById(R.id.textview_settings_langValues_settings);
+        Button getCoins = (Button) getView().findViewById(R.id.button_settings_langValues_get_coins_for_dogep_tokens);
+        Button networks = (Button) getView().findViewById(R.id.button_settings_langValues_networks);
+
+        settings.setText(jsonViewModel.getSettingsByLangValues());
+        getCoins.setText(jsonViewModel.getGetCoinsForDogePTokensByLangValues());
+        networks.setText(jsonViewModel.getNetworksByLangValues());
 
         linerLayoutOffline = (LinearLayout) getView().findViewById(R.id.linerLayout_setting_offline);
         imageViewRetry = (ImageView) getView().findViewById(R.id.image_retry);
@@ -85,7 +91,7 @@ public class SettingsFragment extends Fragment  {
                 }
             }
         });
-
+/*
         exportWallet.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(walletAddress.trim().length() != 0)
@@ -107,12 +113,13 @@ public class SettingsFragment extends Fragment  {
                 showInformationDialog();
             }
         });
-
+*/
         buttonRetry.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
+                //RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
             }
         });
+
     }
 
     @Override
@@ -138,7 +145,7 @@ public class SettingsFragment extends Fragment  {
             throw new ClassCastException(context.toString() + " ");
         }
     }
-
+/*
     private void showInformationDialog(){
         Bundle bundleRoute = new Bundle();
         bundleRoute.putString("message", getResources().getString(R.string.setting_message_description));
@@ -148,7 +155,8 @@ public class SettingsFragment extends Fragment  {
         messageDialogFragment.setArguments(bundleRoute);
         messageDialogFragment.show(fragmentManager, "");
     }
-
+*/
+    /*
     private void RequestTestnetCoins(String address, ProgressBar progressBar){
         try{
             linerLayoutOffline.setVisibility(View.GONE);
@@ -215,4 +223,5 @@ public class SettingsFragment extends Fragment  {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
+    */
 }

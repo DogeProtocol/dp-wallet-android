@@ -124,7 +124,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_TX_HASH_URL.replace("{txhash}", hash)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_TX_HASH_URL.replace("{txhash}", hash)))
                     );
                 }
             });
@@ -133,7 +133,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_ACCOUNT_TRANSACTION_URL.replace("{address}", from)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", from)))
                     );
                 }
             });
@@ -142,7 +142,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_ACCOUNT_TRANSACTION_URL.replace("{address}", to)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", to)))
                     );
                 }
             });

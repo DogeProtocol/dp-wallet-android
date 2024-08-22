@@ -25,8 +25,8 @@
         android:layout_below="@+id/linerLayout_send_offline">
 
         <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,9 +76,9 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/textView_send_langValue_send"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/send_title"
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:textColor="@color/colorCommon6"/>
@@ -91,12 +91,6 @@
                             android:alpha="0.2"
                             android:background="@drawable/line_2_shape" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp"
-                            android:textSize="16dp"
-                            android:text="@string/send_description"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -106,19 +100,19 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/textView_send_langValue_balance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="10dp"
                                 android:textSize="16dp"
-                                android:textStyle="bold"
-                                android:text="@string/send_available_balance_title"/>
+                                android:textStyle="bold"/>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="left|center_vertical"
                                 android:orientation="horizontal">
                                 <TextView
-                                    android:id="@+id/textView_send_balance"
+                                    android:id="@+id/textView_send_balance_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textStyle="bold"
@@ -141,11 +135,11 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/textView_send_address_to_send"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:text="@string/send_to_address_title"/>
+                            android:textSize="16dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -154,7 +148,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/editText_send_to_address"
+                                android:id="@+id/editText_send_address_to_send"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|left"
@@ -162,7 +156,6 @@
                                 android:padding="5dp"
                                 android:inputType="text"
                                 android:textSize="14dp"
-                                android:hint="@string/send_to_address_description"
                                 android:maxLines="1"
                                 android:background="@drawable/text_input_selector"  />
 
@@ -178,21 +171,20 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/textView_send_quantity_to_send"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:text="@string/send_quantity_title"/>
+                            android:textSize="16dp" />
 
                         <EditText
-                            android:id="@+id/editText_send_quantity"
+                            android:id="@+id/editText_send_quantity_to_send"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|left"
                             android:layout_weight="1"
                             android:layout_marginBottom="10dp"
                             android:padding="5dp"
-                            android:hint="@string/send_quantity_description"
                             android:maxLines="1"
                             android:ems="10"
                             android:textSize="14dp"
@@ -207,38 +199,9 @@
                             android:layout_gravity="center_vertical|right"
                             android:padding="5dp"
                             android:textAllCaps="false"
-                            android:text="@string/send_button_send_title"
                             android:textColor="@color/colorCommon7" />
 
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:textSize="12dp"
-                            android:textColor="@color/colorRedTwo"
-                            android:text="@string/send_transaction_sample_message_description"/>
-
-                        <TextView
-                            android:id="@+id/textView_send_sample_address1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/image_selector"
-                            android:textSize="10dp"
-                            android:text="@string/send_transaction_sample_address1_description"/>
-
-                        <TextView
-                            android:id="@+id/textView_send_sample_address2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/image_selector"
-                            android:textSize="10dp"
-                            android:text="@string/send_transaction_sample_address2_description"/>
-
-
-                    </LinearLayout>
+                 </LinearLayout>
 
                 </RelativeLayout>
 

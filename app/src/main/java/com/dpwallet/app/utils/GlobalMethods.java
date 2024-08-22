@@ -36,9 +36,9 @@ public class GlobalMethods {
     public static String WRITE_API_URL = "https://txn.dpapi.org";
 
     public static String DP_DOCS_URL = "https://dpdocs.org/";
-    public static String DP_SCAN_URL = "https://dpscan.app";
-    public static String DP_SCAN_TX_HASH_URL = "https://dpscan.app/txn/{txhash}";
-    public static String DP_SCAN_ACCOUNT_TRANSACTION_URL = "https://dpscan.app/account/{address}/txn/page";
+    public static String BLOCK_EXPLORER_URL = "https://dpscan.app";
+    public static String BLOCK_EXPLORER_TX_HASH_URL = "https://dpscan.app/txn/{txhash}";
+    public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = "https://dpscan.app/account/{address}/txn/page";
 
     public static String FAUCET_API_URL = "https://faucet.dpapi.org";
 
