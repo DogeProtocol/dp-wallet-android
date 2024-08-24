@@ -224,5 +224,15 @@ public class GlobalMethods {
         }
         return intData;
     }
+
+    public static int[] GetIntDataArrayByStringArray(String[] string) {
+        int number[] = new int[string.length];
+
+        for (int i = 0; i < string.length; i++) {
+            number[i] = Integer.parseInt(string[i]); // error here
+        }
+        return number;
+    }
+
 }
 

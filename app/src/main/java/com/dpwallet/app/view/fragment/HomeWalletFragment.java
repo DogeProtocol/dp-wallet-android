@@ -55,7 +55,7 @@ public class HomeWalletFragment extends Fragment {
     private JsonViewModel jsonViewModel;
 
     private KeyViewModel keyViewModel;
-    private  int[] tempSeedArray;
+    private  int[] tempSeedArrayByCreate;
     private SeedWordAutoCompleteAdapter seedWordAutoCompleteAdapter;
     private TextView[] homeSeedWordsViewTextViews;
     private AutoCompleteTextView[] homeSeedWordsViewAutoCompleteTextViews;
@@ -91,7 +91,7 @@ public class HomeWalletFragment extends Fragment {
 
         walletPassword = getArguments().getString("walletPassword");
 
-        tempSeedArray = null;
+        tempSeedArrayByCreate = null;
         jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
         keyViewModel = new KeyViewModel();
 
@@ -136,8 +136,6 @@ public class HomeWalletFragment extends Fragment {
         TextView homeSeedWordsEditTitleTextView = (TextView) getView().findViewById(R.id.textView_home_seed_words_edit_title);
         homeSeedWordsViewAutoCompleteTextViews = HomeSeedWordsViewAutoCompleteTextView();
 
-        //EditText[] homeSeedWordsEditTextViews = HomeSeedWordsViewEditText();
-
         int index=0;
         for (AutoCompleteTextView homeSeedWordsViewAutoCompleteTextView : homeSeedWordsViewAutoCompleteTextViews) {
             homeSeedWordsViewAutoCompleteTextView.addTextChangedListener(GetTextWatcher(homeSeedWordsViewAutoCompleteTextView, index));
@@ -154,9 +152,11 @@ public class HomeWalletFragment extends Fragment {
                         autoCompleteIndexStatus = false;
                     } else {
                         if(homeSeedWordsViewAutoCompleteTextView.length()>3) {
-                            if (!homeSeedWordsViewAutoCompleteTextView.getText().toString().equalsIgnoreCase(homeSeedWordsViewTextViews[autoCompleteCurrentIndex].getText().toString())) {
-                                homeSeedWordsViewAutoCompleteTextView.setText("");
-                                autoCompleteIndexStatus = true;
+                            if(tempSeedArrayByCreate != null) {
+                                if (!homeSeedWordsViewAutoCompleteTextView.getText().toString().equalsIgnoreCase(homeSeedWordsViewTextViews[autoCompleteCurrentIndex].getText().toString())) {
+                                    homeSeedWordsViewAutoCompleteTextView.setText("");
+                                    autoCompleteIndexStatus = true;
+                                }
                             }
                         }
                     }
@@ -207,7 +207,7 @@ public class HomeWalletFragment extends Fragment {
         homeWalletBackArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                    if (homeCreateRestoreWalletLinearLayout.getVisibility() == View.VISIBLE) {
+                    if (homeCreateRestoreWalletLinearLayout.getVisibility()==View.VISIBLE) {
                         if (walletPassword==null || walletPassword.isEmpty()) {
                             homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
                             homeSetWalletTopLinearLayout.setVisibility(View.GONE);
@@ -216,17 +216,23 @@ public class HomeWalletFragment extends Fragment {
                             mHomeWalletListener.OnHomeWalletComplete(2, "");
                         }
                     }
-                    if (homeSeedWordsLinearLayout.getVisibility() == View.VISIBLE) {
+                    if (homeSeedWordsLinearLayout.getVisibility()==View.VISIBLE) {
                         homeSeedWordsLinearLayout.setVisibility(View.GONE);
                         homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
                     }
-                    if (homeSeedWordsViewLinearLayout.getVisibility() == View.VISIBLE) {
+                    if (homeSeedWordsViewLinearLayout.getVisibility()==View.VISIBLE) {
                         homeSeedWordsViewLinearLayout.setVisibility(View.GONE);
                         homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
                     }
-                    if (homeSeedWordsEditLinearLayout.getVisibility() == View.VISIBLE) {
-                        homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
-                        homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
+                    if (homeSeedWordsEditLinearLayout.getVisibility()==View.VISIBLE) {
+                        if (homeCreateRestoreWalletRadioButton_0.isChecked()==true){
+                            homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
+                            homeSeedWordsViewLinearLayout.setVisibility(View.VISIBLE);
+                        }
+                        if (homeCreateRestoreWalletRadioButton_1.isChecked()==true){
+                            homeSeedWordsEditLinearLayout.setVisibility(View.GONE);
+                            homeCreateRestoreWalletLinearLayout.setVisibility(View.VISIBLE);
+                        }
                     }
             }
         });
@@ -247,14 +253,21 @@ public class HomeWalletFragment extends Fragment {
                 String message = "";
 
                 if (homeCreateRestoreWalletRadioButton_0.isChecked() == true) {
+                    tempSeedArrayByCreate = null;
                     homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
                     homeSeedWordsLinearLayout.setVisibility(View.VISIBLE);
-
-                    tempSeedArray = null;
-
                     SeedWordsView(homeSeedWordsTitleTextView, homeSeedWords1, homeSeedWords2, homeSeedWords3, homeSeedWords4, homeSeedWordsShow);
                 } else if (homeCreateRestoreWalletRadioButton_1.isChecked() == true) {
+                    tempSeedArrayByCreate = null;
+                    homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
+                    homeSeedWordsEditLinearLayout.setVisibility(View.VISIBLE);
+                    ShowEditSeedScreen(homeSeedWordsEditTitleTextView, homeSeedWordsAutoCompleteNextButton);
 
+                    homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
+
+                    ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
+                    seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
+                            android.R.id.text1, seedWordsList);
                 } else {
                     message = jsonViewModel.getSelectOptionByErrors();
                     bundleRoute.putString("message", message);
@@ -335,8 +348,21 @@ public class HomeWalletFragment extends Fragment {
                         walletPassword = homeSetWalletPasswordEditText.getText().toString();
                     }
 
-                    //Seed array
-                    int[] seed = tempSeedArray;
+                    String[] seedWords=new String[homeSeedWordsViewAutoCompleteTextViews.length];
+                    int index=0;
+                    for (AutoCompleteTextView homeSeedWordsViewAutoCompleteTextView : homeSeedWordsViewAutoCompleteTextViews) {
+                        if(homeSeedWordsViewAutoCompleteTextView.getText().length()==0){
+                            homeSeedWordsViewAutoCompleteTextView.requestFocus();
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
+                        seedWords[index] = homeSeedWordsViewAutoCompleteTextView.getText().toString().toLowerCase();
+                        index = index +1;
+                    }
+
+                    //String[] stringArray = Arrays.toString(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords)).split("[\\[\\]]")[1].split(", ");
+
+                    int[] seed = GlobalMethods.GetIntDataArrayByStringArray(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords));
 
                     //Expand seed array
                     int[] expandSeed = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoExpandSeed(seed));
@@ -348,7 +374,6 @@ public class HomeWalletFragment extends Fragment {
                     String passwordSHA256 = PrefConnect.getSha256Hash(walletPassword);
                     keyViewModel.encryptDataByString(getContext(), PrefConnect.WALLET_KEY_PASSWORD, walletPassword, passwordSHA256);
                     keyViewModel.encryptDataByAccount(getContext(), address, walletPassword, keyPair);
-
 
                     if(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP != null){
                         walletIndexKey = String.valueOf(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP.size());
@@ -505,12 +530,11 @@ public class HomeWalletFragment extends Fragment {
 
         homeSeedWordsViewTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
 
-        if(tempSeedArray == null) {
-            tempSeedArray = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoNewSeed());
+        if(tempSeedArrayByCreate == null) {
+            tempSeedArrayByCreate = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoNewSeed());
         }
 
-        String[] stringArray = Arrays.toString(tempSeedArray).split("[\\[\\]]")[1].split(", ");
-        //ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(stringArray));
+        String[] stringArray = Arrays.toString(tempSeedArrayByCreate).split("[\\[\\]]")[1].split(", ");
 
         String[] wordList = GlobalMethods.seedWords.getWordListFromSeedArray(stringArray);
 
@@ -575,6 +599,7 @@ public class HomeWalletFragment extends Fragment {
                 (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l4)
         };
     }
+
     private TextWatcher GetTextWatcher(final AutoCompleteTextView autoCompleteTextView, int index) {
         return new TextWatcher() {
             @Override
@@ -593,6 +618,7 @@ public class HomeWalletFragment extends Fragment {
             }
         };
     }
+
     private void ShowEditSeedScreen(TextView homeSeedWordsEditTitleTextView, Button homeSeedWordsEditNextButton) {
         homeSeedWordsEditTitleTextView.setText(jsonViewModel.getVerifySeedWordsByLangValues());
         homeSeedWordsEditNextButton.setText(jsonViewModel.getNextByLangValues());
