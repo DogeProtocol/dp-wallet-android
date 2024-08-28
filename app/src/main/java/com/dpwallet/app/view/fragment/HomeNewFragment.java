@@ -68,7 +68,6 @@ public class HomeNewFragment extends Fragment  {
         TextView homeWelcomeInfoStepInfoDescTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep_info_desc);
         Button homeWelcomeLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_welcome_langValues_next);
 
-
         LinearLayout homeSaftyQuizLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_safety_quiz);
         TextView homeSaftyQuizQuizStepTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep);
         TextView homeSaftyQuizQuizStepQuizeTitleTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep_quiz_title);
@@ -99,7 +98,6 @@ public class HomeNewFragment extends Fragment  {
         homeWelcomeLangValuesNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-
                     //Next
                     if(jsonIndex +1 >= jsonViewModel.getInfoLength()-1){
                         jsonIndex = 0;
@@ -175,7 +173,6 @@ public class HomeNewFragment extends Fragment  {
                     } else {
                         message = jsonViewModel.getQuizNoChoice();
                     }
-
 
                     bundleRoute.putString("message", message);
                     FragmentManager fragmentManager  = getFragmentManager();

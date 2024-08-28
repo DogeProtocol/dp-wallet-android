@@ -1,0 +1,1523 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:background="@android:color/transparent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top_linear_layout_reveal_seed_wallet_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                android:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/imageButton_reveal_seed_wallet_back_arrow"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="left"
+                    android:background="@drawable/image_selector"
+                    android:src="@drawable/arrow_back_circle_outline"
+                    app:tint="@color/colorCommon6"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/top_linear_layout_reveal_seed_wallet_id"
+                android:background="@drawable/center_container">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_reveal_seed_words_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:visibility="visible"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/textView_reveal_seed_words_view_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="20dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorCommon6"/>
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha="0.2"
+                                android:background="@drawable/line_2_shape" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="beforeDescendants"
+                            android:focusableInTouchMode="true">
+
+
+                            <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_a1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedA"
+                                    android:textSize="14dp"
+                                    android:text="A1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_a2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedA"
+                                    android:textSize="14dp"
+                                    android:text="A2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_a3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedA"
+                                    android:textSize="14dp"
+                                    android:text="A3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_a4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedA"
+                                    android:textSize="14dp"
+                                    android:text="A4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_a1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_a_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_a2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_a_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_a3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_a_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_a4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_a_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_b1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedB"
+                                    android:textSize="14dp"
+                                    android:text="B1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_b2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedB"
+                                    android:textSize="14dp"
+                                    android:text="B2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_b3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedB"
+                                    android:textSize="14dp"
+                                    android:text="B3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_b4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedB"
+                                    android:textSize="14dp"
+                                    android:text="B4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_b1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_b_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_b2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_b_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_b3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_b_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_b4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_b_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_c1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedC"
+                                    android:textSize="14dp"
+                                    android:text="C1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_c2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedC"
+                                    android:textSize="14dp"
+                                    android:text="C2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_c3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedC"
+                                    android:textSize="14dp"
+                                    android:text="C3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_c4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedC"
+                                    android:textSize="14dp"
+                                    android:text="C4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_c1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_c_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_c2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_c_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_c3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_c_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_c4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_c_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_d1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedD"
+                                    android:textSize="14dp"
+                                    android:text="D1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_d2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedD"
+                                    android:textSize="14dp"
+                                    android:text="D2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_d3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedD"
+                                    android:textSize="14dp"
+                                    android:text="D3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_d4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedD"
+                                    android:textSize="14dp"
+                                    android:text="D4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_d1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_d_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_d2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_d_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_d3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_d_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_d4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_d_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_e1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedE"
+                                    android:textSize="14dp"
+                                    android:text="E1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_e2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedE"
+                                    android:textSize="14dp"
+                                    android:text="E2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_e3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedE"
+                                    android:textSize="14dp"
+                                    android:text="E3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_e4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedE"
+                                    android:textSize="14dp"
+                                    android:text="E4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_e1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_e_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_e2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_e_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_e3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_e_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_e4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_e_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_f1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedF"
+                                    android:textSize="14dp"
+                                    android:text="F1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_f2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedF"
+                                    android:textSize="14dp"
+                                    android:text="F2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_f3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedF"
+                                    android:textSize="14dp"
+                                    android:text="F3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_f4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedF"
+                                    android:textSize="14dp"
+                                    android:text="F4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_f1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_f_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_f2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_f_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_f3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_f_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_f4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_f_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_g1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedG"
+                                    android:textSize="14dp"
+                                    android:text="G1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_g2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedG"
+                                    android:textSize="14dp"
+                                    android:text="G2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_g3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedG"
+                                    android:textSize="14dp"
+                                    android:text="G3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_g4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedG"
+                                    android:textSize="14dp"
+                                    android:text="G4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_g1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_g_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_g2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_g_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_g3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_g_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_g4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_g_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_h1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedH"
+                                    android:textSize="14dp"
+                                    android:text="H1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_h2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedH"
+                                    android:textSize="14dp"
+                                    android:text="H2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_h3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedH"
+                                    android:textSize="14dp"
+                                    android:text="H3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_h4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedH"
+                                    android:textSize="14dp"
+                                    android:text="H4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_h1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_h_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_h2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_h_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_h3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_h_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_h4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_h_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_i1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedI"
+                                    android:textSize="14dp"
+                                    android:text="I1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_i2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedI"
+                                    android:textSize="14dp"
+                                    android:text="I2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_i3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedI"
+                                    android:textSize="14dp"
+                                    android:text="I3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_i4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedI"
+                                    android:textSize="14dp"
+                                    android:text="I4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_i1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_i_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_i2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_i_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_i3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_i_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_i4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_i_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_j1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedJ"
+                                    android:textSize="14dp"
+                                    android:text="J1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_j2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedJ"
+                                    android:textSize="14dp"
+                                    android:text="J2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_j3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedJ"
+                                    android:textSize="14dp"
+                                    android:text="J3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_j4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedJ"
+                                    android:textSize="14dp"
+                                    android:text="J4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_j1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_j_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_j2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_j_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_j3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_j_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_j4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_j_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_k1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedK"
+                                    android:textSize="14dp"
+                                    android:text="K1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_k2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedK"
+                                    android:textSize="14dp"
+                                    android:text="K2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_k3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedK"
+                                    android:textSize="14dp"
+                                    android:text="K3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_k4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedK"
+                                    android:textSize="14dp"
+                                    android:text="K4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_k1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_k_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_k2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_k_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_k3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_k_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_k4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_k_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_l1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginBottom="5dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedL"
+                                    android:textSize="14dp"
+                                    android:text="L1" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_l2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedL"
+                                    android:textSize="14dp"
+                                    android:text="L2" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_l3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedL"
+                                    android:textSize="14dp"
+                                    android:text="L3" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_caption_l4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorCommonSeedL"
+                                    android:textSize="14dp"
+                                    android:text="L4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_l1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_l_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_l2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_l_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_l3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_l_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/textView_reveal_seed_words_view_l4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:background="@drawable/bg_seed_view_l_curve"
+                                    android:textColor="@color/colorCommon7"
+                                    android:textAlignment="center"
+                                    android:textSize="14dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        </ScrollView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha="0.2"
+                                android:background="@drawable/line_2_shape" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_loader_reveal_seed_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_alignParentBottom="true"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:max="100"
+                android:progress="0"
+                android:background="@android:color/transparent"
+                android:indeterminateDrawable="@drawable/progress" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

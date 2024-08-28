@@ -49,10 +49,10 @@ import com.dpwallet.app.utils.Utility;
 import com.dpwallet.app.view.fragment.HomeFragment;
 import com.dpwallet.app.view.fragment.HomeNewFragment;
 import com.dpwallet.app.view.fragment.HomeWalletFragment;
-import com.dpwallet.app.view.fragment.QrCodeDialogFragment;
 import com.dpwallet.app.view.fragment.ReceiveFragment;
 import com.dpwallet.app.view.fragment.SendFragment;
 import com.dpwallet.app.view.fragment.SettingsFragment;
+import com.dpwallet.app.view.fragment.RevealWalletFragment;
 import com.dpwallet.app.view.fragment.AccountTransactionsFragment;
 
 import com.dpwallet.app.view.fragment.WalletsFragment;
@@ -69,7 +69,7 @@ public class HomeActivity extends FragmentActivity implements
         HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeWalletFragment.OnHomeWalletCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
-        SettingsFragment.OnSettingsCompleteListener {
+        SettingsFragment.OnSettingsCompleteListener, RevealWalletFragment.OnRevealWalletCompleteListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -145,7 +145,6 @@ public class HomeActivity extends FragmentActivity implements
             ImageButton receiveImageButton = (ImageButton) findViewById(R.id.imageButton_home_receive);
             TextView transactionsTitleTextView = (TextView) findViewById(R.id.textView_home_transactions_title);
             ImageButton transactionsImageButton = (ImageButton) findViewById(R.id.imageButton_home_transactions);
-
 
             //Bottom navigation
             bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -322,6 +321,7 @@ public class HomeActivity extends FragmentActivity implements
                     notificationThread(1);
                     break;
                 case 2:
+                    screenViewType(1);
                     beginTransaction(WalletsFragment.newInstance(), bundle);
                     break;
                 default:
@@ -364,9 +364,39 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onWalletsComplete(int status, String walletPassword, String indexKey) {
+    public void  onWalletsCompleteByBackArrow(){
+        screenViewType(0);
+        beginTransaction(HomeFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void  onWalletsCompleteByCreateOrRestore(String walletPassword){
+        screenViewType(1);
+        bundle.putString("walletPassword", walletPassword);
+        beginTransaction(HomeWalletFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void  onWalletsCompleteBySwitchAddress(String indexKey){
+        getCurrentWallet(indexKey);
+        screenViewType(0);
+        beginTransaction(HomeFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void onWalletsCompleteByReveal(String walletAddress, String walletPassword){
+        screenViewType(1);
+        bundle.putString("walletAddress", walletAddress);
+        bundle.putString("walletPassword", walletPassword);
+        beginTransaction(RevealWalletFragment.newInstance(), bundle);
+    }
+
+
+/*
+    @Override
+    public void onWalletsComplete(int status, String walletPassword, String address) {
         try {
-            //1 - Back arrow, 2 - Create or restore, 3 - Switch account
+            //1 - Back arrow, 2 - Create or restore, 3 - Switch account, 4- Reveal seed
             switch (status) {
                 case 1:
                     screenViewType(0);
@@ -379,9 +409,14 @@ public class HomeActivity extends FragmentActivity implements
                     break;
                 case 3:
                     bundle.putString("walletPassword", walletPassword);
-                    getCurrentWallet(indexKey);
+                    getCurrentWallet(address);
                     screenViewType(0);
                     beginTransaction(HomeFragment.newInstance(), bundle);
+                case 4:
+                    bundle.putString("walletAddress", address);
+                    bundle.putString("walletPassword", walletPassword);
+                    screenViewType(1);
+                    beginTransaction(RevealWalletFragment.newInstance(), bundle);
                 default:
                     break;
             }
@@ -389,7 +424,7 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
-
+*/
     @Override
     public void onSettingsComplete(int status) {
         try {
@@ -417,6 +452,18 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
+
+    @Override
+    public void OnRevealWalletComplete() {
+        try {
+            screenViewType(1);
+            beginTransaction(WalletsFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+
 
     private void beginTransaction(Fragment fragment, Bundle bundle) {
         try {

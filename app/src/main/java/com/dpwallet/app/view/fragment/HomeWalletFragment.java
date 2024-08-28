@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.dpwallet.app.view.adapter.SeedWordAutoCompleteAdapter;
+import com.google.gson.Gson;
 
 public class HomeWalletFragment extends Fragment {
 
@@ -206,7 +208,6 @@ public class HomeWalletFragment extends Fragment {
 
         homeWalletBackArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                     if (homeCreateRestoreWalletLinearLayout.getVisibility()==View.VISIBLE) {
                         if (walletPassword==null || walletPassword.isEmpty()) {
                             homeCreateRestoreWalletLinearLayout.setVisibility(View.GONE);
@@ -310,7 +311,8 @@ public class HomeWalletFragment extends Fragment {
                                 Thread.sleep(1000);
                             } catch (Exception e) {
                                 progressBar.setVisibility(View.GONE);
-                                GlobalMethods.ExceptionError(getContext(), TAG, e);                            }
+                                GlobalMethods.ExceptionError(getContext(), TAG, e);
+                            }
                         }
                     }
                 }).start();
@@ -360,13 +362,16 @@ public class HomeWalletFragment extends Fragment {
                         index = index +1;
                     }
 
-                    //String[] stringArray = Arrays.toString(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords)).split("[\\[\\]]")[1].split(", ");
-
                     int[] seed = GlobalMethods.GetIntDataArrayByStringArray(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords));
+                    String[] stringArray = Arrays.toString(seed).split("[\\[\\]]")[1].split(", ");
+
+                    String jsonText = TextUtils.join(",",stringArray);
 
                     //Expand seed array
                     int[] expandSeed = GlobalMethods.GetIntDataArrayByString(keyViewModel.cryptoExpandSeed(seed));
                     String[] keyPair = keyViewModel.cryptoNewKeyPairFromSeed(expandSeed);
+                    keyPair[2]= jsonText;
+
                     int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyPair[1]);
 
                     String address =  keyViewModel.getAccountAddress(PK_KEY);

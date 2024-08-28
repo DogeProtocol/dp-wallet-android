@@ -32,8 +32,10 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_KeypairSeed(JNIEnv* env, jobject, 
 
     jint *expandedSeed = env->GetIntArrayElements(expandedSeedArray, NULL);
 
+    std::ostringstream oes;
     for (int i = 0; i < expandedSeedArraylen; i++)
     {
+        oes <<(int)expandedSeed[i] << ",";
         seed[i] = (unsigned char)expandedSeed[i];
     }
 
@@ -41,6 +43,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_KeypairSeed(JNIEnv* env, jobject, 
 
     jstring skkey;
     jstring pkkey;
+    jstring eseed;
 
     std::ostringstream osk;
     for (int i = 0; i < CRYPTO_SECRETKEY_BYTES; i++) {
@@ -52,20 +55,23 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_KeypairSeed(JNIEnv* env, jobject, 
         opk << (int)pk[i] << ",";
     }
 
-    std::string skey = osk.str();
-    std::string pkey =  opk.str();
+    std::string skey  = osk.str();
+    std::string pkey  = opk.str();
+    std::string eskey = oes.str();
 
     skkey =  env->NewStringUTF(skey.c_str());
     pkkey =  env->NewStringUTF(pkey.c_str());
+    eseed =  env->NewStringUTF(eskey.c_str());
 
     jclass keyClass;
     keyClass = env->FindClass("java/lang/String");
 
     jobjectArray keyArray;
-    keyArray = env->NewObjectArray(2, keyClass, NULL); // create java string key array
+    keyArray = env->NewObjectArray(3, keyClass, NULL); // create java string key array
 
     env->SetObjectArrayElement(keyArray, 0, skkey);
     env->SetObjectArrayElement(keyArray, 1, pkkey);
+    env->SetObjectArrayElement(keyArray, 2, eseed);
 
     //memory free
     memset(sk, 0, CRYPTO_SECRETKEY_BYTES);

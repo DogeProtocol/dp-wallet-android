@@ -100,7 +100,7 @@ public class WalletAdapter extends
             holder.imageViewRevealSeed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    clickListener.onWalletRevealClick(v, position);
                 }
             });
 
@@ -122,5 +122,6 @@ public class WalletAdapter extends
 
     public interface OnWalletItemClickListener {
         public void onWalletItemClick(View view, int position);
+        public void onWalletRevealClick(View view, int position);
     }
 }

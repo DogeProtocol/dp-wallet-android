@@ -103,13 +103,6 @@ public class KeyStore implements IKeyStore {
             String skKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2));
             writeBytesToFile(skKeyEncryptedPath, keyMessage);
 
-            //pk key
-            //byte[] pkKeyEncryptedData = cipher.doFinal(PK_KEY);
-            //byte[] pkKeyMessage = new byte[salt.length + iv.length + pkKeyEncryptedData.length];
-            //pkKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv), pkKeyEncryptedData);
-            //String pkKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2) + "-pk-key");
-            //writeBytesToFile(pkKeyEncryptedPath, pkKeyMessage);
-
             return true;
         }
         catch (Exception ex)
@@ -135,9 +128,8 @@ public class KeyStore implements IKeyStore {
 
             Cipher outCipher = Cipher.getInstance(CIPHER_ALGORITHM);
             outCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
-            byte[] SK_KEY = outCipher.doFinal(skKeyEncryptedData);
 
-            return SK_KEY;
+            return outCipher.doFinal(skKeyEncryptedData);
         }
         catch (InvalidKeyException e)
         {

@@ -330,7 +330,9 @@ public class SendFragment extends Fragment  {
                 GlobalMethods.ShowToast(getContext(), message);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
-                int[] SK_KEY = keyViewModel.decryptDataByAccount(context, fromAddress, password);
+                String[] keyData = keyViewModel.decryptDataByAccount(context, fromAddress, password);
+                int[] SK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[0]);
+
                 getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, dp_wei, SK_KEY, password);
             }
             return;

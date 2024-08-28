@@ -13,6 +13,7 @@ import com.dpwallet.app.keystorage.KeyStore;
 import com.dpwallet.app.services.IKeyService;
 import com.dpwallet.app.services.KeyService;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import androidx.lifecycle.ViewModel;
 
@@ -126,22 +127,31 @@ public class KeyViewModel  extends ViewModel{
         byte[] sk_key = sk_key_byteBuffer.array();
         byte[] pk_key = pk_key_byteBuffer.array();
         */
+
         Gson gson = new Gson();
         List<String> textList = new ArrayList<String>(Arrays.asList(keyPair));
         String jsonText = gson.toJson(textList);
-
         return _keyInteract.encryptDataByAccount(context, key, password, jsonText);
     }
 
-    public int[] decryptDataByAccount(Context context, String key, String password) throws InvalidKeyException, KeyServiceException {
+    public String[] decryptDataByAccount(Context context, String key, String password) throws InvalidKeyException, KeyServiceException {
         byte[] byteArray = _keyInteract.decryptDataByAccount(context, key, password);
+        String jsonString = new String(byteArray);
+        List<String> dataList = Arrays.asList(new GsonBuilder().create().fromJson(jsonString, String[].class));
+        String[] data = new String[dataList.size()];
+        data = dataList.toArray(data);
+        return data;
+
+        /*
         IntBuffer intBuf =
                 ByteBuffer.wrap(byteArray)
                         .order(ByteOrder.BIG_ENDIAN)
                         .asIntBuffer();
-        int[] array = new int[intBuf.remaining()];
+
+        String[] array = new String[intBuf.remaining()];
         intBuf.get(array);
         return array;
+         */
     }
 
     public String[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
