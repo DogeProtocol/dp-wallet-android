@@ -1,6 +1,7 @@
 package com.dpwallet.app.view.activities;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,11 +43,14 @@ import com.dpwallet.app.api.read.model.BalanceResponse;
 import com.dpwallet.app.asynctask.download.DownloadingTask;
 import com.dpwallet.app.asynctask.read.AccountBalanceRestTask;
 import com.dpwallet.app.entity.ServiceException;
+import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.seedwords.SeedWords;
 import com.dpwallet.app.utils.CheckForSDCard;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
+import com.dpwallet.app.view.fragment.BlockchainNetworkDialogFragment;
+import com.dpwallet.app.view.fragment.BlockchainNetworkFragment;
 import com.dpwallet.app.view.fragment.HomeFragment;
 import com.dpwallet.app.view.fragment.HomeNewFragment;
 import com.dpwallet.app.view.fragment.HomeWalletFragment;
@@ -60,13 +65,17 @@ import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class HomeActivity extends FragmentActivity implements
         HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeWalletFragment.OnHomeWalletCompleteListener,
+        BlockchainNetworkDialogFragment.OnBlockchainNetworkDialogCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
         SettingsFragment.OnSettingsCompleteListener, RevealWalletFragment.OnRevealWalletCompleteListener {
@@ -110,7 +119,7 @@ public class HomeActivity extends FragmentActivity implements
 
             jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
 
-            loadSeedsThread ();
+            loadSeedsThread();
 
             PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP = PrefConnect.loadHashMap(getApplicationContext(),
                     PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX);
@@ -126,6 +135,7 @@ public class HomeActivity extends FragmentActivity implements
             //Linear top layout
             topLinearLayout = (LinearLayout) findViewById(R.id.top_linear_layout_home_id);
             topLinearLayoutParams = topLinearLayout.getLayoutParams();
+            TextView blockChainNetworkTextView = (TextView) findViewById(R.id.textView_home_blockchain_network);
             TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
 
             //Center Relative layout & Image Button
@@ -146,6 +156,7 @@ public class HomeActivity extends FragmentActivity implements
             TextView transactionsTitleTextView = (TextView) findViewById(R.id.textView_home_transactions_title);
             ImageButton transactionsImageButton = (ImageButton) findViewById(R.id.imageButton_home_transactions);
 
+
             //Bottom navigation
             bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -162,7 +173,6 @@ public class HomeActivity extends FragmentActivity implements
             receiveTitleTextView.setText(jsonViewModel.getReceiveByLangValues());
             transactionsTitleTextView.setText(jsonViewModel.getTransactionsByLangValues());
 
-
             getCurrentWallet(PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_VALUE);
 
             //Notification permission
@@ -172,6 +182,19 @@ public class HomeActivity extends FragmentActivity implements
                 }
                 createNotificationChannel();
             }
+
+
+            int netWorkDefaultIndex = 0;
+            List<BlockchainNetwork> blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getApplicationContext());
+            BlockchainNetwork blockchainNetwork = blockchainNetworkList.get(netWorkDefaultIndex);
+            blockChainNetworkTextView.setText(blockchainNetwork.getBlockchainName());
+
+            blockChainNetworkTextView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    screenViewType(0);
+                    beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
+                }
+            });
 
             //Center buttons setOnClickListener
             copyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
@@ -327,6 +350,16 @@ public class HomeActivity extends FragmentActivity implements
                 default:
                     break;
             }
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onBlockchainNetworkDialogComplete() {
+        try{
+            screenViewType(0);
+            beginTransaction(HomeFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -721,4 +754,7 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
         }
     }
+
+
+
 }

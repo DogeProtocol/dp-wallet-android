@@ -17,9 +17,18 @@ import android.widget.Toast;
 import androidx.annotation.RawRes;
 
 import com.dpwallet.app.R;
+import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.seedwords.SeedWords;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -65,14 +74,20 @@ public class GlobalMethods {
     public static SeedWords seedWords;
     public static boolean seedLoaded = false;
 
-
-
     public static String LocaleLanguage(Context context, String languageKey){
         if (languageKey.equals("en")) {
             return readRawResource(context, R.raw.en_us);
         }
         return readRawResource(context, R.raw.en_us);
     }
+    public static List<BlockchainNetwork> BlockChainNetworkRead(Context context){
+        String blockchainJsonString = readRawResource(context, R.raw.blockchain_networks);
+        JsonObject jo = new JsonParser().parse(blockchainJsonString).getAsJsonObject();
+        JsonArray jsonArray = jo.getAsJsonArray("networks");
+        BlockchainNetwork[] blockChainNetworks = new Gson().fromJson(jsonArray, BlockchainNetwork[].class);
+        return Arrays.asList(blockChainNetworks);
+    }
+
     public static String readRawResource(Context context,  @RawRes int res) {
         return readStream(context.getResources().openRawResource(res));
     }

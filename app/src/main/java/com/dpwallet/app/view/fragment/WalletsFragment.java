@@ -56,7 +56,6 @@ import butterknife.Unbinder;
 
 public class WalletsFragment extends Fragment  {
     private static final String TAG = "WalletsFragment";
-
     private WalletAdapter walletAdapter;
     Unbinder unbinder;
     @BindView(R.id.recycler_wallets)  RecyclerView recycler;
@@ -134,7 +133,6 @@ public class WalletsFragment extends Fragment  {
 
         backArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //mWalletsListener.onWalletsComplete(1, walletPassword, null);
                 mWalletsListener.onWalletsCompleteByBackArrow();
             }
         });
@@ -142,9 +140,9 @@ public class WalletsFragment extends Fragment  {
         walletCreateOrRestoreTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (walletPassword==null || walletPassword.isEmpty()) {
-                     unlockDialogFragment(view,0, null);
+                     unlockDialogFragment(progressBar, 0, null);
                 } else {
-                    VerifyPassword(walletPassword, 0, null);
+                    VerifyPassword(progressBar, walletPassword, 0, null);
                 }
             }
         });
@@ -163,9 +161,9 @@ public class WalletsFragment extends Fragment  {
                             PrefConnect.writeString(getContext(), PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_KEY, indexKey);
                             String walletAddress = entry.getValue();
                             if (walletPassword==null || walletPassword.isEmpty()) {
-                                unlockDialogFragment(view, 1, walletAddress);
+                                unlockDialogFragment(progressBar, 1, walletAddress);
                             } else {
-                                VerifyPassword(walletPassword, 1, walletAddress);
+                                VerifyPassword(progressBar, walletPassword, 1, walletAddress);
                             }
                             break;
                         }
@@ -203,7 +201,7 @@ public class WalletsFragment extends Fragment  {
         }
     }
 
-    private void unlockDialogFragment(View view, int listenerStatus, String walletAddress ) {
+    private void unlockDialogFragment(ProgressBar progressBar, int listenerStatus, String walletAddress ) {
         try {
             //Alert unlock dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -231,7 +229,7 @@ public class WalletsFragment extends Fragment  {
                     if (walletPassword==null || walletPassword.isEmpty()) {
                         messageDialogFragment(jsonViewModel.getEnterApasswordByLangValues());
                     } else {
-                        VerifyPassword(walletPassword, listenerStatus, walletAddress);
+                        VerifyPassword(progressBar, walletPassword, listenerStatus, walletAddress);
                         dialog.dismiss();
                     }
                 }
@@ -262,7 +260,7 @@ public class WalletsFragment extends Fragment  {
         }
     }
 
-    private void VerifyPassword(String walletPassword, int listenerStatus, String walletAddress)  {
+    private void VerifyPassword(ProgressBar progressBar, String walletPassword, int listenerStatus, String walletAddress)  {
         try {
             String passwordSHA256 = PrefConnect.getSha256Hash(walletPassword);
             String password= keyViewModel.decryptDataByString(getContext(), PrefConnect.WALLET_KEY_PASSWORD, walletPassword);
@@ -284,4 +282,40 @@ public class WalletsFragment extends Fragment  {
             messageDialogFragment(jsonViewModel.getWalletOpenErrorByErrors());
         }
     }
+
+    /*
+    private void CheckThread(ProgressBar progressBar, String walletAddress, String walletPassword) {
+        progressBar.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (GlobalMethods.seedLoaded) {
+                                try {
+                                    progressBar.setVisibility(View.GONE);
+                                } catch (Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+                                    GlobalMethods.ExceptionError(getContext(), TAG, e);
+                                }
+                            }
+                        }
+                    });
+                    try {
+                        if(progressBar.getVisibility()==View.GONE){
+                            return;
+                        }
+                        if(ThreadStop) {
+                            return;
+                        }
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        progressBar.setVisibility(View.GONE);
+                        GlobalMethods.ExceptionError(getContext(), TAG, e);
+                    }
+                }
+            }
+        }).start();
+    }
+    */
 }

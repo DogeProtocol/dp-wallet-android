@@ -41,6 +41,8 @@ public class RevealWalletFragment extends Fragment {
 
     private static final String TAG = "RevealSeedWalletFragment";
 
+    private boolean ThreadStop = false;
+
     private JsonViewModel jsonViewModel;
 
     private KeyViewModel keyViewModel;
@@ -97,7 +99,13 @@ public class RevealWalletFragment extends Fragment {
         }
         homeWalletBackArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mRevealWalletListener.OnRevealWalletComplete();
+                try {
+                    ThreadStop = true;
+                    Thread.sleep(1000);
+                    mRevealWalletListener.OnRevealWalletComplete();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -136,7 +144,6 @@ public class RevealWalletFragment extends Fragment {
     }
 
     private void loadRevealSeedsThread(String[] stringArray, TextView[] textViews, ProgressBar progressBar) {
-
             progressBar.setVisibility(View.VISIBLE);
             new Thread(new Runnable() {
                 public void run() {
@@ -161,16 +168,17 @@ public class RevealWalletFragment extends Fragment {
                             if(progressBar.getVisibility() == View.GONE){
                                 return;
                             }
+                            if(ThreadStop){
+                                return;
+                            }
                             Thread.sleep(1000);
                         } catch (Exception e) {
                             progressBar.setVisibility(View.GONE);
                             GlobalMethods.ExceptionError(getContext(), TAG, e);
                         }
-
                     }
                 }
             }).start();
-
     }
 
     private TextView[]RevealSeedWordsViewTextViews() {

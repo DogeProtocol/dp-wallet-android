@@ -39,6 +39,18 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/progress_loader_reveal_seed_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="true"
+                android:visibility="visible"
+                android:max="100"
+                android:progress="0"
+                android:background="@android:color/transparent"
+                android:indeterminateDrawable="@drawable/progress" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1492,29 +1504,13 @@
                                 android:alpha="0.2"
                                 android:background="@drawable/line_2_shape" />
 
-
                         </LinearLayout>
 
                     </LinearLayout>
 
-
                 </RelativeLayout>
 
             </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progress_loader_reveal_seed_wallet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_alignParentBottom="true"
-                android:indeterminate="true"
-                android:visibility="gone"
-                android:max="100"
-                android:progress="0"
-                android:background="@android:color/transparent"
-                android:indeterminateDrawable="@drawable/progress" />
 
         </RelativeLayout>
 
