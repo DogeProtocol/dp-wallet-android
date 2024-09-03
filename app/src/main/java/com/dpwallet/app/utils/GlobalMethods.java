@@ -24,9 +24,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -40,20 +44,27 @@ public class GlobalMethods {
     public static String totalSteps = "[TOTAL_STEPS]";
 
 
+    public static String HTTPS = "https://";
+
     //URL
-    public static String READ_API_URL = "https://scan.dpapi.org";
-    public static String WRITE_API_URL = "https://txn.dpapi.org";
+    public static String SCAN_API_URL = null;
+    public static String TXN_API_URL = null;
+
+    public static String BLOCK_EXPLORER_URL = null;
+    public static String BLOCK_EXPLORER_TX_HASH_URL = BLOCK_EXPLORER_URL + "/txn/{txhash}";
+    public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = BLOCK_EXPLORER_URL + "/account/{address}/txn/page";
+
+    //Network
+    public static String BLOCKCHAIN_NAME = null;
+    public static String NETWORK_ID = null;
+
 
     public static String DP_DOCS_URL = "https://dpdocs.org/";
-    public static String BLOCK_EXPLORER_URL = "https://dpscan.app";
-    public static String BLOCK_EXPLORER_TX_HASH_URL = "https://dpscan.app/txn/{txhash}";
-    public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = "https://dpscan.app/account/{address}/txn/page";
+
 
     public static String FAUCET_API_URL = "https://faucet.dpapi.org";
 
-    //Network
-    public static String NETWORK_NAME = "T3";
-    public static String CHAIN_ID = "36996";
+
     public static String GAS_LIMIT = "21000";
 
     //public static String NONCE = "0";
@@ -80,12 +91,32 @@ public class GlobalMethods {
         }
         return readRawResource(context, R.raw.en_us);
     }
-    public static List<BlockchainNetwork> BlockChainNetworkRead(Context context){
+    public static List<BlockchainNetwork> BlockChainNetworkRead(Context context) throws JSONException {
         String blockchainJsonString = readRawResource(context, R.raw.blockchain_networks);
         JsonObject jo = new JsonParser().parse(blockchainJsonString).getAsJsonObject();
         JsonArray jsonArray = jo.getAsJsonArray("networks");
-        BlockchainNetwork[] blockChainNetworks = new Gson().fromJson(jsonArray, BlockchainNetwork[].class);
-        return Arrays.asList(blockChainNetworks);
+
+        //BlockchainNetwork[] blockChainNetworks = new Gson().fromJson(jsonArray, BlockchainNetwork[].class);
+        //return Arrays.asList(blockChainNetworks);
+
+        List<BlockchainNetwork> blockChainNetworks = new ArrayList<>();
+        for (int i=0; i < jsonArray.size(); i++) {
+
+            String scanApiDomain = jsonArray.get(i).getAsJsonObject().get("scanApiDomain").toString().replace("\"", "").replace("\'", "");
+            String txnApiDomain = jsonArray.get(i).getAsJsonObject().get("txnApiDomain").toString().replace("\"", "").replace("\'", "");
+            String blockExplorerDomain = jsonArray.get(i).getAsJsonObject().get("blockExplorerDomain").toString().replace("\"", "").replace("\'", "");
+            String blockchainName = jsonArray.get(i).getAsJsonObject().get("blockchainName").toString().replace("\"", "").replace("\'", "");
+            String networkId = jsonArray.get(i).getAsJsonObject().get("networkId").toString().replace("\"", "").replace("\'", "");
+
+            BlockchainNetwork blockchainNetwork = new BlockchainNetwork();
+            blockchainNetwork.setScanApiDomain(scanApiDomain);
+            blockchainNetwork.setTxnApiDomain(txnApiDomain);
+            blockchainNetwork.setBlockExplorerDomain(blockExplorerDomain);
+            blockchainNetwork.setBlockchainName(blockchainName);
+            blockchainNetwork.setNetworkId(networkId);
+            blockChainNetworks.add(blockchainNetwork);
+        }
+        return blockChainNetworks;
     }
 
     public static String readRawResource(Context context,  @RawRes int res) {

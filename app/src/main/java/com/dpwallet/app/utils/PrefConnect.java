@@ -40,6 +40,11 @@ public class PrefConnect {
     public static String WALLET_CURRENT_ADDRESS_INDEX_KEY = "WALLET_CURRENT_ADDRESS_INDEX_KEY";
     public static String WALLET_CURRENT_ADDRESS_INDEX_VALUE = "0";
 
+
+    public static String BLOCKCHAIN_NETWORK_ID_INDEX_KEY = "BLOCKCHAIN_NETWORK_ID_INDEX_KEY";
+
+
+
     public static void clearAllPrefs(Context context) {
         getEditor(context).clear().commit();
     }

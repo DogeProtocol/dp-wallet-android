@@ -415,16 +415,16 @@ public class SendFragment extends Fragment  {
 
             int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
             int[] message  = (int[]) keyViewModel.getTxnSigningHash(fromAddress,  NONCE,
-                    toAddress, dp_wei, GlobalMethods.GAS_LIMIT,  GlobalMethods.CHAIN_ID);
+                    toAddress, dp_wei, GlobalMethods.GAS_LIMIT,  GlobalMethods.NETWORK_ID);
             int[] SIGN = GlobalMethods.GetIntDataArrayByString(keyViewModel.signAccount(message, SK_KEY));
             int verify = (int) keyViewModel.verifyAccount(message, SIGN, PK_KEY);
 
             if(verify==0){
                 //String txHash = (String) keyViewModel.getTxHash(fromAddress,  NONCE, toAddress, dp_wei,
-                //        GlobalMethods.GAS, GlobalMethods.GAS_PRICE,  GlobalMethods.CHAIN_ID, PK_KEY, SIGN);
+                //        GlobalMethods.GAS, GlobalMethods.GAS_PRICE,  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
 
                 String txData = (String) keyViewModel.getTxData(fromAddress,  NONCE, toAddress, dp_wei,
-                        GlobalMethods.GAS_LIMIT,  GlobalMethods.CHAIN_ID, PK_KEY, SIGN);
+                        GlobalMethods.GAS_LIMIT,  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
 
                 transactionByAccount(context, progressBar, txData, password);
             } else {

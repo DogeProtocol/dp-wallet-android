@@ -51,7 +51,7 @@ import com.dpwallet.app.utils.GlobalMethods;
 
 public class ApiClient {
 
-    private String basePath = GlobalMethods.READ_API_URL;
+    private String basePath = GlobalMethods.SCAN_API_URL;
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;

@@ -20,17 +20,19 @@ import androidx.fragment.app.DialogFragment;
 import com.dpwallet.app.R;
 import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.viewmodel.BlockchainNetworkViewModel;
 import com.dpwallet.app.viewmodel.JsonViewModel;
+
+import org.json.JSONException;
+
 import java.util.List;
 
 public class BlockchainNetworkDialogFragment extends DialogFragment {
 
     private static final String TAG = "BlockchainNetworkDialogFragment";
 
-    private final int jsonIndex = 0;
-
-    private int blockchainRadio = -1;
+    private int blockchainRadio = 0;
 
     private  OnBlockchainNetworkDialogCompleteListener mBlockchainNetworkDialogListener;
 
@@ -54,8 +56,6 @@ public class BlockchainNetworkDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.blockchain_network_dialog_fragment, container, false);
     }
 
-
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -63,12 +63,23 @@ public class BlockchainNetworkDialogFragment extends DialogFragment {
 
         JsonViewModel jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
 
-        List<BlockchainNetwork> blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getContext());
+        String blockchainNetworkIdCurrentIndex = getArguments().getString("blockchainNetworkIdIndex");
+        assert blockchainNetworkIdCurrentIndex != null;
+        int blockchainNetworkIdIndex = Integer.parseInt(blockchainNetworkIdCurrentIndex);
 
-        BlockchainNetworkViewModel blockchainNetworkViewModel = new BlockchainNetworkViewModel(getContext());
+        List<BlockchainNetwork> blockchainNetworkList = null;
+        try {
+            blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getContext());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        //BlockchainNetworkViewModel blockchainNetworkViewModel = new BlockchainNetworkViewModel(getContext());
 
         TextView blockchainNetworkDialogTitleTextView = (TextView) getView().findViewById(R.id.textView_blockchain_network_dialog_title);
         RadioGroup blockchainNetworkRadioGroup = (RadioGroup) getView().findViewById(R.id.radioGroup_blockchain_network_dialog);
+        blockchainNetworkRadioGroup.clearCheck();
+        blockchainNetworkRadioGroup.removeAllViews();
 
         Button blockchaintNetworkDialogCancelButton = (Button) getView().findViewById(R.id.button_blockchain_network_dialog_cancel);
         Button blockchaintNetworkDialogOkButton = (Button) getView().findViewById(R.id.button_blockchain_network_dialog_ok);
@@ -89,7 +100,7 @@ public class BlockchainNetworkDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 try {
                     getDialog().dismiss();
-                    mBlockchainNetworkDialogListener.onBlockchainNetworkDialogComplete();
+                    mBlockchainNetworkDialogListener.onBlockchainNetworkDialogCancel();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -99,19 +110,29 @@ public class BlockchainNetworkDialogFragment extends DialogFragment {
         blockchaintNetworkDialogOkButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-
+                    getDialog().dismiss();
+                    if(blockchainNetworkIdIndex != blockchainRadio) {
+                        PrefConnect.writeInteger(getContext(), PrefConnect.BLOCKCHAIN_NETWORK_ID_INDEX_KEY, blockchainRadio);
+                        mBlockchainNetworkDialogListener.onBlockchainNetworkDialogOk();
+                    } else {
+                        mBlockchainNetworkDialogListener.onBlockchainNetworkDialogCancel();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
+        int currentPosition = 0;
         for(BlockchainNetwork blockchainNetwork : blockchainNetworkList){
             RadioButton blockNetworkRadio = new RadioButton(getContext());
-            blockNetworkRadio.setId(View.generateViewId());
             blockNetworkRadio.setText(blockchainNetwork.getBlockchainName() + " ( Network Id " + blockchainNetwork.getNetworkId() + ")"); // +
-                    //"(" + blockchainNetworkViewModel.getNetworkId() + ") " + blockchainNetwork.getNetworkId() );
-            blockchainNetworkRadioGroup.addView(blockNetworkRadio);
+            blockNetworkRadio.setTag(currentPosition);
+            blockchainNetworkRadioGroup.addView(blockNetworkRadio, currentPosition);
+            if(blockchainNetworkIdIndex==currentPosition) {
+                blockNetworkRadio.setChecked(true);
+            }
+            currentPosition++;
         }
 
         getDialog().getWindow().setSoftInputMode(
@@ -131,7 +152,9 @@ public class BlockchainNetworkDialogFragment extends DialogFragment {
 
 
     public static interface OnBlockchainNetworkDialogCompleteListener {
-        public abstract void onBlockchainNetworkDialogComplete();
+        public abstract void onBlockchainNetworkDialogCancel();
+        public abstract void onBlockchainNetworkDialogOk();
+
     }
 
     public void onAttach(Context context) {

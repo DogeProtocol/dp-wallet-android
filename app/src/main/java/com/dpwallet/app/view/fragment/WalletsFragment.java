@@ -171,6 +171,7 @@ public class WalletsFragment extends Fragment  {
                 }
             }
         });
+
     }
 
     @Override

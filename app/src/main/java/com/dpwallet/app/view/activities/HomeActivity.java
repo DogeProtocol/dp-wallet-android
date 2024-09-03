@@ -1,7 +1,7 @@
 package com.dpwallet.app.view.activities;
 
 import android.Manifest;
-import android.app.FragmentManager;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,6 +34,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipboardManager;
@@ -67,6 +68,8 @@ import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +78,7 @@ import java.util.Objects;
 
 public class HomeActivity extends FragmentActivity implements
         HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeWalletFragment.OnHomeWalletCompleteListener,
+        BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener,
         BlockchainNetworkDialogFragment.OnBlockchainNetworkDialogCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
@@ -91,6 +95,8 @@ public class HomeActivity extends FragmentActivity implements
     private Bundle bundle;
 
     private String walletAddress = "";
+
+    private TextView blockChainNetworkTextView;
 
     private TextView walletAddressTextView;
     private TextView balanceValueTextView;
@@ -135,7 +141,7 @@ public class HomeActivity extends FragmentActivity implements
             //Linear top layout
             topLinearLayout = (LinearLayout) findViewById(R.id.top_linear_layout_home_id);
             topLinearLayoutParams = topLinearLayout.getLayoutParams();
-            TextView blockChainNetworkTextView = (TextView) findViewById(R.id.textView_home_blockchain_network);
+            blockChainNetworkTextView = (TextView) findViewById(R.id.textView_home_blockchain_network);
             TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
 
             //Center Relative layout & Image Button
@@ -155,7 +161,6 @@ public class HomeActivity extends FragmentActivity implements
             ImageButton receiveImageButton = (ImageButton) findViewById(R.id.imageButton_home_receive);
             TextView transactionsTitleTextView = (TextView) findViewById(R.id.textView_home_transactions_title);
             ImageButton transactionsImageButton = (ImageButton) findViewById(R.id.imageButton_home_transactions);
-
 
             //Bottom navigation
             bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -183,16 +188,26 @@ public class HomeActivity extends FragmentActivity implements
                 createNotificationChannel();
             }
 
-
-            int netWorkDefaultIndex = 0;
+            int blockchainNetworkIdIndex = PrefConnect.readInteger(getApplicationContext(),
+                    PrefConnect.BLOCKCHAIN_NETWORK_ID_INDEX_KEY, 0);
             List<BlockchainNetwork> blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getApplicationContext());
-            BlockchainNetwork blockchainNetwork = blockchainNetworkList.get(netWorkDefaultIndex);
-            blockChainNetworkTextView.setText(blockchainNetwork.getBlockchainName());
+            BlockchainNetwork blockchainNetwork = blockchainNetworkList.get(blockchainNetworkIdIndex);
+            GlobalMethods.SCAN_API_URL = GlobalMethods.HTTPS + blockchainNetwork.getScanApiDomain();
+            GlobalMethods.TXN_API_URL = GlobalMethods.HTTPS + blockchainNetwork.getTxnApiDomain();
+            GlobalMethods.BLOCK_EXPLORER_URL = GlobalMethods.HTTPS + blockchainNetwork.getBlockExplorerDomain();
+            GlobalMethods.BLOCKCHAIN_NAME = blockchainNetwork.getBlockchainName();
+            GlobalMethods.NETWORK_ID = blockchainNetwork.getNetworkId();
+
+            blockChainNetworkTextView.setText(GlobalMethods.BLOCKCHAIN_NAME);
 
             blockChainNetworkTextView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    screenViewType(0);
-                    beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
+                    bundle.putString("blockchainNetworkIdIndex", String.valueOf(blockchainNetworkIdIndex));
+
+                    BlockchainNetworkDialogFragment blockChainDialogFragment = BlockchainNetworkDialogFragment.newInstance();
+                    blockChainDialogFragment.setCancelable(false);
+                    blockChainDialogFragment.setArguments(bundle);
+                    blockChainDialogFragment.show(getSupportFragmentManager(), "BlockchainNetworkDialog");
                 }
             });
 
@@ -239,8 +254,6 @@ public class HomeActivity extends FragmentActivity implements
                     beginTransaction(AccountTransactionsFragment.newInstance(), bundle);
                 }
             });
-
-
 
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -356,7 +369,7 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onBlockchainNetworkDialogComplete() {
+    public void onBlockchainNetworkDialogCancel() {
         try{
             screenViewType(0);
             beginTransaction(HomeFragment.newInstance(), bundle);
@@ -364,6 +377,38 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
+
+    @SuppressLint("UnsafeIntentLaunch")
+    @Override
+    public void onBlockchainNetworkDialogOk() {
+        try{
+            finish();
+            startActivity(getIntent());
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onBlockchainNetworkCompleteByBackArrow() {
+        try{
+            screenViewType(1);
+            beginTransaction(SettingsFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onBlockchainNetworkCompleteByAdd() {
+        try{
+            screenViewType(1);
+            beginTransaction(SettingsFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
 
     @Override
     public void onSendComplete(String password) {
@@ -424,7 +469,6 @@ public class HomeActivity extends FragmentActivity implements
         beginTransaction(RevealWalletFragment.newInstance(), bundle);
     }
 
-
 /*
     @Override
     public void onWalletsComplete(int status, String walletPassword, String address) {
@@ -458,29 +502,22 @@ public class HomeActivity extends FragmentActivity implements
         }
     }
 */
-    @Override
-    public void onSettingsComplete(int status) {
-        try {
-            //0 and 3 - Back arrow, 1 - Export, 2 - Testnet, 3 - delete account
-            switch (status) {
-                case 1:
-                    screenViewType(1);
-                    //beginTransaction(ExportWalletFragment.newInstance(), bundle);
-                    break;
-                case 3:
-                    screenViewType(1);
-                   //// removeWalletAddress();
 
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                    break;
-                default:
-                    //0, 2 Button
-                    screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
-                    break;
-            }
+    @Override
+    public void onSettingsCompleteCompleteByBackArrow() {
+        try {
+            screenViewType(0);
+            beginTransaction(HomeFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onSettingsCompleteByNetwork() {
+        try {
+            screenViewType(1);
+            beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -495,8 +532,6 @@ public class HomeActivity extends FragmentActivity implements
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
-
-
 
     private void beginTransaction(Fragment fragment, Bundle bundle) {
         try {
@@ -523,6 +558,7 @@ public class HomeActivity extends FragmentActivity implements
                     topLinearLayout.setLayoutParams(topLinearLayoutParams);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     centerRelativeLayout.setVisibility(View.VISIBLE);
+                    blockChainNetworkTextView.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     screenHeight = (Utility.calculateScreenWidthDp(getApplicationContext()) * 30 / 100);
@@ -530,6 +566,7 @@ public class HomeActivity extends FragmentActivity implements
                     topLinearLayout.setLayoutParams(topLinearLayoutParams);
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     centerRelativeLayout.setVisibility(View.GONE);
+                    blockChainNetworkTextView.setVisibility(View.GONE);
                     break;
                 default:
                     screenHeight = (Utility.calculateScreenWidthDp(getApplicationContext()) * 30 / 100);
@@ -537,8 +574,8 @@ public class HomeActivity extends FragmentActivity implements
                     topLinearLayout.setLayoutParams(topLinearLayoutParams);
                     bottomNavigationView.setVisibility(View.GONE);
                     centerRelativeLayout.setVisibility(View.GONE);
+                    blockChainNetworkTextView.setVisibility(View.GONE);
             }
-
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }

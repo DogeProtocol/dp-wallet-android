@@ -67,12 +67,12 @@ public class SettingsFragment extends Fragment  {
 
         ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_setting_back_arrow);
         TextView settings = (TextView) getView().findViewById(R.id.textview_settings_langValues_settings);
-        Button getCoins = (Button) getView().findViewById(R.id.button_settings_langValues_get_coins_for_dogep_tokens);
-        Button networks = (Button) getView().findViewById(R.id.button_settings_langValues_networks);
+        Button buttonGetCoins = (Button) getView().findViewById(R.id.button_settings_langValues_get_coins_for_dogep_tokens);
+        Button buttonNetworks = (Button) getView().findViewById(R.id.button_settings_langValues_networks);
 
         settings.setText(jsonViewModel.getSettingsByLangValues());
-        getCoins.setText(jsonViewModel.getGetCoinsForDogePTokensByLangValues());
-        networks.setText(jsonViewModel.getNetworksByLangValues());
+        buttonGetCoins.setText(jsonViewModel.getGetCoinsForDogePTokensByLangValues());
+        buttonNetworks.setText(jsonViewModel.getNetworksByLangValues());
 
         linerLayoutOffline = (LinearLayout) getView().findViewById(R.id.linerLayout_setting_offline);
         imageViewRetry = (ImageView) getView().findViewById(R.id.image_retry);
@@ -80,46 +80,30 @@ public class SettingsFragment extends Fragment  {
         textViewSubTitleRetry = (TextView) getView().findViewById(R.id.textview_subtitle_retry);
         Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-        String walletAddress = getArguments().getString("walletAddress");
 
         backArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(walletAddress.trim().length() != 0) {
-                    mSettingsListener.onSettingsComplete(0);
-                } else {
-                    mSettingsListener.onSettingsComplete(3);
-                }
-            }
-        });
-/*
-        exportWallet.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(walletAddress.trim().length() != 0)
-                {
-                    mSettingsListener.onSettingsComplete(1);
-                    return;
-                }
-                showInformationDialog();
+                mSettingsListener.onSettingsCompleteCompleteByBackArrow();
             }
         });
 
-        requestTestCoins.setOnClickListener(new View.OnClickListener() {
+        buttonGetCoins.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                if(walletAddress.trim().length() != 0)
-                {
-                    RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
-                    return;
-                }
-                showInformationDialog();
+
             }
         });
-*/
+
+        buttonNetworks.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mSettingsListener.onSettingsCompleteByNetwork();
+            }
+        });
+
         buttonRetry.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                //RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
+                mSettingsListener.onSettingsCompleteCompleteByBackArrow();
             }
         });
-
     }
 
     @Override
@@ -133,7 +117,8 @@ public class SettingsFragment extends Fragment  {
     }
 
     public static interface OnSettingsCompleteListener {
-        public abstract void onSettingsComplete(int status);
+        public abstract void onSettingsCompleteCompleteByBackArrow();
+        public abstract void onSettingsCompleteByNetwork();
     }
 
     public void onAttach(Context context) {
@@ -145,6 +130,7 @@ public class SettingsFragment extends Fragment  {
             throw new ClassCastException(context.toString() + " ");
         }
     }
+
 /*
     private void showInformationDialog(){
         Bundle bundleRoute = new Bundle();
@@ -156,6 +142,7 @@ public class SettingsFragment extends Fragment  {
         messageDialogFragment.show(fragmentManager, "");
     }
 */
+
     /*
     private void RequestTestnetCoins(String address, ProgressBar progressBar){
         try{
@@ -224,4 +211,5 @@ public class SettingsFragment extends Fragment  {
         }
     }
     */
+
 }

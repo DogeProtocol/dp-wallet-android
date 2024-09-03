@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class BlockchainNetwork {
 
-    public static final String SERIALIZED_NAME_BALANCE = "blockchainNetwork";
+    public static final String SERIALIZED_NAME_BLOCKCHAIN_NETWORK = "blockchainNetwork";
 
-    @SerializedName(SERIALIZED_NAME_BALANCE)
+    @SerializedName(SERIALIZED_NAME_BLOCKCHAIN_NETWORK)
     private String scanApiDomain;
     private String txnApiDomain;
     private String blockExplorerDomain;
