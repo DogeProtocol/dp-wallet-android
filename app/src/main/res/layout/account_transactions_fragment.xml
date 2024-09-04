@@ -50,30 +50,10 @@
                         android:src="@drawable/arrow_back_circle_outline"
                         app:tint="@color/colorCommon6"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/middle_linear_layout_account_transactions_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/top_linear_layout_account_transactions_id"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@android:color/transparent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/transaction_title"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorCommon6"/>
-
                     <ImageButton
                         android:id="@+id/imageButton_account_transactions_refresh"
-                        android:layout_width="40dp"
-                        android:layout_height="41dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:padding="5dp"
                         android:scaleType="fitCenter"
                         android:background="@drawable/image_selector"
@@ -84,7 +64,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/middle_linear_layout_account_transactions_id"
+                    android:layout_below="@+id/top_linear_layout_account_transactions_id"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/center_container">
@@ -104,7 +84,7 @@
                             android:orientation="horizontal">
 
                             <ToggleButton
-                                android:id="@+id/toggleButton_account_transactions_completed"
+                                android:id="@+id/toggleButton_account_transactions_langValues_completed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -119,7 +99,7 @@
                                 android:background="@drawable/toggle_selector"/>
 
                             <ToggleButton
-                                android:id="@+id/toggleButton_account_transactions_pending"
+                                android:id="@+id/toggleButton_account_transactions_langValues_pending"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -168,29 +148,30 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButtonToggleGroup
-                            android:id="@+id/materialButtonToggleGroup_account_transactions_group"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
-                            android:layout_marginBottom="10dp"
-                            app:singleSelection="true">
+                                android:id="@+id/materialButtonToggleGroup_account_transactions_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                app:singleSelection="true">
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/materialButton_account_transactions_previous"
+                                android:id="@+id/materialButton_account_transactions_langValues_previous"
                                 style="@style/BottomSegmentedButton"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/transaction_previous_title"
+                                android:padding="10dp"
                                 android:textAllCaps="false" />
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/materialButton_account_transactions_next"
+                                android:id="@+id/materialButton_account_transactions_langValues_next"
                                 style="@style/BottomSegmentedButton"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/transaction_next_title"
+                                android:padding="10dp"
                                 android:textAllCaps="false" />
 
                         </com.google.android.material.button.MaterialButtonToggleGroup>

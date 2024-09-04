@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:padding="10dp"
-                android:text="@string/message_dialog_close"
                 android:textColor="@color/colorCommon7"
                 android:textAlignment="center"
                 android:background="@drawable/image_selector" />

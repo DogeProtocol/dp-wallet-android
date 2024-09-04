@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,26 +32,23 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipboardManager;
 
 import com.dpwallet.app.R;
 import com.dpwallet.app.api.read.model.BalanceResponse;
-import com.dpwallet.app.asynctask.download.DownloadingTask;
 import com.dpwallet.app.asynctask.read.AccountBalanceRestTask;
 import com.dpwallet.app.entity.ServiceException;
 import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.seedwords.SeedWords;
-import com.dpwallet.app.utils.CheckForSDCard;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
 import com.dpwallet.app.view.fragment.BlockchainNetworkDialogFragment;
 import com.dpwallet.app.view.fragment.BlockchainNetworkFragment;
-import com.dpwallet.app.view.fragment.HomeFragment;
-import com.dpwallet.app.view.fragment.HomeNewFragment;
+import com.dpwallet.app.view.fragment.HomeMainFragment;
+import com.dpwallet.app.view.fragment.HomeStartFragment;
 import com.dpwallet.app.view.fragment.HomeWalletFragment;
 import com.dpwallet.app.view.fragment.ReceiveFragment;
 import com.dpwallet.app.view.fragment.SendFragment;
@@ -66,18 +61,14 @@ import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
 
-import org.json.JSONException;
-
-import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class HomeActivity extends FragmentActivity implements
-        HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeWalletFragment.OnHomeWalletCompleteListener,
+        HomeMainFragment.OnHomeMainCompleteListener, HomeStartFragment.OnHomeStartCompleteListener,
+        HomeWalletFragment.OnHomeWalletCompleteListener,
         BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener,
         BlockchainNetworkDialogFragment.OnBlockchainNetworkDialogCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
@@ -297,12 +288,12 @@ public class HomeActivity extends FragmentActivity implements
             if (walletAddress.startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
                 if (walletAddress.length() == GlobalMethods.ADDRESS_LENGTH){
                     screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
+                    beginTransaction(HomeMainFragment.newInstance(), bundle);
                     notificationThread(1);
                 }
             } else {
                 screenViewType(-1);
-                beginTransaction(HomeNewFragment.newInstance(), bundle);
+                beginTransaction(HomeStartFragment.newInstance(), bundle);
             }
 
         } catch (Exception e) {
@@ -328,7 +319,7 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onHomeComplete() {
+    public void onHomeMainComplete() {
         try {
             getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
         } catch (Exception e) {
@@ -337,7 +328,7 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onHomeNewComplete() {
+    public void onHomeStartComplete() {
         try {
             screenViewType(-1);
             beginTransaction(HomeWalletFragment.newInstance(), bundle);
@@ -347,22 +338,22 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void OnHomeWalletComplete(int status, String indexKey) {
+    public void onHomeWalletCompleteByHomeMain( String indexKey) {
         try {
-            switch (status) {
-                case 1:
-                    getCurrentWallet(indexKey);
-                    screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
-                    notificationThread(1);
-                    break;
-                case 2:
-                    screenViewType(1);
-                    beginTransaction(WalletsFragment.newInstance(), bundle);
-                    break;
-                default:
-                    break;
-            }
+            getCurrentWallet(indexKey);
+            screenViewType(0);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+            notificationThread(1);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onHomeWalletCompleteByWallets() {
+        try {
+            screenViewType(1);
+            beginTransaction(WalletsFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -372,7 +363,7 @@ public class HomeActivity extends FragmentActivity implements
     public void onBlockchainNetworkDialogCancel() {
         try{
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -415,7 +406,7 @@ public class HomeActivity extends FragmentActivity implements
         try {
             bundle.putString("sendPassword", password);
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -425,7 +416,7 @@ public class HomeActivity extends FragmentActivity implements
     public void onReceiveComplete() {
         try {
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -435,7 +426,7 @@ public class HomeActivity extends FragmentActivity implements
     public void onAccountTransactionsComplete() {
         try {
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -444,7 +435,7 @@ public class HomeActivity extends FragmentActivity implements
     @Override
     public void  onWalletsCompleteByBackArrow(){
         screenViewType(0);
-        beginTransaction(HomeFragment.newInstance(), bundle);
+        beginTransaction(HomeMainFragment.newInstance(), bundle);
     }
 
     @Override
@@ -458,7 +449,7 @@ public class HomeActivity extends FragmentActivity implements
     public void  onWalletsCompleteBySwitchAddress(String indexKey){
         getCurrentWallet(indexKey);
         screenViewType(0);
-        beginTransaction(HomeFragment.newInstance(), bundle);
+        beginTransaction(HomeMainFragment.newInstance(), bundle);
     }
 
     @Override
@@ -469,45 +460,11 @@ public class HomeActivity extends FragmentActivity implements
         beginTransaction(RevealWalletFragment.newInstance(), bundle);
     }
 
-/*
-    @Override
-    public void onWalletsComplete(int status, String walletPassword, String address) {
-        try {
-            //1 - Back arrow, 2 - Create or restore, 3 - Switch account, 4- Reveal seed
-            switch (status) {
-                case 1:
-                    screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
-                    break;
-                case 2:
-                    screenViewType(1);
-                    bundle.putString("walletPassword", walletPassword);
-                    beginTransaction(HomeWalletFragment.newInstance(), bundle);
-                    break;
-                case 3:
-                    bundle.putString("walletPassword", walletPassword);
-                    getCurrentWallet(address);
-                    screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
-                case 4:
-                    bundle.putString("walletAddress", address);
-                    bundle.putString("walletPassword", walletPassword);
-                    screenViewType(1);
-                    beginTransaction(RevealWalletFragment.newInstance(), bundle);
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
-        }
-    }
-*/
-
     @Override
     public void onSettingsCompleteCompleteByBackArrow() {
         try {
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -524,7 +481,7 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void OnRevealWalletComplete() {
+    public void onRevealWalletComplete() {
         try {
             screenViewType(1);
             beginTransaction(WalletsFragment.newInstance(), bundle);

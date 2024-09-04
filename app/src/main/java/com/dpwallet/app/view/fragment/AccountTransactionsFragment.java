@@ -29,8 +29,11 @@ import com.dpwallet.app.api.read.model.AccountPendingTransactionSummary;
 import com.dpwallet.app.api.read.model.AccountPendingTransactionSummaryResponse;
 import com.dpwallet.app.view.adapter.AccountPendingTransactionAdapter;
 import com.dpwallet.app.view.adapter.AccountTransactionAdapter;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,17 +92,30 @@ public class AccountTransactionsFragment extends Fragment  {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind((Object) this, view);
 
-        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_account_transactions);
+        String walletAddress = getArguments().getString("walletAddress");
 
-        ImageButton refreshImageButton = (ImageButton) getView().findViewById(R.id.imageButton_account_transactions_refresh);
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+
         ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_account_transactions_back_arrow);
 
-        ToggleButton completedToggleButton = view.findViewById(R.id.toggleButton_account_transactions_completed);
-        ToggleButton pendingToggleButton = view.findViewById(R.id.toggleButton_account_transactions_pending);;
+        ImageButton accountTransactionRefreshImageButton = (ImageButton) getView().findViewById(R.id.imageButton_account_transactions_refresh);
+
+        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_account_transactions);
+
+        ToggleButton accountTransactionCompletedToggleButton = view.findViewById(R.id.toggleButton_account_transactions_langValues_completed);
+        ToggleButton accountTransactionPendingToggleButton = view.findViewById(R.id.toggleButton_account_transactions_langValues_pending);;
+
+        TextView accountTransactionHeaderInOutTextView = (TextView) getView().findViewById(R.id.textView_account_transaction_header_langValues_in_out);
+        TextView accountTransactionHeaderQuantityTextView = (TextView) getView().findViewById(R.id.textView_account_transaction_header_langValues_quantity);
+        TextView accountTransactionHeaderFromTextView = (TextView) getView().findViewById(R.id.textView_account_transaction_header_langValues_from);
+        TextView accountTransactionHeaderToTextView = (TextView) getView().findViewById(R.id.textView_account_transaction_header_langValues_to);
+        TextView accountTransactionHeaderTransactionHashTextView = (TextView) getView().findViewById(R.id.textView_account_transaction_header_langValues_trans_hash);
+
+
 
         MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.materialButtonToggleGroup_account_transactions_group);
-        MaterialButton previousMaterialButton = toggleGroup.findViewById(R.id.materialButton_account_transactions_previous);
-        MaterialButton nextMaterialButton = toggleGroup.findViewById(R.id.materialButton_account_transactions_next);
+        MaterialButton previousMaterialButton = toggleGroup.findViewById(R.id.materialButton_account_transactions_langValues_previous);
+        MaterialButton nextMaterialButton = toggleGroup.findViewById(R.id.materialButton_account_transactions_langValues_next);
 
         linerLayoutOffline = (LinearLayout) getView().findViewById(R.id.linerLayout_account_transactions_offline);
         imageViewRetry = (ImageView) getView().findViewById(R.id.image_retry);
@@ -107,7 +123,17 @@ public class AccountTransactionsFragment extends Fragment  {
         textViewSubTitleRetry = (TextView) getView().findViewById(R.id.textview_subtitle_retry);
         Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-        String walletAddress = getArguments().getString("walletAddress");
+        accountTransactionCompletedToggleButton.setText(jsonViewModel.getCompletedTransactionsByLangValues());
+        accountTransactionPendingToggleButton.setText(jsonViewModel.getPendingTransactionsByLangValues());
+
+        accountTransactionHeaderInOutTextView.setText(jsonViewModel.getInoutByLangValues());
+        accountTransactionHeaderQuantityTextView.setText(jsonViewModel.getCoinsByLangValues());
+        accountTransactionHeaderFromTextView.setText(jsonViewModel.getFromByLangValues());
+        accountTransactionHeaderToTextView.setText(jsonViewModel.getToByLangValues());
+        accountTransactionHeaderTransactionHashTextView.setText(jsonViewModel.getHashByLangValues());
+
+        previousMaterialButton.setText("<");
+        nextMaterialButton.setText(">");
 
         this.recycler.removeAllViewsInLayout();
         this.accountTransactionSummaries = new ArrayList<>();
@@ -130,7 +156,7 @@ public class AccountTransactionsFragment extends Fragment  {
         this.recycler.setAdapter(accountTransactionAdapter);
         ListAccountTransactionByAccount(getContext(), walletAddress, progressBar, pageIndex);
 
-        refreshImageButton.setOnClickListener(new View.OnClickListener() {
+        accountTransactionRefreshImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 switch(transactionStatus) {
                     case 0:
@@ -151,15 +177,15 @@ public class AccountTransactionsFragment extends Fragment  {
             }
         });
 
-        completedToggleButton.setOnClickListener(new View.OnClickListener(){
+        accountTransactionCompletedToggleButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                completedToggleButton.setChecked(true);
-                completedToggleButton.setTypeface(completedToggleButton.getTypeface(), Typeface.BOLD);
-                completedToggleButton.setTextColor(getResources().getColor(R.color.colorCommon2));
+                accountTransactionCompletedToggleButton.setChecked(true);
+                accountTransactionCompletedToggleButton.setTypeface(accountTransactionCompletedToggleButton.getTypeface(), Typeface.BOLD);
+                accountTransactionCompletedToggleButton.setTextColor(getResources().getColor(R.color.colorCommon2));
 
-                pendingToggleButton.setChecked(false);
-                pendingToggleButton.setTypeface(pendingToggleButton.getTypeface(), Typeface.NORMAL);
-                pendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon3));
+                accountTransactionPendingToggleButton.setChecked(false);
+                accountTransactionPendingToggleButton.setTypeface(accountTransactionPendingToggleButton.getTypeface(), Typeface.NORMAL);
+                accountTransactionPendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon3));
 
                 transactionStatus = 0;
                 pageIndex = 1;
@@ -172,15 +198,15 @@ public class AccountTransactionsFragment extends Fragment  {
             }
         });
 
-        pendingToggleButton.setOnClickListener(new View.OnClickListener(){
+        accountTransactionPendingToggleButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                pendingToggleButton.setChecked(true);
-                pendingToggleButton.setTypeface(pendingToggleButton.getTypeface(), Typeface.BOLD);
-                pendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon2));
+                accountTransactionPendingToggleButton.setChecked(true);
+                accountTransactionPendingToggleButton.setTypeface(accountTransactionPendingToggleButton.getTypeface(), Typeface.BOLD);
+                accountTransactionPendingToggleButton.setTextColor(getResources().getColor(R.color.colorCommon2));
 
-                completedToggleButton.setChecked(false);
-                completedToggleButton.setTypeface(completedToggleButton.getTypeface(), Typeface.NORMAL);
-                completedToggleButton.setTextColor(getResources().getColor(R.color.colorCommon3));
+                accountTransactionCompletedToggleButton.setChecked(false);
+                accountTransactionCompletedToggleButton.setTypeface(accountTransactionCompletedToggleButton.getTypeface(), Typeface.NORMAL);
+                accountTransactionCompletedToggleButton.setTextColor(getResources().getColor(R.color.colorCommon3));
 
                 transactionStatus = 1;
                 pageIndex = 1;
@@ -282,7 +308,6 @@ public class AccountTransactionsFragment extends Fragment  {
                 GlobalMethods.ShowToast(context, message);
                 return;
             }
-
 
             //Internet connection check
             if (GlobalMethods.IsNetworkAvailable(getContext())) {

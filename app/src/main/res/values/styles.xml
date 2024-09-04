@@ -21,7 +21,8 @@
         <item name="android:backgroundTint">@color/colorCommon7</item>
         <item name="android:backgroundTintMode">add</item>
         <item name="android:tint">@color/colorCommon2</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/relay_poppins_medium</item>
     </style>
 

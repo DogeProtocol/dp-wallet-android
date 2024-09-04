@@ -102,7 +102,7 @@ public class RevealWalletFragment extends Fragment {
                 try {
                     ThreadStop = true;
                     Thread.sleep(1000);
-                    mRevealWalletListener.OnRevealWalletComplete();
+                    mRevealWalletListener.onRevealWalletComplete();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -121,7 +121,7 @@ public class RevealWalletFragment extends Fragment {
     }
 
     public static interface OnRevealWalletCompleteListener {
-        public abstract void OnRevealWalletComplete();
+        public abstract void onRevealWalletComplete();
     }
 
     public void onAttach(Context context) {

@@ -9,18 +9,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.dpwallet.app.R;
-import com.dpwallet.app.api.faucet.ApiException;
-import com.dpwallet.app.api.faucet.model.FaucetTransactionSummaryResponse;
-import com.dpwallet.app.asynctask.faucet.FaucetTransactionRestTask;
-import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 

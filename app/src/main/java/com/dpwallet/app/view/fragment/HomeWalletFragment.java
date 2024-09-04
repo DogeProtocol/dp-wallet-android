@@ -1,8 +1,6 @@
 package com.dpwallet.app.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -12,13 +10,11 @@ import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,19 +30,10 @@ import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
-import com.dpwallet.app.seedwords.SeedWords;
-import com.dpwallet.app.utils.PrefConnect;
 
-import java.lang.reflect.Array;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import com.dpwallet.app.view.adapter.SeedWordAutoCompleteAdapter;
-import com.google.gson.Gson;
 
 public class HomeWalletFragment extends Fragment {
 
@@ -214,7 +201,7 @@ public class HomeWalletFragment extends Fragment {
                             homeSetWalletTopLinearLayout.setVisibility(View.GONE);
                             homeSetWalletLinearLayout.setVisibility(View.VISIBLE);
                         } else {
-                            mHomeWalletListener.OnHomeWalletComplete(2, "");
+                            mHomeWalletListener.onHomeWalletCompleteByWallets();
                         }
                     }
                     if (homeSeedWordsLinearLayout.getVisibility()==View.VISIBLE) {
@@ -395,7 +382,7 @@ public class HomeWalletFragment extends Fragment {
 
                     progressBar.setVisibility(View.GONE);
 
-                    mHomeWalletListener.OnHomeWalletComplete(1, walletIndexKey);
+                    mHomeWalletListener.onHomeWalletCompleteByHomeMain(walletIndexKey);
 
                 } catch (ServiceException e) {
                     progressBar.setVisibility(View.GONE);
@@ -416,7 +403,9 @@ public class HomeWalletFragment extends Fragment {
     }
 
     public static interface OnHomeWalletCompleteListener {
-        public abstract void OnHomeWalletComplete(int status, String indexKey);
+        public abstract void onHomeWalletCompleteByHomeMain(String indexKey);
+        public abstract void onHomeWalletCompleteByWallets();
+
     }
 
     public void onAttach(Context context) {

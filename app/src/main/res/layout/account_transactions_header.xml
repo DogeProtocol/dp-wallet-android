@@ -26,7 +26,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/in_out"
+            android:id="@+id/textView_account_transaction_header_langValues_in_out"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
@@ -44,12 +44,12 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/trans_hash"
+            android:id="@+id/textView_account_transaction_header_langValues_quantity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
             android:layout_marginTop="5dp"
-            android:text="Txn Hash"
+            android:text="Quantity"
             android:textSize="12dp"
             android:textStyle="bold"
             android:textAlignment="center" />
@@ -62,7 +62,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/textView_account_transaction_header_langValues_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
@@ -80,7 +80,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/from"
+            android:id="@+id/textView_account_transaction_header_langValues_from"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
@@ -98,7 +98,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/to"
+            android:id="@+id/textView_account_transaction_header_langValues_to"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
@@ -116,12 +116,12 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/quantity"
+            android:id="@+id/textView_account_transaction_header_langValues_trans_hash"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
             android:layout_marginTop="5dp"
-            android:text="Quantity"
+            android:text="Txn Hash"
             android:textSize="12dp"
             android:textStyle="bold"
             android:textAlignment="center" />

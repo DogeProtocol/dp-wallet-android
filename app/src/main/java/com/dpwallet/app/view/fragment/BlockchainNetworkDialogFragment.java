@@ -2,15 +2,12 @@ package com.dpwallet.app.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,7 +18,6 @@ import com.dpwallet.app.R;
 import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
-import com.dpwallet.app.viewmodel.BlockchainNetworkViewModel;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 
 import org.json.JSONException;

@@ -52,14 +52,12 @@ public class AccountTransactionAdapter extends
         public DataObjectHolder(View itemView) {
             super(itemView);
             try{
-                this.imageViewInOut = (ImageView) itemView.findViewById(R.id.imageView_account_transactions_adapter_inout);
-                this.textViewTransHash = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_trans_hash);
+                this.imageViewInOut = (ImageView) itemView.findViewById(R.id.imageView_account_transactions_adapter_in_out);
+                this.textViewQuantity = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_quantity);
                 this.textViewDate = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_date);
-
                 this.textViewFrom = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_from);
                 this.textViewTo = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_to);
-
-                this.textViewQuantity = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_quantity);
+                this.textViewTransHash = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_trans_hash);
             } catch(Exception ex){
                 GlobalMethods.ExceptionError(context, TAG, ex);
             }
@@ -84,11 +82,11 @@ public class AccountTransactionAdapter extends
     public void onBindViewHolder(DataObjectHolder holder, @SuppressLint("RecyclerView") final int position) {
         try {
 
-            String hash = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getHash().toString();
+            String value = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getValue().toString();
             String createDate = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getCreatedAt().toString();
             String from =  ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getFrom().toString();
             String to = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getTo().toString();
-            String value = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getValue().toString();
+            String hash = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getHash().toString();
 
             int inOut = 1;
 

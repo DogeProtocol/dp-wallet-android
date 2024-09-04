@@ -1,15 +1,12 @@
 package com.dpwallet.app.view.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,28 +17,23 @@ import androidx.fragment.app.FragmentManager;
 
 import com.dpwallet.app.R;
 import com.dpwallet.app.utils.GlobalMethods;
-import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.viewmodel.JsonViewModel;
-import com.dpwallet.app.viewmodel.KeyViewModel;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-public class HomeNewFragment extends Fragment  {
-    private static final String TAG = "HomeNewFragment";
+public class HomeStartFragment extends Fragment  {
+    private static final String TAG = "HomeStartFragment";
 
     private int jsonIndex = 0;
     private int quizStepQuizRadioCorrectChoice = -1;
     private JsonViewModel jsonViewModel;
 
-    private OnHomeNewCompleteListener mHomeNewListener;
+    private OnHomeStartCompleteListener mHomeStartListener;
 
-    public static HomeNewFragment newInstance() {
-        HomeNewFragment fragment = new HomeNewFragment();
+    public static HomeStartFragment newInstance() {
+        HomeStartFragment fragment = new HomeStartFragment();
         return fragment;
     }
 
-    public HomeNewFragment() {
+    public HomeStartFragment() {
 
     }
 
@@ -53,7 +45,7 @@ public class HomeNewFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_new_fragment, container, false);
+        return inflater.inflate(R.layout.home_start_fragment, container, false);
     }
 
     @Override
@@ -62,29 +54,29 @@ public class HomeNewFragment extends Fragment  {
 
         jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
 
-        LinearLayout homeWelcomeLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_welcome);
-        TextView homeWelcomeInfoStepTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep);
-        TextView homeWelcomeInfoStepInfoTileTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep_info_title);
-        TextView homeWelcomeInfoStepInfoDescTextView = (TextView) getView().findViewById(R.id.textview_home_welcome_infoStep_info_desc);
-        Button homeWelcomeLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_welcome_langValues_next);
+        LinearLayout homeStartLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_start);
+        TextView homeStartInfoStepTextView = (TextView) getView().findViewById(R.id.textview_home_start_infoStep);
+        TextView homeStartInfoStepInfoTileTextView = (TextView) getView().findViewById(R.id.textview_home_start_infoStep_info_title);
+        TextView homeStartInfoStepInfoDescTextView = (TextView) getView().findViewById(R.id.textview_home_start_infoStep_info_desc);
+        Button homeStartLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_start_langValues_next);
 
-        LinearLayout homeSaftyQuizLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_safety_quiz);
-        TextView homeSaftyQuizQuizStepTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep);
-        TextView homeSaftyQuizQuizStepQuizeTitleTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep_quiz_title);
-        TextView homeSaftyQuizQuizStepQuizQuestionTextView = (TextView) getView().findViewById(R.id.textview_home_safety_quiz_quizStep_quiz_question);
+        LinearLayout homeSaftyQuizLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_start_safety_quiz);
+        TextView homeSaftyQuizQuizStepTextView = (TextView) getView().findViewById(R.id.textview_home_start_safety_quiz_quizStep);
+        TextView homeSaftyQuizQuizStepQuizeTitleTextView = (TextView) getView().findViewById(R.id.textview_home_start_safety_quiz_quizStep_quiz_title);
+        TextView homeSaftyQuizQuizStepQuizQuestionTextView = (TextView) getView().findViewById(R.id.textview_home_start_safety_quiz_quizStep_quiz_question);
 
-        RadioGroup homeSafetyQuizQuizStepQuizRadioGroup = (RadioGroup) getView().findViewById(R.id.radioGroup_home_safety_quiz_quizStep_quiz);
-        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_0 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_0);
-        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_1);
-        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_2);
-        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_safety_quiz_quizStep_quiz_choices_3);
+        RadioGroup homeSafetyQuizQuizStepQuizRadioGroup = (RadioGroup) getView().findViewById(R.id.radioGroup_home_start_safety_quiz_quizStep_quiz);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_0 = (RadioButton) getView().findViewById(R.id.radioButton_home_start_safety_quiz_quizStep_quiz_choices_0);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_1 = (RadioButton) getView().findViewById(R.id.radioButton_home_start_safety_quiz_quizStep_quiz_choices_1);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_2 = (RadioButton) getView().findViewById(R.id.radioButton_home_start_safety_quiz_quizStep_quiz_choices_2);
+        RadioButton homeSafetyQuizQuizStepQuizChoicesRadioButton_3 = (RadioButton) getView().findViewById(R.id.radioButton_home_start_safety_quiz_quizStep_quiz_choices_3);
 
-        Button homeSaftyQuizLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_safety_quiz_langValues_next);
+        Button homeSaftyQuizLangValuesNextButton = (Button) getView().findViewById(R.id.button_home_start_safety_quiz_langValues_next);
 
-        homeWelcomeLinearLayout.setVisibility(View.VISIBLE);
+        homeStartLinearLayout.setVisibility(View.VISIBLE);
 
-        InfoView(homeWelcomeInfoStepTextView,homeWelcomeInfoStepInfoTileTextView,homeWelcomeInfoStepInfoDescTextView,
-                homeWelcomeLangValuesNextButton,
+        InfoView(homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
+                homeStartLangValuesNextButton,
                 jsonViewModel.getInfoStep(), jsonIndex, jsonViewModel.getInfoLength());
 
         homeSafetyQuizQuizStepQuizRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -95,13 +87,13 @@ public class HomeNewFragment extends Fragment  {
             }
         });
 
-        homeWelcomeLangValuesNextButton.setOnClickListener(new View.OnClickListener() {
+        homeStartLangValuesNextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     //Next
                     if(jsonIndex +1 >= jsonViewModel.getInfoLength()-1){
                         jsonIndex = 0;
-                        homeWelcomeLinearLayout.setVisibility(View.GONE);
+                        homeStartLinearLayout.setVisibility(View.GONE);
                         homeSaftyQuizLinearLayout.setVisibility(View.VISIBLE);
                         QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
                                 homeSaftyQuizLangValuesNextButton,
@@ -111,8 +103,8 @@ public class HomeNewFragment extends Fragment  {
                     }
 
                     //View
-                    InfoView(homeWelcomeInfoStepTextView,homeWelcomeInfoStepInfoTileTextView,homeWelcomeInfoStepInfoDescTextView,
-                            homeWelcomeLangValuesNextButton,
+                    InfoView(homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
+                            homeStartLangValuesNextButton,
                             jsonViewModel.getInfoStep(), jsonIndex + 1 , jsonViewModel.getInfoLength());
 
                     jsonIndex = jsonIndex + 1;
@@ -155,12 +147,12 @@ public class HomeNewFragment extends Fragment  {
                                     dialog.dismiss();
 
                                     if(jsonIndex +1 >= jsonViewModel.getQuizLength()-1) {
-                                        mHomeNewListener.onHomeNewComplete();
+                                        mHomeStartListener.onHomeStartComplete();
                                         return;
                                     }
 
                                     QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
-                                            homeWelcomeLangValuesNextButton,
+                                            homeStartLangValuesNextButton,
                                             homeSafetyQuizQuizStepQuizChoicesRadioButton_0,homeSafetyQuizQuizStepQuizChoicesRadioButton_1,homeSafetyQuizQuizStepQuizChoicesRadioButton_2,homeSafetyQuizQuizStepQuizChoicesRadioButton_3,
                                             jsonViewModel.getQuizStep(), jsonIndex + 1, jsonViewModel.getQuizLength());
 
@@ -198,14 +190,14 @@ public class HomeNewFragment extends Fragment  {
         super.onStop();
     }
 
-    public static interface OnHomeNewCompleteListener {
-        public abstract void onHomeNewComplete();
+    public static interface OnHomeStartCompleteListener {
+        public abstract void onHomeStartComplete();
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            this.mHomeNewListener = (HomeNewFragment.OnHomeNewCompleteListener)context;
+            this.mHomeStartListener = (HomeStartFragment.OnHomeStartCompleteListener)context;
         } catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }
@@ -221,6 +213,7 @@ public class HomeNewFragment extends Fragment  {
 
         langValuesNextButton.setText(jsonViewModel.getNextByLangValues());
     }
+
     private void QuizView(TextView quizStepTextView, TextView quizStepQuizeTitleTextView, TextView quizStepQuizQuestionTextView, Button  langValuesNextButton,
                        RadioButton quizStepQuizChoicesRadioButton_0, RadioButton quizStepQuizChoicesRadioButton_1, RadioButton quizStepQuizChoicesRadioButton_2,
                       RadioButton quizStepQuizChoicesRadioButton_3, String quizStep, int index, int length){
@@ -247,4 +240,5 @@ public class HomeNewFragment extends Fragment  {
 
             langValuesNextButton.setText(jsonViewModel.getNextByLangValues());
     }
+
 }

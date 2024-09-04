@@ -9,18 +9,18 @@ import androidx.fragment.app.Fragment;
 
 import com.dpwallet.app.R;
 
-public class HomeFragment extends Fragment  {
+public class HomeMainFragment extends Fragment  {
 
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "HomeMainFragment";
 
-    private HomeFragment.OnHomeCompleteListener mHomeListener;
+    private HomeMainFragment.OnHomeMainCompleteListener mHomeMainListener;
 
-    public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
+    public static HomeMainFragment newInstance() {
+        HomeMainFragment fragment = new HomeMainFragment();
         return fragment;
     }
 
-    public HomeFragment() {
+    public HomeMainFragment() {
 
     }
 
@@ -32,13 +32,13 @@ public class HomeFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.home_fragment, container, false);
+            return inflater.inflate(R.layout.home_main_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mHomeListener.onHomeComplete();
+        mHomeMainListener.onHomeMainComplete();
     }
 
     @Override
@@ -51,14 +51,14 @@ public class HomeFragment extends Fragment  {
         super.onStop();
     }
 
-    public static interface OnHomeCompleteListener {
-        public abstract void onHomeComplete();
+    public static interface OnHomeMainCompleteListener {
+        public abstract void onHomeMainComplete();
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            this.mHomeListener = (HomeFragment.OnHomeCompleteListener)context;
+            this.mHomeMainListener = (HomeMainFragment.OnHomeMainCompleteListener)context;
         } catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
         }

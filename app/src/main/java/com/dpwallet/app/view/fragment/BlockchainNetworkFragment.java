@@ -10,22 +10,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dpwallet.app.R;
 import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.GridAutoFitLayoutManager;
-import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
 import com.dpwallet.app.view.adapter.BlockchainNetworkAdapter;
-import com.dpwallet.app.view.adapter.WalletAdapter;
 import com.dpwallet.app.viewmodel.JsonViewModel;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +63,6 @@ public class BlockchainNetworkFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind((Object) this, view);
-
         try {
             assert getArguments() != null;
             jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));

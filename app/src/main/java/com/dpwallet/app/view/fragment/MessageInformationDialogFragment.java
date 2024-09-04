@@ -11,10 +11,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.dpwallet.app.R;
 import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 
 public class MessageInformationDialogFragment extends DialogFragment  {
 
     private static final String TAG = "MessageDialogFragment";
+
+    private JsonViewModel jsonViewModel;
 
     public static MessageInformationDialogFragment newInstance() {
         MessageInformationDialogFragment fragment = new MessageInformationDialogFragment();
@@ -41,11 +44,15 @@ public class MessageInformationDialogFragment extends DialogFragment  {
         super.onViewCreated(view, savedInstanceState);
 
         try {
+            jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+
             TextView messageTextView = (TextView) getView().findViewById(R.id.textView_message_information_dialog_description);
             TextView closeTextView = (TextView) getView().findViewById(R.id.textView_message_information_dialog_close);
 
             String message = getArguments().getString("message");
             messageTextView.setText(message);
+
+            closeTextView.setText(jsonViewModel.getCloseByLangValues());
 
             closeTextView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
