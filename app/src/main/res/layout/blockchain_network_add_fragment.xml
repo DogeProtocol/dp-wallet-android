@@ -19,13 +19,13 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/top_linear_layout_blockchain_network_id"
+                android:id="@+id/top_linear_layout_blockchain_network_add_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@android:color/transparent">
                 <ImageButton
-                    android:id="@+id/imageButton_blockchain_network_back_arrow"
+                    android:id="@+id/imageButton_blockchain_network_add_back_arrow"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:padding="5dp"
@@ -37,7 +37,7 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/progress_blockchain_network"
+                android:id="@+id/progress_blockchain_network_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -55,7 +55,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/top_linear_layout_blockchain_network_id"
+                android:layout_below="@+id/top_linear_layout_blockchain_network_add_id"
                 android:background="@drawable/center_container">
 
                 <RelativeLayout
@@ -74,7 +74,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textview_blockchain_network_langValues_networks"
+                            android:id="@+id/textview_blockchain_network_add_langValues_add_network"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="5dp"
@@ -88,20 +88,14 @@
                             android:alpha="0.2"
                             android:background="@drawable/line_2_shape" />
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/textview_blockchain_network_add_langValues_enter_network_json"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <include layout="@layout/blockchain_network_header"/>
-
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_blockchain_network"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipToPadding="false"/>
+                            android:paddingBottom="5dp"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorCommon6" />
 
                         <View
                             android:layout_width="wrap_content"
@@ -109,17 +103,32 @@
                             android:alpha="0.2"
                             android:background="@drawable/line_2_shape" />
 
-                        <TextView
-                            android:id="@+id/textview_blockchain_network_langValues_add_network"
+                        <EditText
+                            android:id="@+id/editText_blockchain_network_add_langValues_add_network"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="10dp"
-                            android:clickable="true"
-                            android:textColor="@color/colorCommonSeedA"
-                            android:background="@drawable/text_link_selector_bg"
-                            android:textAlignment="center"
-                            android:textSize="16dp" />
+                            android:inputType="textMultiLine"
+                            android:lines="8"
+                            android:minLines="6"
+                            android:gravity="top|start"
+                            android:maxLines="10"
+                            android:scrollbars="vertical" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
+                        <Button
+                            android:id="@+id/button_blockchain_network_add_langValues_add"
+                            android:background="@drawable/button_green_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:padding="5dp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorCommon7" />
 
                     </LinearLayout>
 

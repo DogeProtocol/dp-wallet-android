@@ -92,12 +92,14 @@ public class GlobalMethods {
         return readRawResource(context, R.raw.en_us);
     }
     public static List<BlockchainNetwork> BlockChainNetworkRead(Context context) throws JSONException {
-        String blockchainJsonString = readRawResource(context, R.raw.blockchain_networks);
+        String blockchainJsonString = "";
+        blockchainJsonString = PrefConnect.readString(context, PrefConnect.BLOCKCHAIN_NETWORK_LIST, "");
+        if(blockchainJsonString=="") {
+            blockchainJsonString=readRawResource(context, R.raw.blockchain_networks);
+        }
+
         JsonObject jo = new JsonParser().parse(blockchainJsonString).getAsJsonObject();
         JsonArray jsonArray = jo.getAsJsonArray("networks");
-
-        //BlockchainNetwork[] blockChainNetworks = new Gson().fromJson(jsonArray, BlockchainNetwork[].class);
-        //return Arrays.asList(blockChainNetworks);
 
         List<BlockchainNetwork> blockChainNetworks = new ArrayList<>();
         for (int i=0; i < jsonArray.size(); i++) {

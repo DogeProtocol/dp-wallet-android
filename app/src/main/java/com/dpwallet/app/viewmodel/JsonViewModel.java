@@ -801,9 +801,9 @@ public class JsonViewModel extends ViewModel{
         }
         return null;
     }
-    public String getEnterNetwork_jsonByLangValues() {
+    public String getEnterNetworkJsonByLangValues() {
         try {
-            return _jsonInteract.getEnterNetwork_jsonByLangValues();
+            return _jsonInteract.getEnterNetworkJsonByLangValues();
         } catch (JSONException e) {
             e.printStackTrace();
         }

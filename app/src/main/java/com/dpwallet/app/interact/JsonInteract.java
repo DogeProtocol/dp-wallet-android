@@ -522,7 +522,7 @@ public class JsonInteract {
     public String getAddByLangValues() throws JSONException{
         return getLangValues().getString(data_lang_key_add);
     }
-    public String getEnterNetwork_jsonByLangValues() throws JSONException{
+    public String getEnterNetworkJsonByLangValues() throws JSONException{
         return getLangValues().getString(data_lang_key_enter_network_json);
     }
     public String getAddNetworkWarnByLangValues() throws JSONException{

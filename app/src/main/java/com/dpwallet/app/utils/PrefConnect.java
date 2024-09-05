@@ -30,8 +30,6 @@ public class PrefConnect {
     public static String WALLET_KEY_ADDRESS_INDEX = "ADDRESS_INDEX";
     public static String WALLET_KEY_INDEX_ADDRESS = "INDEX_ADDRESS";
 
-
-
     public static String WALLET_KEY_PASSWORD = "WALLET_PASSWORD";
     public static Map<String, String> WALLET_ADDRESS_TO_INDEX_MAP = new HashMap<>(); //key is address, value is index
     public static Map<String, String> WALLET_INDEX_TO_ADDRESS_MAP = new HashMap<>(); //key is index, value is address
@@ -40,10 +38,9 @@ public class PrefConnect {
     public static String WALLET_CURRENT_ADDRESS_INDEX_KEY = "WALLET_CURRENT_ADDRESS_INDEX_KEY";
     public static String WALLET_CURRENT_ADDRESS_INDEX_VALUE = "0";
 
-
     public static String BLOCKCHAIN_NETWORK_ID_INDEX_KEY = "BLOCKCHAIN_NETWORK_ID_INDEX_KEY";
 
-
+    public static String BLOCKCHAIN_NETWORK_LIST = "BLOCKCHAIN_NETWORK_LIST";
 
     public static void clearAllPrefs(Context context) {
         getEditor(context).clear().commit();

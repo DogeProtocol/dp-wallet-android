@@ -45,6 +45,7 @@ import com.dpwallet.app.seedwords.SeedWords;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
+import com.dpwallet.app.view.fragment.BlockchainNetworkAddFragment;
 import com.dpwallet.app.view.fragment.BlockchainNetworkDialogFragment;
 import com.dpwallet.app.view.fragment.BlockchainNetworkFragment;
 import com.dpwallet.app.view.fragment.HomeMainFragment;
@@ -69,8 +70,9 @@ import java.util.Objects;
 public class HomeActivity extends FragmentActivity implements
         HomeMainFragment.OnHomeMainCompleteListener, HomeStartFragment.OnHomeStartCompleteListener,
         HomeWalletFragment.OnHomeWalletCompleteListener,
-        BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener,
         BlockchainNetworkDialogFragment.OnBlockchainNetworkDialogCompleteListener,
+        BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener,
+        BlockchainNetworkAddFragment.OnBlockchainNetworkAddCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
         SettingsFragment.OnSettingsCompleteListener, RevealWalletFragment.OnRevealWalletCompleteListener {
@@ -394,12 +396,21 @@ public class HomeActivity extends FragmentActivity implements
     public void onBlockchainNetworkCompleteByAdd() {
         try{
             screenViewType(1);
-            beginTransaction(SettingsFragment.newInstance(), bundle);
+            beginTransaction(BlockchainNetworkAddFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
+    @Override
+    public void onBlockchainNetworkAddComplete() {
+        try{
+            screenViewType(1);
+            beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
 
     @Override
     public void onSendComplete(String password) {
