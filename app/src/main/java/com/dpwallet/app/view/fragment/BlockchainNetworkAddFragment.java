@@ -1,7 +1,5 @@
 package com.dpwallet.app.view.fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,34 +13,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.dpwallet.app.R;
 import com.dpwallet.app.model.BlockchainNetwork;
 import com.dpwallet.app.utils.GlobalMethods;
-import com.dpwallet.app.utils.GridAutoFitLayoutManager;
 import com.dpwallet.app.utils.PrefConnect;
-import com.dpwallet.app.utils.Utility;
-import com.dpwallet.app.view.adapter.BlockchainNetworkAdapter;
 import com.dpwallet.app.viewmodel.JsonViewModel;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import kotlin._Assertions;
+
 
 public class BlockchainNetworkAddFragment extends Fragment  {
 
@@ -92,7 +73,6 @@ public class BlockchainNetworkAddFragment extends Fragment  {
 
             ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_blockchain_network_add);
 
-
             blockchainNetworkAddNetworkEditText.setText(makeJSON().toString());
 
             blockchainNetworkAddNetworkTextView.setText(jsonViewModel.getAddNetworkByLangValues());
@@ -137,25 +117,15 @@ public class BlockchainNetworkAddFragment extends Fragment  {
                                     "'blockExplorerDomain': '" +  blockchainNetwork1.getBlockExplorerDomain() + "'," +
                                     "'blockchainName': '" +  blockchainNetwork1.getBlockchainName() + "'," +
                                     "'networkId': " +  blockchainNetwork1.getNetworkId() + "}";
-
                         }
 
                         String json = "{ 'networks' : [" + jsonString+ "]}";
-
                         PrefConnect.writeString(getContext(), PrefConnect.BLOCKCHAIN_NETWORK_LIST,json);
 
-                       // FileOutputStream fileout= getContext().openFileOutput(filename, MODE_PRIVATE);
-                       // OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
-                       // outputWriter.write(json);
-                       // outputWriter.close();
-
-                        //display file saved message
                         Toast.makeText(getContext(), "Added successfully!",
                                 Toast.LENGTH_SHORT).show();
 
                         mBlockchainNetworkAddListener.onBlockchainNetworkAddComplete();
-
-
                     } catch (Exception e) {
                         GlobalMethods.ExceptionError(getContext(), TAG, e);
                     }

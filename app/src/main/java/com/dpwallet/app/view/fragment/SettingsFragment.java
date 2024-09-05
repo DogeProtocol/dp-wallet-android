@@ -73,7 +73,6 @@ public class SettingsFragment extends Fragment  {
         textViewSubTitleRetry = (TextView) getView().findViewById(R.id.textview_subtitle_retry);
         Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-
         backArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mSettingsListener.onSettingsCompleteCompleteByBackArrow();
