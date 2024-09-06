@@ -341,17 +341,16 @@
                             android:orientation="vertical">
 
                             <ScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:descendantFocusability="beforeDescendants"
-                            android:focusableInTouchMode="true">
-
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:descendantFocusability="beforeDescendants"
+                                android:focusableInTouchMode="true">
 
                             <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:orientation="vertical">
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -1728,18 +1727,29 @@
 
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <View
-                                android:layout_width="wrap_content"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:alpha="0.2"
-                                android:background="@drawable/line_2_shape" />
+                            <ImageButton
+                                android:id="@+id/imageButton_home_seed_words_view_copy_clipboard"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:padding="5dp"
+                                android:scaleType="fitCenter"
+                                android:layout_gravity="center_vertical|left"
+                                android:background="@drawable/image_selector"
+                                android:src="@drawable/copy_outline"
+                                app:tint="@color/colorCommon6" />
 
                             <Button
                                 android:id="@+id/button_home_seed_words_view_next"
@@ -3342,6 +3352,7 @@
                                 android:background="@drawable/button_green_selector"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:layout_gravity="center_vertical|right"
                                 android:padding="5dp"
                                 android:textAllCaps="false"

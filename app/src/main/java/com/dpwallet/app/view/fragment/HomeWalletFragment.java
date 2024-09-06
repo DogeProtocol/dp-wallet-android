@@ -1,5 +1,10 @@
 package com.dpwallet.app.view.fragment;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -33,6 +38,8 @@ import com.dpwallet.app.viewmodel.KeyViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
+
 import com.dpwallet.app.view.adapter.SeedWordAutoCompleteAdapter;
 
 public class HomeWalletFragment extends Fragment {
@@ -46,7 +53,7 @@ public class HomeWalletFragment extends Fragment {
     private KeyViewModel keyViewModel;
     private  int[] tempSeedArrayByCreate;
     private SeedWordAutoCompleteAdapter seedWordAutoCompleteAdapter;
-    private TextView[] homeSeedWordsViewTextViews;
+   // private TextView[] homeSeedWordsViewTextViews;
     private AutoCompleteTextView[] homeSeedWordsViewAutoCompleteTextViews;
     private boolean autoCompleteIndexStatus = false;
     private int autoCompleteCurrentIndex = 0;
@@ -118,7 +125,9 @@ public class HomeWalletFragment extends Fragment {
 
         LinearLayout homeSeedWordsViewLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words_view);
         TextView homeSeedWordsViewTitleTextView = (TextView) getView().findViewById(R.id.textView_home_seed_words_view_title);
-        homeSeedWordsViewTextViews = HomeSeedWordsViewTextViews();
+        TextView[] homeSeedWordsViewCaptionTextViews = HomeSeedWordsViewCaptionTextViews();
+        TextView[] homeSeedWordsViewTextViews = HomeSeedWordsViewTextViews();
+        ImageButton homeSeedWordsViewCopyClipboardImageButton = (ImageButton) getView().findViewById(R.id.imageButton_home_seed_words_view_copy_clipboard);
         Button homeSeedWordsViewNextButton = (Button) getView().findViewById(R.id.button_home_seed_words_view_next);
 
         LinearLayout homeSeedWordsEditLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_seed_words_edit);
@@ -306,6 +315,18 @@ public class HomeWalletFragment extends Fragment {
             }
         });
 
+        homeSeedWordsViewCopyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                String clipboardCopyData = ClipboardCopyData(homeSeedWordsViewCaptionTextViews, homeSeedWordsViewTextViews);
+                ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("walletSeed", clipboardCopyData);
+                clipBoard.setPrimaryClip(clipData);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
         homeSeedWordsViewNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,11 +340,12 @@ public class HomeWalletFragment extends Fragment {
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
 
-                for (int index = 0; index < 48; index++){
-                    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
-                }
+                //for (int index = 0; index < 48; index++){
+                //    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                //}
             }
         });
+
 
 
         homeSeedWordsAutoCompleteNextButton.setOnClickListener(new View.OnClickListener() {
@@ -464,6 +486,61 @@ public class HomeWalletFragment extends Fragment {
         seedWordsShowTextView.setText(content);
     }
 
+    private TextView[] HomeSeedWordsViewCaptionTextViews() {
+        TextView[] homeSeedWordsViewCaptionTextViews = new TextView[]{
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_a1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_a2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_a3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_a4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_b1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_b2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_b3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_b4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_c1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_c2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_c3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_c4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_d1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_d2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_d3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_d4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_e1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_e2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_e3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_e4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_f1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_f2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_f3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_f4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_g1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_g2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_g3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_g4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_h1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_h2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_h3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_h4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_i1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_i2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_i3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_i4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_j1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_j2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_j3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_j4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_k1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_k2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_k3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_k4),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_l1),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_l2),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_l3),
+                (TextView) getView().findViewById(R.id.textView_home_seed_words_view_caption_l4),
+
+        };
+        return homeSeedWordsViewCaptionTextViews;
+    }
+
     private TextView[] HomeSeedWordsViewTextViews() {
         TextView[] homeSeedWordsViewTextViews = new TextView[]{
                 (TextView) getView().findViewById(R.id.textView_home_seed_words_view_a1),
@@ -593,6 +670,15 @@ public class HomeWalletFragment extends Fragment {
                 (AutoCompleteTextView) getView().findViewById(R.id.autoComplete_home_seed_words_textView_l4)
         };
     }
+
+    private String ClipboardCopyData(TextView[] homeSeedWordsViewCaptionTextViews, TextView[] homeSeedWordsViewTextViews){
+        String copyData = "";
+        for (int i=0; i<homeSeedWordsViewCaptionTextViews.length; i++) {
+            copyData = copyData + homeSeedWordsViewCaptionTextViews[i].getText() + " = " +  homeSeedWordsViewTextViews[i].getText() + "\n";
+        }
+        return copyData.toString();
+    }
+
 
     private TextWatcher GetTextWatcher(final AutoCompleteTextView autoCompleteTextView, int index) {
         return new TextWatcher() {

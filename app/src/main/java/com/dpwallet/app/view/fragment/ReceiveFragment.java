@@ -84,7 +84,7 @@ public class ReceiveFragment extends Fragment  {
         copyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("label", receiveAddressTextView.getText());
+                ClipData clipData = ClipData.newPlainText("receiveAddress", receiveAddressTextView.getText());
                 clipBoard.setPrimaryClip(clipData);
             }
         });

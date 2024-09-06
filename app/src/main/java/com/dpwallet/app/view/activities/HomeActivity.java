@@ -208,7 +208,7 @@ public class HomeActivity extends FragmentActivity implements
             copyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     ClipboardManager clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("label", walletAddressTextView.getText());
+                    ClipData clipData = ClipData.newPlainText("currentAddress", walletAddressTextView.getText());
                     clipBoard.setPrimaryClip(clipData);
                 }
             });
