@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.dpwallet.app"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -19,7 +19,6 @@ android {
             abiFilters "armeabi-v7a" , "arm64-v8a", "x86", "x86_64"
         }
     }
-
     buildTypes {
         release {
             debuggable false
@@ -56,6 +55,7 @@ android {
         viewBinding true
     }
 }
+
 
 //Notification
 def core_version = "1.6.0"
@@ -114,4 +114,8 @@ dependencies {
 
     //Notification
     implementation "androidx.core:core:$core_version"
+
+    implementation 'com.opencsv:opencsv:4.6'
+
+    implementation "com.trustwallet:wallet-core:2.9.5"
 }
