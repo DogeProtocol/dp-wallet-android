@@ -79,6 +79,12 @@ public class KeyViewModel  extends ViewModel{
                 amount, gasLimit, chainId);
     }
 
+    public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
+                                   String amount, String gasLimit, String data, String chainId) throws ServiceException {
+        return _keyInteract.getTxnSigningHash(fromAddress, nonce, toAddress,
+                amount, gasLimit,data, chainId);
+    }
+
     public String getTxHash(String fromAddress, String nonce, String toAddress,
                             String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         return _keyInteract.getTxHash(fromAddress, nonce, toAddress,
@@ -89,6 +95,16 @@ public class KeyViewModel  extends ViewModel{
                             String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         return _keyInteract.getTxData(fromAddress, nonce, toAddress,
                 amount, gasLimit, chainId, pkKey, sig);
+    }
+
+    public String getTxData(String fromAddress, String nonce, String toAddress,
+                            String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+        return _keyInteract.getTxData(fromAddress, nonce, toAddress,
+                amount, gasLimit, data, chainId, pkKey, sig);
+    }
+
+    public String getContractData(String method, String abiData, String argument1, String argument2) throws ServiceException {
+        return _keyInteract.getContractData(method, abiData, argument1, argument2);
     }
 
     public String getParseBigFloat(String value) throws ServiceException {

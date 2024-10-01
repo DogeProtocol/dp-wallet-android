@@ -140,10 +140,10 @@ public class KeyService implements IKeyService
 
     @Override
     public Result<Object> getTxHash(String fromAddress, String nonce, String toAddress,
-                         String amount, String gasLimit,  String chainId,
+                         String amount, String gasLimit, String data, String chainId,
                          int[] pkKey, int[] sig)
     {
-        String[] hash = _iHybridPqcJNI.TxHash(fromAddress, nonce, toAddress, amount, gasLimit, "", chainId, pkKey, sig);
+        String[] hash = _iHybridPqcJNI.TxHash(fromAddress, nonce, toAddress, amount, gasLimit, data, chainId, pkKey, sig);
         String hashResult = hash[0];
         String hashError = hash[1];
         if(!hashResult.isEmpty())
@@ -155,12 +155,12 @@ public class KeyService implements IKeyService
 
     @Override
     public Result<Object> getTxData(String fromAddress, String nonce, String toAddress,
-                        String amount, String gasLimit, String chainId,
+                        String amount, String gasLimit, String data, String chainId,
                         int[] pkKey, int[] sig)
     {
-        String[] data = _iHybridPqcJNI.TxData(fromAddress, nonce, toAddress, amount, gasLimit,  "", chainId, pkKey, sig);
-        String dataResult = data[0];
-        String dataError = data[1];
+        String[] txData = _iHybridPqcJNI.TxData(fromAddress, nonce, toAddress, amount, gasLimit, data, chainId, pkKey, sig);
+        String dataResult = txData[0];
+        String dataError = txData[1];
         if(!dataResult.isEmpty())
         {
             return new Result<Object>(dataResult, null);
@@ -169,7 +169,7 @@ public class KeyService implements IKeyService
     }
 
     @Override
-    public Result<Object> ContractData(String method, String abiData, String argument1, String argument2)
+    public Result<Object> getContractData(String method, String abiData, String argument1, String argument2)
     {
         String[] data = _iHybridPqcJNI.ContractData(method, abiData, argument1, argument2);
         String dataResult = data[0];
@@ -179,24 +179,6 @@ public class KeyService implements IKeyService
             return new Result<Object>(dataResult, null);
         }
         return new Result<Object>(null, dataError);
-    }
-
-    @Override
-    public Result<Object> unLockAccount(String encrypted_skKey, String password)
-    {
-        return new Result<Object>(0, null);
-    }
-
-    @Override
-    public Result<Object> importUnLockAccount(String encrypted_skKey, String password)
-    {
-        return new Result<Object>(0, null);
-    }
-
-    @Override
-    public Result<Object> storeAccountKey(String skKey, String password)
-    {
-        return new Result<Object>(0, null);
     }
 
     @Override

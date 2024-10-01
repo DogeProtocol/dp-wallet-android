@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Quantum Wallet</string>
+    <string name="app_name" translatable="false">Quantumcoin Wallet</string>
     <string name="empty">empty1</string>
 
 
@@ -9,7 +9,7 @@
     <string name="device_security_changed">Since this key was created the mobile device security has changed and the OS has invalidated the key. Please re-import your key.</string>
 
     <!-- Home -->
-    <string name="home_title">DP QUANTUM COIN WALLET</string>
+    <string name="home_title">QUANTUM COIN WALLET</string>
     <string name="home_total_balance_title">Total Balance</string>
 
     <!-- Home new fragment -->

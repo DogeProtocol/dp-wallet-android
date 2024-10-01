@@ -24,7 +24,6 @@ public class HomeStartFragment extends Fragment  {
 
     private int jsonIndex = 0;
     private int quizStepQuizRadioCorrectChoice = -1;
-    private JsonViewModel jsonViewModel;
 
     private OnHomeStartCompleteListener mHomeStartListener;
 
@@ -52,7 +51,9 @@ public class HomeStartFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
+        String languageKey = getArguments().getString("languageKey");
+
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(),getArguments().getString("languageKey"));
 
         LinearLayout homeStartLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_start);
         TextView homeStartInfoStepTextView = (TextView) getView().findViewById(R.id.textview_home_start_infoStep);
@@ -75,7 +76,7 @@ public class HomeStartFragment extends Fragment  {
 
         homeStartLinearLayout.setVisibility(View.VISIBLE);
 
-        InfoView(homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
+        InfoView(jsonViewModel, homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
                 homeStartLangValuesNextButton,
                 jsonViewModel.getInfoStep(), jsonIndex, jsonViewModel.getInfoLength());
 
@@ -95,7 +96,7 @@ public class HomeStartFragment extends Fragment  {
                         jsonIndex = 0;
                         homeStartLinearLayout.setVisibility(View.GONE);
                         homeSaftyQuizLinearLayout.setVisibility(View.VISIBLE);
-                        QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
+                        QuizView(jsonViewModel, homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
                                 homeSaftyQuizLangValuesNextButton,
                                 homeSafetyQuizQuizStepQuizChoicesRadioButton_0,homeSafetyQuizQuizStepQuizChoicesRadioButton_1,homeSafetyQuizQuizStepQuizChoicesRadioButton_2,homeSafetyQuizQuizStepQuizChoicesRadioButton_3,
                                 jsonViewModel.getQuizStep(), jsonIndex, jsonViewModel.getQuizLength());
@@ -103,7 +104,7 @@ public class HomeStartFragment extends Fragment  {
                     }
 
                     //View
-                    InfoView(homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
+                    InfoView(jsonViewModel, homeStartInfoStepTextView,homeStartInfoStepInfoTileTextView,homeStartInfoStepInfoDescTextView,
                             homeStartLangValuesNextButton,
                             jsonViewModel.getInfoStep(), jsonIndex + 1 , jsonViewModel.getInfoLength());
 
@@ -151,7 +152,7 @@ public class HomeStartFragment extends Fragment  {
                                         return;
                                     }
 
-                                    QuizView(homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
+                                    QuizView(jsonViewModel, homeSaftyQuizQuizStepTextView,homeSaftyQuizQuizStepQuizeTitleTextView,homeSaftyQuizQuizStepQuizQuestionTextView,
                                             homeStartLangValuesNextButton,
                                             homeSafetyQuizQuizStepQuizChoicesRadioButton_0,homeSafetyQuizQuizStepQuizChoicesRadioButton_1,homeSafetyQuizQuizStepQuizChoicesRadioButton_2,homeSafetyQuizQuizStepQuizChoicesRadioButton_3,
                                             jsonViewModel.getQuizStep(), jsonIndex + 1, jsonViewModel.getQuizLength());
@@ -166,7 +167,9 @@ public class HomeStartFragment extends Fragment  {
                         message = jsonViewModel.getQuizNoChoice();
                     }
 
+                    bundleRoute.putString("languageKey", languageKey);
                     bundleRoute.putString("message", message);
+
                     FragmentManager fragmentManager  = getFragmentManager();
                     MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
                     messageDialogFragment.setCancelable(false);
@@ -203,7 +206,7 @@ public class HomeStartFragment extends Fragment  {
         }
     }
 
-    private void InfoView(TextView infoStepTextView,TextView infoStepInfoTileTextView,TextView infoStepInfoDescTextView, Button  langValuesNextButton,
+    private void InfoView(JsonViewModel jsonViewModel, TextView infoStepTextView,TextView infoStepInfoTileTextView,TextView infoStepInfoDescTextView, Button  langValuesNextButton,
                           String infoStep, int index, int length){
         infoStepTextView.setText(infoStep.replace(GlobalMethods.step, String.valueOf(index +1))
                 .replace(GlobalMethods.totalSteps,String.valueOf(length-1)));
@@ -214,10 +217,11 @@ public class HomeStartFragment extends Fragment  {
         langValuesNextButton.setText(jsonViewModel.getNextByLangValues());
     }
 
-    private void QuizView(TextView quizStepTextView, TextView quizStepQuizeTitleTextView, TextView quizStepQuizQuestionTextView, Button  langValuesNextButton,
+    private void QuizView(JsonViewModel jsonViewModel, TextView quizStepTextView, TextView quizStepQuizeTitleTextView, TextView quizStepQuizQuestionTextView, Button  langValuesNextButton,
                        RadioButton quizStepQuizChoicesRadioButton_0, RadioButton quizStepQuizChoicesRadioButton_1, RadioButton quizStepQuizChoicesRadioButton_2,
                       RadioButton quizStepQuizChoicesRadioButton_3, String quizStep, int index, int length){
-           quizStepTextView.setText(quizStep.toString().replace(GlobalMethods.step, String.valueOf(index +1))
+
+        quizStepTextView.setText(quizStep.toString().replace(GlobalMethods.step, String.valueOf(index +1))
                     .replace(GlobalMethods.totalSteps,String.valueOf(length-1)));
 
             quizStepQuizeTitleTextView.setText(jsonViewModel.getTitleByQuiz(index));

@@ -54,25 +54,27 @@ public class GlobalMethods {
     public static String BLOCK_EXPLORER_TX_HASH_URL = BLOCK_EXPLORER_URL + "/txn/{txhash}";
     public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = BLOCK_EXPLORER_URL + "/account/{address}/txn/page";
 
+    public static String DP_DOCS_URL = "https://dpdocs.org/";
+
+    public static String FAUCET_API_URL = "https://faucet.dpapi.org";
+
     //Network
     public static String BLOCKCHAIN_NAME = null;
     public static String NETWORK_ID = null;
 
+    public static String GAS_QCN_LIMIT = "21000";
 
-    public static String DP_DOCS_URL = "https://dpdocs.org/";
-
-
-    public static String FAUCET_API_URL = "https://faucet.dpapi.org";
-
-
-    public static String GAS_LIMIT = "21000";
-
-    //public static String NONCE = "0";
+    public static String CONVERSION_CONTRACT_ABI = "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"quantumAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"ethAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"OnConversion\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"quantumAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"ethAddress\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"ethereumSignature\",\"type\":\"string\"}],\"name\":\"OnRequestConversion\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ethAddress\",\"type\":\"address\"}],\"name\":\"getAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ethAddress\",\"type\":\"address\"}],\"name\":\"getConversionStatus\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ethAddress\",\"type\":\"address\"}],\"name\":\"getQuantumAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"ethAddress\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"ethSignature\",\"type\":\"string\"}],\"name\":\"requestConversion\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ethAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"quantumAddress\",\"type\":\"address\"}],\"name\":\"setConverted\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
+    public static String CONVERSION_CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000000000000000000000002000";
+    public static String CONVERSION_DOGEP_GAS_LIMIT = "300000";
+    public static String CONVERSION_MESSAGE_TEMPLATE = "MY ETH ADDRESS IS [ETH_ADDRESS]. I AGREE THAT MY CORRESPONDING QUANTUM ADDRESS FOR GETTING COINS FOR MY DOGEP TOKENS IS [QUANTUM_ADDRESS].";
 
     public static int DURATION = 20;
     public static int MINIMUM_PASSWORD_LENGTH = 12;
     public static int ADDRESS_LENGTH = 66;
     public static String ADDRESS_START_PREFIX = "0x";
+    public static int ethAddressSeedDrivePathCount = 100;
+
 
    // public static int TOAST_SHOW_LENGTH = 1;
 

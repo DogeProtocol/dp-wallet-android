@@ -31,8 +31,6 @@ public class BlockchainNetworkAddFragment extends Fragment  {
 
     Unbinder unbinder;
 
-    private JsonViewModel jsonViewModel;
-
     private BlockchainNetworkAddFragment.OnBlockchainNetworkAddCompleteListener mBlockchainNetworkAddListener;
 
     public static BlockchainNetworkAddFragment newInstance() {
@@ -61,7 +59,10 @@ public class BlockchainNetworkAddFragment extends Fragment  {
         this.unbinder = ButterKnife.bind((Object) this, view);
         try {
             assert getArguments() != null;
-            jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+
+            String languageKey = getArguments().getString("languageKey");
+
+            JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
             ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_blockchain_network_add_back_arrow);
 
@@ -161,7 +162,6 @@ public class BlockchainNetworkAddFragment extends Fragment  {
         }
     }
 
-
     public JSONObject makeJSON() {
         JSONObject jObj = new JSONObject();
         try {
@@ -175,7 +175,5 @@ public class BlockchainNetworkAddFragment extends Fragment  {
         }
         return jObj;
     }
-
-
 
 }

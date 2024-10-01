@@ -17,7 +17,6 @@ public class MessageInformationDialogFragment extends DialogFragment  {
 
     private static final String TAG = "MessageDialogFragment";
 
-    private JsonViewModel jsonViewModel;
 
     public static MessageInformationDialogFragment newInstance() {
         MessageInformationDialogFragment fragment = new MessageInformationDialogFragment();
@@ -44,7 +43,7 @@ public class MessageInformationDialogFragment extends DialogFragment  {
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+            JsonViewModel jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
 
             TextView messageTextView = (TextView) getView().findViewById(R.id.textView_message_information_dialog_description);
             TextView closeTextView = (TextView) getView().findViewById(R.id.textView_message_information_dialog_close);

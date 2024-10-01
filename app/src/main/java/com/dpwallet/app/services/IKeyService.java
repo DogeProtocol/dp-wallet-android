@@ -28,20 +28,15 @@ public interface IKeyService {
                      String amount, String gasLimit,  String data, String chainId);
 
     Result<Object> getTxHash(String fromAddress, String nonce, String toAddress,
-                             String amount, String gasLimit,  String chainId,
+                             String amount, String gasLimit, String data, String chainId,
                              int[] pkKey, int[] sig);
 
     Result<Object> getTxData(String fromAddress, String nonce, String toAddress,
-                             String amount, String gasLimit,  String chainId,
+                             String amount, String gasLimit, String data, String chainId,
                              int[] pkKey, int[] sig);
 
-    Result<Object> ContractData(String method, String abiData, String argument1, String argument2);
+    Result<Object> getContractData(String method, String abiData, String argument1, String argument2);
 
-    Result<Object> unLockAccount(String encrypted_skKey, String password);
-
-    Result<Object> importUnLockAccount(String encrypted_skKey, String password);
-
-    Result<Object> storeAccountKey(String skKey, String password);
 
     Result<Object> getParseBigFloat(String value);
     Result<Object> getDogeProtocolToWei(String value);

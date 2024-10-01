@@ -43,10 +43,6 @@ public class RevealWalletFragment extends Fragment {
 
     private boolean ThreadStop = false;
 
-    private JsonViewModel jsonViewModel;
-
-    private KeyViewModel keyViewModel;
-
     private OnRevealWalletCompleteListener mRevealWalletListener;
 
     public static RevealWalletFragment newInstance() {
@@ -73,11 +69,11 @@ public class RevealWalletFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String languageKey = getArguments().getString("languageKey");
         String walletAddress  = getArguments().getString("walletAddress");
         String walletPassword = getArguments().getString("walletPassword");
 
-        jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
-        keyViewModel = new KeyViewModel();
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
         //LinearLayout revealSetWalletTopLinearLayout = (LinearLayout) getView().findViewById(R.id.top_linear_layout_reveal_seed_wallet_id);
         ImageButton homeWalletBackArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_reveal_seed_wallet_back_arrow);
@@ -89,7 +85,9 @@ public class RevealWalletFragment extends Fragment {
         ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.progress_loader_reveal_seed_wallet);
 
         try {
-            ShowRevealSeedScreen(revealSeedWordsViewTitleTextView, revealSeedWordsViewTextViews, progressBar, walletAddress, walletPassword);
+            ShowRevealSeedScreen(jsonViewModel,
+                    revealSeedWordsViewTitleTextView, revealSeedWordsViewTextViews, progressBar, walletAddress, walletPassword);
+
         } catch (KeyServiceException e) {
             progressBar.setVisibility(View.GONE);
             GlobalMethods.ExceptionError(getContext(), TAG, e);
@@ -133,12 +131,16 @@ public class RevealWalletFragment extends Fragment {
         }
     }
 
-    private void ShowRevealSeedScreen(TextView revealSeedWordsViewTitleTextView, TextView[] textViews,
+    private void ShowRevealSeedScreen(JsonViewModel jsonViewModel,
+                                     TextView revealSeedWordsViewTitleTextView, TextView[] textViews,
                                    ProgressBar progressBar,String walletAddress, String walletPassword) throws
             KeyServiceException, InvalidKeyException {
 
         revealSeedWordsViewTitleTextView.setText(jsonViewModel.getSeedWordsByLangValues());
+
+        KeyViewModel keyViewModel = new KeyViewModel();
         String[] wallet = keyViewModel.decryptDataByAccount(getContext(),walletAddress, walletPassword);
+
         String[] stringArray = Arrays.toString(GlobalMethods.GetIntDataArrayByString(wallet[2])).split("[\\[\\]]")[1].split(", ");
         loadRevealSeedsThread(stringArray, textViews, progressBar);
     }

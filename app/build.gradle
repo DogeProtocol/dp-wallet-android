@@ -34,7 +34,7 @@ android {
                         // on below line we are setting a
                         // name to our apk as dp-wallet.apk
                     output->
-                        def name = "dp-wallet.apk"
+                        def name = "Quantumcoin-wallet.apk"
                         // on below line we are setting the
                         // outputFile Name to our apk file.
                         output.outputFileName = name
@@ -118,4 +118,6 @@ dependencies {
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation "com.trustwallet:wallet-core:2.9.5"
+
+    implementation 'com.google.android.gms:play-services-vision:11.8.0'
 }

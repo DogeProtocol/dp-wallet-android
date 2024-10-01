@@ -160,13 +160,14 @@
                                 android:background="@drawable/text_input_selector"  />
 
                             <ImageButton
+                                android:id="@+id/imageButton_scan_qr_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
                                 android:layout_gravity="center_vertical|right"
                                 android:background="@drawable/image_selector"
                                 android:src="@android:drawable/ic_menu_camera"
-                                android:visibility="gone"/>
+                                android:visibility="visible"/>
 
                         </LinearLayout>
 

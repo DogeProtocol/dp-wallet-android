@@ -44,11 +44,11 @@
       "choices": [
         "Ethereum",
         "DogeP ERC20 Tokens",
-        "DP Mainnet Coins",
+        "Quantum Mainnet Coins",
         "All the above"
       ],
       "correctChoice": 3,
-      "afterQuizInfo": "This is correct. You should only send DP Mainnet coins to this wallet."
+      "afterQuizInfo": "This is correct. You should only send Quantum Mainnet coins to this wallet."
     },
     {
       "title": "Lost wallet or password",
@@ -76,7 +76,7 @@
     }
   ],
     "langValues": {
-      "title": "DP Quantum Coin Wallet",
+      "title": "Quantum Coin Wallet",
       "next": "Next",
       "ok": "Ok",
       "cancel": "Cancel",
@@ -192,7 +192,7 @@
       "quantity-to-send": "Quantity to send",
       "sendRequest": "Your request to send coins has been added to the queue for processing. Transaction: [TRANSACTION_HASH]",
       "receive-coins": "Receive Coins",
-      "send-only": "Send only DP coins to this address!",
+      "send-only": "Send only Quantum coins to this address!",
       "inout": "In/Out",
       "date": "Date",
       "from": "From",

@@ -56,7 +56,7 @@ public class AccountTransactionsFragment extends Fragment  {
     private List<AccountPendingTransactionSummary> accountPendingTransactionSummaries;
 
     Unbinder unbinder;
-    @BindView(R.id.recycler_account_transactions)  RecyclerView recycler;
+    @BindView(R.id.recycler_account_transactions) RecyclerView recycler;
 
     private LinearLayout linerLayoutOffline;
     private ImageView imageViewRetry;
@@ -92,9 +92,10 @@ public class AccountTransactionsFragment extends Fragment  {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind((Object) this, view);
 
+        String languageKey = getArguments().getString("languageKey");
         String walletAddress = getArguments().getString("walletAddress");
 
-        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
         ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_account_transactions_back_arrow);
 

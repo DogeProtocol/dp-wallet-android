@@ -88,10 +88,12 @@ public class WalletsFragment extends Fragment  {
         super.onViewCreated(view, savedInstanceState);
         this.unbinder = ButterKnife.bind((Object) this, view);
 
+        String languageKey = getArguments().getString("languageKey");
+        String walletPassword = getArguments().getString("walletPassword");
+
         keyViewModel = new KeyViewModel();
 
-        jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
-        String walletPassword = getArguments().getString("walletPassword");
+        jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
         ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_wallets_back_arrow);
         TextView walletTitleTextView = (TextView) getView().findViewById(R.id.textview_wallets_langValues_wallets);
@@ -140,9 +142,9 @@ public class WalletsFragment extends Fragment  {
         walletCreateOrRestoreTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (walletPassword==null || walletPassword.isEmpty()) {
-                     unlockDialogFragment(progressBar, 0, null);
+                     unlockDialogFragment(progressBar, 0, null, languageKey);
                 } else {
-                    VerifyPassword(progressBar, walletPassword, 0, null);
+                    VerifyPassword(progressBar, walletPassword, 0, null, languageKey);
                 }
             }
         });
@@ -161,9 +163,9 @@ public class WalletsFragment extends Fragment  {
                             PrefConnect.writeString(getContext(), PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_KEY, indexKey);
                             String walletAddress = entry.getValue();
                             if (walletPassword==null || walletPassword.isEmpty()) {
-                                unlockDialogFragment(progressBar, 1, walletAddress);
+                                unlockDialogFragment(progressBar, 1, walletAddress, languageKey);
                             } else {
-                                VerifyPassword(progressBar, walletPassword, 1, walletAddress);
+                                VerifyPassword(progressBar, walletPassword, 1, walletAddress, languageKey);
                             }
                             break;
                         }
@@ -202,7 +204,7 @@ public class WalletsFragment extends Fragment  {
         }
     }
 
-    private void unlockDialogFragment(ProgressBar progressBar, int listenerStatus, String walletAddress ) {
+    private void unlockDialogFragment(ProgressBar progressBar, int listenerStatus, String walletAddress, String languageKey) {
         try {
             //Alert unlock dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -228,9 +230,9 @@ public class WalletsFragment extends Fragment  {
                 public void onClick(View v) {
                     String walletPassword = passwordEditText.getText().toString();
                     if (walletPassword==null || walletPassword.isEmpty()) {
-                        messageDialogFragment(jsonViewModel.getEnterApasswordByLangValues());
+                        messageDialogFragment(languageKey, jsonViewModel.getEnterApasswordByLangValues());
                     } else {
-                        VerifyPassword(progressBar, walletPassword, listenerStatus, walletAddress);
+                        VerifyPassword(progressBar, walletPassword, listenerStatus, walletAddress, languageKey);
                         dialog.dismiss();
                     }
                 }
@@ -246,9 +248,10 @@ public class WalletsFragment extends Fragment  {
         }
     }
 
-    private void messageDialogFragment(String message) {
+    private void messageDialogFragment(String languageKey, String message) {
         try {
             Bundle bundleRoute = new Bundle();
+            bundleRoute.putString("languageKey",languageKey);
             bundleRoute.putString("message", message);
 
             FragmentManager fragmentManager  = getFragmentManager();
@@ -261,7 +264,7 @@ public class WalletsFragment extends Fragment  {
         }
     }
 
-    private void VerifyPassword(ProgressBar progressBar, String walletPassword, int listenerStatus, String walletAddress)  {
+    private void VerifyPassword(ProgressBar progressBar, String walletPassword, int listenerStatus, String walletAddress, String languageKey)  {
         try {
             String passwordSHA256 = PrefConnect.getSha256Hash(walletPassword);
             String password= keyViewModel.decryptDataByString(getContext(), PrefConnect.WALLET_KEY_PASSWORD, walletPassword);
@@ -276,11 +279,11 @@ public class WalletsFragment extends Fragment  {
                        break;
                }
             } else {
-                messageDialogFragment(jsonViewModel.getEnterApasswordByLangValues());
+                messageDialogFragment(languageKey, jsonViewModel.getEnterApasswordByLangValues());
             }
         } catch (Exception e) {
            // GlobalMethods.ExceptionError(getContext(), TAG, e);
-            messageDialogFragment(jsonViewModel.getWalletOpenErrorByErrors());
+            messageDialogFragment(languageKey, jsonViewModel.getWalletOpenErrorByErrors());
         }
     }
 

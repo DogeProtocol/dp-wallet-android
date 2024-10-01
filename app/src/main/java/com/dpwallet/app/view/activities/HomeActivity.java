@@ -48,6 +48,7 @@ import com.dpwallet.app.utils.Utility;
 import com.dpwallet.app.view.fragment.BlockchainNetworkAddFragment;
 import com.dpwallet.app.view.fragment.BlockchainNetworkDialogFragment;
 import com.dpwallet.app.view.fragment.BlockchainNetworkFragment;
+import com.dpwallet.app.view.fragment.GetCoinsDogepTokensFragment;
 import com.dpwallet.app.view.fragment.HomeMainFragment;
 import com.dpwallet.app.view.fragment.HomeStartFragment;
 import com.dpwallet.app.view.fragment.HomeWalletFragment;
@@ -75,7 +76,8 @@ public class HomeActivity extends FragmentActivity implements
         BlockchainNetworkAddFragment.OnBlockchainNetworkAddCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
         AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
-        SettingsFragment.OnSettingsCompleteListener, RevealWalletFragment.OnRevealWalletCompleteListener {
+        SettingsFragment.OnSettingsCompleteListener,  GetCoinsDogepTokensFragment.OnGetCoinsCompleteListener,
+        RevealWalletFragment.OnRevealWalletCompleteListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -102,6 +104,7 @@ public class HomeActivity extends FragmentActivity implements
     private TextView textViewSubTitleRetry;
 
     private JsonViewModel jsonViewModel;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -486,6 +489,37 @@ public class HomeActivity extends FragmentActivity implements
         try {
             screenViewType(1);
             beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onSettingsCompleteByGetCoin() {
+        try {
+            screenViewType(1);
+            beginTransaction(GetCoinsDogepTokensFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onGetCoinsCompleteByBackArrow() {
+        try {
+            screenViewType(1);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onGetCoinsCompleteBySendData(String walletPassword) {
+        try {
+            screenViewType(0);
+            bundle.putString("walletPassword", walletPassword);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }

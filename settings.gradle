@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
     }
 }
+
 Properties properties = new Properties()
 File localProps = new File(rootDir.absolutePath, "local.properties")
 if (localProps.exists()) {
@@ -14,6 +15,7 @@ if (localProps.exists()) {
     println "local.properties not found, please create it next to build.gradle and set gpr.user and gpr.key (Create a GitHub package read only + non expiration token at https://github.com/settings/tokens)\n" +
             "Or set GITHUB_USER and GITHUB_TOKEN environment variables"
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -28,6 +30,7 @@ dependencyResolutionManagement {
         }
     }
 }
+
 rootProject.name = "dpwallet"
 include ':app'
 

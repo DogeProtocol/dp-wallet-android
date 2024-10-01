@@ -36,8 +36,7 @@ public class BlockchainNetworkFragment extends Fragment  {
     @BindView(R.id.recycler_blockchain_network)
     RecyclerView recycler;
 
-    private JsonViewModel jsonViewModel;
-    private BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener mBlockchainNetworkListener;
+    private OnBlockchainNetworkCompleteListener mBlockchainNetworkListener;
 
     public static BlockchainNetworkFragment newInstance() {
         BlockchainNetworkFragment fragment = new BlockchainNetworkFragment();
@@ -65,7 +64,10 @@ public class BlockchainNetworkFragment extends Fragment  {
         this.unbinder = ButterKnife.bind((Object) this, view);
         try {
             assert getArguments() != null;
-            jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+
+            String languageKey = getArguments().getString("languageKey");
+
+            JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
             ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_blockchain_network_back_arrow);
             TextView blockchainNetworkTitleTextView = (TextView) getView().findViewById(R.id.textview_blockchain_network_langValues_networks);

@@ -31,8 +31,6 @@ public class ReceiveFragment extends Fragment  {
 
     private static final String TAG = "ReceiveFragment";
 
-    private JsonViewModel jsonViewModel;
-
     private OnReceiveCompleteListener mReceiveListener;
 
     public static ReceiveFragment newInstance() {
@@ -59,9 +57,10 @@ public class ReceiveFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String languageKey = getArguments().getString("languageKey");
         String walletAddress = getArguments().getString("walletAddress");
 
-        jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
         ImageButton receiveBackArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_receive_back_arrow);
         TextView receiveCoinsTextView = (TextView) getView().findViewById(R.id.textview_receive_langValues_receive_coins);

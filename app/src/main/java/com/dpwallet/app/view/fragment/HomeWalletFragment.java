@@ -86,9 +86,10 @@ public class HomeWalletFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         walletPassword = getArguments().getString("walletPassword");
+        String languageKey = getArguments().getString("languageKey");
 
         tempSeedArrayByCreate = null;
-        jsonViewModel = new JsonViewModel(getContext(), getArguments().getString("languageKey"));
+        jsonViewModel = new JsonViewModel(getContext(), languageKey);
         keyViewModel = new KeyViewModel();
 
         LinearLayout homeSetWalletTopLinearLayout = (LinearLayout) getView().findViewById(R.id.top_linear_layout_home_wallet_id);
@@ -193,7 +194,9 @@ public class HomeWalletFragment extends Fragment {
                     message = jsonViewModel.getRetypePasswordMismatchByErrors();
                 }
                 Bundle bundleRoute = new Bundle();
+                bundleRoute.putString("languageKey",languageKey);
                 bundleRoute.putString("message", message);
+
                 FragmentManager fragmentManager = getFragmentManager();
                 MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
                 messageDialogFragment.setCancelable(false);
@@ -267,7 +270,9 @@ public class HomeWalletFragment extends Fragment {
                             android.R.id.text1, seedWordsList);
                 } else {
                     message = jsonViewModel.getSelectOptionByErrors();
+                    bundleRoute.putString("languageKey",languageKey);
                     bundleRoute.putString("message", message);
+
                     FragmentManager fragmentManager = getFragmentManager();
                     MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
                     messageDialogFragment.setCancelable(false);
@@ -340,9 +345,9 @@ public class HomeWalletFragment extends Fragment {
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
 
-                //for (int index = 0; index < 48; index++){
-                //    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
-                //}
+                for (int index = 0; index < 48; index++){
+                    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                }
             }
         });
 
@@ -709,5 +714,4 @@ public class HomeWalletFragment extends Fragment {
         }
         return true;
     }
-
 }

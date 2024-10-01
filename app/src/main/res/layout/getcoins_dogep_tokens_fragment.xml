@@ -9,7 +9,24 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/linerLayout_send_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone">
+
+        <include layout="@layout/retry_layout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linerLayout_send_offline">
+
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -68,10 +85,12 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_getCoins_eth_seed_words"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
                         <TextView
                             android:id="@+id/textview_getCoins_langValues_getCoinsForTokens"
@@ -110,7 +129,6 @@
                             android:paddingBottom="5dp"
                             android:textSize="16dp"
                             android:textColor="@color/colorCommon6" />
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -181,7 +199,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="burden"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_2"
@@ -196,7 +215,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="junk"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_3"
@@ -211,7 +231,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="improve"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_4"
@@ -226,7 +247,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="topic"/>
 
                         </LinearLayout>
 
@@ -299,7 +321,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="recycle"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_6"
@@ -314,7 +337,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="pistol"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_7"
@@ -329,7 +353,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="daring"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_8"
@@ -344,7 +369,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="tag"/>
 
                         </LinearLayout>
 
@@ -417,7 +443,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="already"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_10"
@@ -432,7 +459,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="frozen"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_11"
@@ -447,7 +475,8 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="disease"/>
 
                             <EditText
                                 android:id="@+id/editText_getCoins_text_12"
@@ -462,9 +491,11 @@
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorCommon6"
                                 android:textAlignment="center"
-                                android:textSize="14dp" />
+                                android:textSize="14dp"
+                                android:text="poet"/>
 
                         </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -480,7 +511,68 @@
                                 android:background="@drawable/line_2_shape" />
 
                             <Button
-                                android:id="@+id/button_getCoins_next"
+                                android:id="@+id/button_getCoins_seed_next"
+                                android:background="@drawable/button_green_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical|right"
+                                android:padding="5dp"
+                                android:textAllCaps="false"
+                                android:textColor="@color/colorCommon7" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_getCoins_ethAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_below="@+id/linear_layout_getCoins_eth_seed_words"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textView_getCoins_langValues_select_an_option"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dip"
+                            android:layout_marginBottom="5dp"
+                            android:text="Select Ethereum Address" />
+
+                        <Spinner
+                            android:id="@+id/spinner_ethAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/btn_dropdown"
+                            android:spinnerMode="dropdown"/>
+
+                        <TextView
+                            android:id="@+id/textview_getCoins_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorCommon6" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha="0.2"
+                                android:background="@drawable/line_2_shape" />
+
+                            <Button
+                                android:id="@+id/button_getCoins_ethAddress_next"
                                 android:background="@drawable/button_green_selector"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -502,4 +594,5 @@
 
     </ScrollView>
 
+    </LinearLayout>
 </RelativeLayout>
