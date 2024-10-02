@@ -1,11 +1,12 @@
 package com.dpwallet.app.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.ToneGenerator;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -25,11 +26,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-//import com.dpwallet.app.Manifest;
-import android.Manifest;
 import com.dpwallet.app.R;
 import com.dpwallet.app.api.read.model.BalanceResponse;
 import com.dpwallet.app.api.write.model.TransactionSummaryResponse;
@@ -42,14 +42,18 @@ import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.gms.common.util.Strings;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+
+import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.pm.PackageManager;
+
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import java.io.IOException;
-
-import java.security.InvalidKeyException;
 
 public class SendFragment extends Fragment  {
     private static final String TAG = "SendFragment";
@@ -65,6 +69,13 @@ public class SendFragment extends Fragment  {
     private SendFragment.OnSendCompleteListener mSendListener;
     private KeyViewModel keyViewModel = new KeyViewModel();
     private JsonViewModel jsonViewModel;
+
+    private BarcodeDetector barcodeDetector;
+    private CameraSource cameraSource;
+    private static final int REQUEST_CAMERA_PERMISSION = 201;
+
+    private final int CAMERA_PERMISSION_CODE = 1;
+    private final int CAMERA_REQUEST_CODE = 2;
 
     public static SendFragment newInstance() {
         SendFragment fragment = new SendFragment();
@@ -143,7 +154,7 @@ public class SendFragment extends Fragment  {
 
             qrCodeImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    QRCodeDialogFragment(view, quantityToSendEditText);
+                    QRCodeDialogFragment(view, addressToSendEditText);
                 }
             });
 
@@ -542,15 +553,10 @@ public class SendFragment extends Fragment  {
         }
     }
 
+
     private void QRCodeDialogFragment(View view, EditText walletAddressEditText) {
         try {
 
-
-            int REQUEST_CAMERA_PERMISSION = 201;
-            final String[] barcodeData = new String[1];
-            CardView cardView;
-
-            //Alert unlock dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext())
                     .setTitle((CharSequence) "").setView((int)
                             R.layout.qrcode_dialog_fragment).create();
@@ -562,18 +568,16 @@ public class SendFragment extends Fragment  {
             TextView qrcodeTextView = dialog.findViewById(R.id.textView_qrcode);
 
             Button okButton = (Button) dialog.findViewById(R.id.button_qrcode_langValues_ok);
-            okButton.setText(jsonViewModel.getUnlockByLangValues());
-
             Button closeButton = (Button) dialog.findViewById(R.id.button_qrcode_langValues_close);
+
+            okButton.setText(jsonViewModel.getOkByLangValues());
             closeButton.setText(jsonViewModel.getCloseByLangValues());
 
-            Toast.makeText(getActivity(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
-            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(getActivity())
+            barcodeDetector = new BarcodeDetector.Builder(getContext())
                     .setBarcodeFormats(Barcode.ALL_FORMATS)
                     .build();
 
-            CameraSource cameraSource = new CameraSource.Builder(getActivity(), barcodeDetector)
+            cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
                     .setRequestedPreviewSize(1920, 1080)
                     .setAutoFocusEnabled(true)
                     .build();
@@ -582,13 +586,15 @@ public class SendFragment extends Fragment  {
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
                     try {
-                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                             cameraSource.start(qrCodeSurfaceView.getHolder());
                         } else {
                             ActivityCompat.requestPermissions(getActivity(), new
                                     String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                            dialog.dismiss();
+                            dialog.setCancelable(false);
+                            dialog.show();
                         }
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -609,35 +615,20 @@ public class SendFragment extends Fragment  {
             barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
                 @Override
                 public void release() {
-                    Toast.makeText(getActivity(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
-                    final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                    if (barcodes.size() != 0) {
-
+                    final SparseArray<Barcode> barCode = detections.getDetectedItems();
+                    if (barCode.size() > 0) {
                         qrcodeTextView.post(new Runnable() {
-
                             @Override
                             public void run() {
-                                ToneGenerator toneGen1 = null;
-                                if (barcodes.valueAt(0).email != null) {
-                                    qrcodeTextView.removeCallbacks(null);
-                                    barcodeData[0] = barcodes.valueAt(0).email.address;
-                                    qrcodeTextView.setText(barcodeData[0]);
-                                    toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-                                    intentToBrowser(barcodeData[0]);
-                                } else {
-
-                                    barcodeData[0] = barcodes.valueAt(0).displayValue;
-                                    qrcodeTextView.setText(barcodeData[0]);
-                                    toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-
-                                }
+                                String intentData = barCode.valueAt(0).displayValue;
+                                qrcodeTextView.setText(intentData);
                             }
                         });
-
                     }
                 }
             });
@@ -646,6 +637,7 @@ public class SendFragment extends Fragment  {
                 public void onClick(View v) {
                     cameraSource.release();
                     walletAddressEditText.setText(qrcodeTextView.getText());
+                    dialog.dismiss();
                 }
             });
 
@@ -660,8 +652,5 @@ public class SendFragment extends Fragment  {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
-    private  void intentToBrowser(String  url){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
-    }
+
 }
