@@ -73,6 +73,10 @@ public class KeyViewModel  extends ViewModel{
         return _keyInteract.getAccountAddress(pkKey);
     }
 
+    public String isValidAddress(String quantumAddress) throws ServiceException {
+        return _keyInteract.isValidAddress(quantumAddress);
+    }
+
     public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
                               String amount, String gasLimit,  String chainId) throws ServiceException {
         return _keyInteract.getTxnSigningHash(fromAddress, nonce, toAddress,

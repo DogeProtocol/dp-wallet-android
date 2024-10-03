@@ -168,6 +168,22 @@ public class KeyInteract {
         }
     }
 
+    public String isValidAddress(String quantumAddress) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.isValidAddress(quantumAddress);
+            if (result.getException() != null) {
+                Timber.tag("isValidAddress").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("isValidAddress").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("isValidAddress").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
     public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
                               String amount, String gasLimit, String chainId) throws ServiceException {
         try {

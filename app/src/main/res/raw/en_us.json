@@ -44,11 +44,11 @@
       "choices": [
         "Ethereum",
         "DogeP ERC20 Tokens",
-        "Quantum Mainnet Coins",
+        "Quantum Coin Mainnet",
         "All the above"
       ],
       "correctChoice": 3,
-      "afterQuizInfo": "This is correct. You should only send Quantum Mainnet coins to this wallet."
+      "afterQuizInfo": "This is correct. You should only send Quantum Coin Mainnet  to this wallet."
     },
     {
       "title": "Lost wallet or password",

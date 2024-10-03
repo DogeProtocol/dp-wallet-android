@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -73,9 +74,6 @@ public class SendFragment extends Fragment  {
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-
-    private final int CAMERA_PERMISSION_CODE = 1;
-    private final int CAMERA_REQUEST_CODE = 2;
 
     public static SendFragment newInstance() {
         SendFragment fragment = new SendFragment();
@@ -154,7 +152,7 @@ public class SendFragment extends Fragment  {
 
             qrCodeImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    QRCodeDialogFragment(view, addressToSendEditText);
+                    QRCodeDialogFragment(view, addressToSendEditText, languageKey);
                 }
             });
 
@@ -554,12 +552,12 @@ public class SendFragment extends Fragment  {
     }
 
 
-    private void QRCodeDialogFragment(View view, EditText walletAddressEditText) {
+    private void QRCodeDialogFragment(View view, EditText walletAddressEditText, String languageKey) {
         try {
-
             AlertDialog dialog = new AlertDialog.Builder(getContext())
                     .setTitle((CharSequence) "").setView((int)
                             R.layout.qrcode_dialog_fragment).create();
+
             dialog.dismiss();
             dialog.setCancelable(false);
             dialog.show();
@@ -589,11 +587,17 @@ public class SendFragment extends Fragment  {
                         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                             cameraSource.start(qrCodeSurfaceView.getHolder());
                         } else {
-                            ActivityCompat.requestPermissions(getActivity(), new
-                                    String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-                            dialog.dismiss();
-                            dialog.setCancelable(false);
-                            dialog.show();
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))
+                            {
+                                qrcodeTextView.setText(R.string.send_camara_permission_description);
+                                Toast.makeText(getActivity(), R.string.send_camara_permission_description, Toast.LENGTH_SHORT).show();
+                            } else {
+                                ActivityCompat.requestPermissions(getActivity(), new
+                                        String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                                dialog.dismiss();
+                                dialog.setCancelable(false);
+                                dialog.show();
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -636,7 +640,12 @@ public class SendFragment extends Fragment  {
             okButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     cameraSource.release();
-                    walletAddressEditText.setText(qrcodeTextView.getText());
+                    assert qrcodeTextView != null;
+                    if(qrcodeTextView.getText().toString().startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
+                        walletAddressEditText.setText(qrcodeTextView.getText());
+                    } else {
+                        walletAddressEditText.setText("");
+                    }
                     dialog.dismiss();
                 }
             });

@@ -195,6 +195,8 @@
     <string name="send_quantity_description">Quantity to send</string>
     <string name="send_button_send_title">Send</string>
 
+    <string name="send_camara_permission_description">The camera permission is restricted and unavailable. Give permission manually.</string>
+
     <string name="send_address_message_description">Enter the to address correctly!</string>
     <string name="send_quantity_message_description">Enter the to quantity correctly!</string>
 
