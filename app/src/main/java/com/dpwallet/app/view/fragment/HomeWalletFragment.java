@@ -104,8 +104,8 @@ public class HomeWalletFragment extends Fragment {
         EditText homeSetWalletRetypePasswordEditText = (EditText) getView().findViewById(R.id.editText_home_set_wallet_retype_password);
         Button homeSetWalletNextButton = (Button) getView().findViewById(R.id.button_home_set_wallet_next);
 
-        homeSetWalletPasswordEditText.setText("Test123$$Test123$$");
-        homeSetWalletRetypePasswordEditText.setText("Test123$$Test123$$");
+        ////homeSetWalletPasswordEditText.setText("Test123$$Test123$$");
+        ////homeSetWalletRetypePasswordEditText.setText("Test123$$Test123$$");
 
         LinearLayout homeCreateRestoreWalletLinearLayout = (LinearLayout) getView().findViewById(R.id.linear_layout_home_create_restore_wallet);
         TextView homeCreateRestoreWalletTitleTextView = (TextView) getView().findViewById(R.id.textView_home_create_restore_wallet_title);
@@ -345,9 +345,10 @@ public class HomeWalletFragment extends Fragment {
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
 
-                for (int index = 0; index < 48; index++){
-                    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
-                }
+
+                ////for (int index = 0; index < 48; index++){
+                ////    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                ////}
             }
         });
 

@@ -92,7 +92,7 @@ public class WalletAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", address)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", address)))
                     );
                 }
             });

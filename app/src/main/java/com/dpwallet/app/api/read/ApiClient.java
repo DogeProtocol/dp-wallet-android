@@ -51,7 +51,7 @@ import com.dpwallet.app.utils.GlobalMethods;
 
 public class ApiClient {
 
-    private String basePath = GlobalMethods.SCAN_API_URL;
+    //private String basePath = GlobalMethods.SCAN_API_URL;
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;
@@ -103,7 +103,7 @@ public class ApiClient {
      * @return Base path
      */
     public String getBasePath() {
-        return basePath;
+        return GlobalMethods.SCAN_API_URL;
     }
 
     /**
@@ -113,7 +113,7 @@ public class ApiClient {
      * @return An instance of OkHttpClient
      */
     public ApiClient setBasePath(String basePath) {
-        this.basePath = basePath;
+        GlobalMethods.SCAN_API_URL = basePath;
         return this;
     }
 
@@ -1017,7 +1017,7 @@ public class ApiClient {
      */
     public String buildUrl(String path, List<Pair> queryParams, List<Pair> collectionQueryParams) {
         final StringBuilder url = new StringBuilder();
-        url.append(basePath).append(path);
+        url.append(GlobalMethods.SCAN_API_URL).append(path);
 
         if (queryParams != null && !queryParams.isEmpty()) {
             // support (constant) query string in `path`, e.g. "/posts?draft=1"

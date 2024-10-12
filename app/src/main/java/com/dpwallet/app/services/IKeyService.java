@@ -39,6 +39,7 @@ public interface IKeyService {
 
 
     Result<Object> getParseBigFloat(String value);
+    Result<Object> getParseBigFloatInner(String value);
     Result<Object> getDogeProtocolToWei(String value);
     Result<Object> getWeiToDogeProtocol(String value);
     

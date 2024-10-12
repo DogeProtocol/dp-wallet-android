@@ -304,6 +304,27 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_PublicKeyFromPrivateKey(JNIEnv* en
 
     jint *sKey = env->GetIntArrayElements(skKey, NULL);
 
+    int j=0;
+    for (int i = 0; i < CRYPTO_SECRETKEY_BYTES; i++)
+    {
+        switch (i) {
+            case 32 ... 64:
+                pk[j] = (unsigned char) sKey[i];
+                j = j + 1;
+                break;
+            case (64+2560) ... (64+2560+1312):
+                pk[j] = (unsigned char) sKey[i];
+                j = j + 1;
+                break;
+            case (64+2560+1312+64) ... CRYPTO_SECRETKEY_BYTES:
+                pk[j] = (unsigned char) sKey[i];
+                j = j + 1;
+                break;
+            default:
+                break;
+        }
+    }
+
     //crypto_public_key_from_private_key_falcon_ed25519(pk, sk);
 
     std::ostringstream opk;
@@ -477,6 +498,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxnSigningHash(JNIEnv* env, jobjec
                         jstring gasLimit, jstring data, jstring chainId)
 {
     jboolean isCopy;
+
     char *f = const_cast<char *>(env->GetStringUTFChars(from, &isCopy));
     char *n = const_cast<char *>(env->GetStringUTFChars(nonce, &isCopy));
     char *t = const_cast<char *>(env->GetStringUTFChars(to, &isCopy));
@@ -485,7 +507,8 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxnSigningHash(JNIEnv* env, jobjec
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
 
-    TxnSigningHash_return r = TxnSigningHash(f, n, t, v, gl, d, c);
+    TxnSigningHash_return r = TxnSigningHash(f, n, t, v, gl,
+                                             d, c);
 
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
@@ -565,6 +588,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxHash(JNIEnv* env, jobject ,
     env->SetObjectArrayElement(keyArray, 0, result);
     env->SetObjectArrayElement(keyArray, 1, error);
 
+
     memset(pk, 0, CRYPTO_PUBLICKEY_BYTES);
     free(pk);
 
@@ -590,6 +614,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxHash(JNIEnv* env, jobject ,
     env->ReleaseStringUTFChars(data, d);
     env->ReleaseStringUTFChars(chainId, c);
 
+
     env->ReleaseIntArrayElements(pkKey, pKey, 0);
     env->ReleaseIntArrayElements(sign, sig, 0);
 
@@ -610,6 +635,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxData(JNIEnv* env, jobject ,
     char *gl = const_cast<char *>(env->GetStringUTFChars(gasLimit, &isCopy));
     char *d = const_cast<char *>(env->GetStringUTFChars(data, &isCopy));
     char *c = const_cast<char *>(env->GetStringUTFChars(chainId, &isCopy));
+
 
     jint *pKey = env->GetIntArrayElements(pkKey, NULL);
     char *pk = (char*) malloc(CRYPTO_PUBLICKEY_BYTES * sizeof(1));
@@ -651,6 +677,7 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxData(JNIEnv* env, jobject ,
         memset(r.r0, 0, sizeof(strlen(r.r0)));
         free(r.r0);
     }
+
     if(r.r1 != NULL)
     {
         memset(r.r1, 0, sizeof(strlen(r.r1)));
@@ -671,6 +698,22 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_TxData(JNIEnv* env, jobject ,
     return keyArray;
 }
 
+char **new_argv(int count, ...)
+{
+    va_list args;
+    int i;
+    char **argv = static_cast<char **>(malloc((count + 1) * sizeof(char *)));
+    char *temp;
+    va_start(args, count);
+    for (i = 0; i < count; i++) {
+        temp = va_arg(args, char*);
+        argv[i] = static_cast<char *>(malloc(sizeof(temp)));
+        argv[i] = temp;
+    }
+    //argv[i] = NULL;
+    va_end(args);
+    return argv;
+}
 
 static jobjectArray make_row(JNIEnv *env, jsize count, const char* elements[])
 {
@@ -690,7 +733,6 @@ extern "C" JNIEXPORT jobjectArray JNICALL
 Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_ContractData(JNIEnv* env, jobject ,
                                                          jstring method, jstring abidata, jstring argument1, jstring argument2)
 {
-    const jsize NumColumns = 1;
     const jsize NumRows = 4;
 
     jboolean isCopy;
@@ -700,24 +742,9 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_ContractData(JNIEnv* env, jobject 
     char *arg1 = const_cast<char *>(env->GetStringUTFChars(argument1, &isCopy));
     char *arg2 = const_cast<char *>(env->GetStringUTFChars(argument2, &isCopy));
 
-    const char* methods[] = {reinterpret_cast<const char *>(env->NewStringUTF(m))};
-    const char* abiDatas[] = {reinterpret_cast<const char *>(env->NewStringUTF(a))};
-    const char* arguments1[] = {reinterpret_cast<const char *>(env->NewStringUTF(arg1)) };
-    const char* arguments2[] = { reinterpret_cast<const char *>(env->NewStringUTF(arg2))};
+    char **args = new_argv(NumRows,  m, a, arg1, arg2);
 
-    jobjectArray argv1 = make_row(env, NumColumns, methods);
-    jobjectArray argv2 = make_row(env, NumColumns, abiDatas);
-    jobjectArray argv3 = make_row(env, NumColumns, arguments1);
-    jobjectArray argv4 = make_row(env, NumColumns, arguments2);
-
-    jobjectArray args = env->NewObjectArray( NumRows, env->GetObjectClass( argv1), 0);
-
-    env->SetObjectArrayElement(args, 0,  argv1);
-    env->SetObjectArrayElement(args, 1, argv2);
-    env->SetObjectArrayElement(args, 2, argv3);
-    env->SetObjectArrayElement(args, 3, argv4);
-
-    ContractData_return r = ContractData(reinterpret_cast<char **>(args), NumRows);
+    ContractData_return r = ContractData(args, NumRows);
 
     jstring result = env->NewStringUTF(r.r0);
     jstring error = env->NewStringUTF(r.r1);
@@ -746,28 +773,12 @@ Java_com_dpwallet_app_hybrid_HybridPqcJNIImpl_ContractData(JNIEnv* env, jobject 
     env->ReleaseStringUTFChars(abidata, a);
     env->ReleaseStringUTFChars(argument1, arg1);
     env->ReleaseStringUTFChars(argument2, arg2);
-
-    memset(methods, 0, sizeof(strlen(methods[0])));
-    free(methods);
-
-    memset(abiDatas, 0, sizeof(strlen(abiDatas[0])));
-    free(abiDatas);
-
-    memset(arguments1, 0, sizeof(strlen(arguments1[0])));
-    free(arguments1);
-
-    memset(arguments2, 0, sizeof(strlen(arguments2[0])));
-    free(arguments2);
-
-    env->ReleaseStringUTFChars(reinterpret_cast<jstring>(argv1),
-                               reinterpret_cast<const char *>(methods));
-    env->ReleaseStringUTFChars(reinterpret_cast<jstring>(argv2),
-                               reinterpret_cast<const char *>(abiDatas));
-    env->ReleaseStringUTFChars(reinterpret_cast<jstring>(argv3),
-                               reinterpret_cast<const char *>(arguments1));
-    env->ReleaseStringUTFChars(reinterpret_cast<jstring>(argv4),
-                               reinterpret_cast<const char *>(arguments2));
+    if(args != NULL) {
+        memset(args, 0, sizeof(strlen(*args)));
+        free(args);
+    }
     return keyArray;
+
 }
 
 

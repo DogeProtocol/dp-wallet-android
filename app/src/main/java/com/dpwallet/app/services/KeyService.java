@@ -195,6 +195,19 @@ public class KeyService implements IKeyService
     }
 
     @Override
+    public Result<Object> getParseBigFloatInner(String value)
+    {
+        String[] parse = _iHybridPqcJNI.ParseBigFloatInner(value);
+        String parseResult = parse[0];
+        String parseError = parse[1];
+        if(!parseResult.isEmpty())
+        {
+            return new Result<Object>(parseResult, null);
+        }
+        return new Result<Object>(null, parseError);
+    }
+
+    @Override
     public Result<Object> getDogeProtocolToWei(String value)
     {
         String[] wei = _iHybridPqcJNI.DogeProtocolToWei(value);

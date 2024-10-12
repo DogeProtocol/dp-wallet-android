@@ -91,6 +91,21 @@
                             android:alpha="0.2"
                             android:background="@drawable/line_2_shape" />
 
+                        <TextView
+                            android:id="@+id/textView_send_langValue_network"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:textStyle="bold"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/textView_send_network_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:textSize="14dp"
+                            android:textColor="@color/colorCommon6" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -101,9 +116,8 @@
 
                             <TextView
                                 android:id="@+id/textView_send_langValue_balance"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
                                 android:textSize="16dp"
                                 android:textStyle="bold"/>
                             <LinearLayout
@@ -111,13 +125,24 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="left|center_vertical"
                                 android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_send_coin_symbol"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:textSize="24dp"
+                                    android:textColor="@color/colorCommon6"
+                                    android:visibility="gone"/>
+
                                 <TextView
                                     android:id="@+id/textView_send_balance_value"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textSize="18dp"
                                     android:textStyle="bold"
-                                    android:textSize="20dp"
-                                    android:text="0"/>
+                                    android:textColor="@color/colorCommon6" />
 
                                 <ProgressBar
                                     android:id="@+id/progress_send_loader"

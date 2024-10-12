@@ -51,8 +51,8 @@ public class GlobalMethods {
     public static String TXN_API_URL = null;
 
     public static String BLOCK_EXPLORER_URL = null;
-    public static String BLOCK_EXPLORER_TX_HASH_URL = BLOCK_EXPLORER_URL + "/txn/{txhash}";
-    public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = BLOCK_EXPLORER_URL + "/account/{address}/txn/page";
+    public static String BLOCK_EXPLORER_TX_HASH_URL =  "/txn/{txhash}";
+    public static String BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL = "/account/{address}/txn/page";
 
     public static String DP_DOCS_URL = "https://dpdocs.org/";
 
@@ -74,7 +74,7 @@ public class GlobalMethods {
     public static int ADDRESS_LENGTH = 66;
     public static String ADDRESS_START_PREFIX = "0x";
     public static int ethAddressSeedDrivePathCount = 100;
-
+    public static String COIN_SYMBOL = "";
 
    // public static int TOAST_SHOW_LENGTH = 1;
 

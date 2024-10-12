@@ -60,12 +60,11 @@ public class KeyViewModel  extends ViewModel{
         return _keyInteract.verifyAccount(message, sign, pkKey);
     }
 
-
-
     public int[] scrypt(int[] skKey, int[] salt) throws ServiceException {
         return _keyInteract.scrypt(skKey, salt);
     }
-    public int[] publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
+
+    public String publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
         return _keyInteract.publicKeyFromPrivateKey(skKey);
     }
 
@@ -77,11 +76,6 @@ public class KeyViewModel  extends ViewModel{
         return _keyInteract.isValidAddress(quantumAddress);
     }
 
-    public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
-                              String amount, String gasLimit,  String chainId) throws ServiceException {
-        return _keyInteract.getTxnSigningHash(fromAddress, nonce, toAddress,
-                amount, gasLimit, chainId);
-    }
 
     public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
                                    String amount, String gasLimit, String data, String chainId) throws ServiceException {
@@ -90,15 +84,9 @@ public class KeyViewModel  extends ViewModel{
     }
 
     public String getTxHash(String fromAddress, String nonce, String toAddress,
-                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+                            String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         return _keyInteract.getTxHash(fromAddress, nonce, toAddress,
-                amount, gasLimit,  chainId, pkKey, sig);
-    }
-
-    public String getTxData(String fromAddress, String nonce, String toAddress,
-                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
-        return _keyInteract.getTxData(fromAddress, nonce, toAddress,
-                amount, gasLimit, chainId, pkKey, sig);
+                amount, gasLimit, data, chainId, pkKey, sig);
     }
 
     public String getTxData(String fromAddress, String nonce, String toAddress,
@@ -113,6 +101,10 @@ public class KeyViewModel  extends ViewModel{
 
     public String getParseBigFloat(String value) throws ServiceException {
         return _keyInteract.getParseBigFloat(value);
+    }
+
+    public String getParseBigFloatInner(String value) throws ServiceException {
+        return _keyInteract.getParseBigFloatInner(value);
     }
 
     public String getDogeProtocolToWei(String value) throws ServiceException {

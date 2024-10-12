@@ -1,5 +1,6 @@
 package com.dpwallet.app.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -102,6 +103,7 @@ public class SendFragment extends Fragment  {
             String languageKey = getArguments().getString("languageKey");
             String walletAddress = getArguments().getString("walletAddress");
             String sendPassword = getArguments().getString("sendPassword");
+            ////String sendPassword = "Test123$$Test123$$"; //getArguments().getString("sendPassword");
 
             jsonViewModel = new JsonViewModel(getContext(), languageKey);
 
@@ -110,10 +112,20 @@ public class SendFragment extends Fragment  {
             TextView sendTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_send);
             sendTextView.setText(jsonViewModel.getSendByLangValues());
 
+            TextView sendNetworkTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_network);
+            sendNetworkTextView.setText(jsonViewModel.getNetworkByLangValues());
+
+            TextView sendNetworkValueTextView = (TextView) getView().findViewById(R.id.textView_send_network_value);
+            sendNetworkValueTextView.setText( GlobalMethods.BLOCKCHAIN_NAME);
+
             TextView balanceTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_balance);
             balanceTextView.setText(jsonViewModel.getBalanceByLangValues());
 
+            TextView balanceCoinSymbolTextView = (TextView) getView().findViewById(R.id.textView_send_coin_symbol);
+            balanceCoinSymbolTextView.setText(GlobalMethods.COIN_SYMBOL);
+
             TextView balanceValueTextView = (TextView) getView().findViewById(R.id.textView_send_balance_value);
+
             ProgressBar progressBar = (ProgressBar)  getView().findViewById(R.id.progress_send_loader);
 
             TextView addressToSendTextView = (TextView) getView().findViewById(R.id.textView_send_address_to_send);
@@ -132,6 +144,11 @@ public class SendFragment extends Fragment  {
 
             Button sendButton = (Button) getView().findViewById(R.id.button_send_send);
             sendButton.setText(jsonViewModel.getSendByLangValues());
+
+            //////////////////////////////////////////////////////////////
+            ////addressToSendEditText.setText("0xF0CC7651951D8B08Dac76f9E03f22374935661fB134E402f0943981282f5B047");
+            ////quantityToSendEditText.setText("50000");
+            //////////////////////////////////////////////////////////////
 
             ProgressBar progressBarSendCoins = (ProgressBar)  getView().findViewById(R.id.progress_loader_send_coins);
 
@@ -169,18 +186,18 @@ public class SendFragment extends Fragment  {
                                 if (quantityToSendEditText.getText().toString().length() > 0) {
                                     String toAddress = addressToSendEditText.getText().toString();
                                     String quantity = quantityToSendEditText.getText().toString();
-                                    String dp_wei = (String) keyViewModel.getDogeProtocolToWei(quantity);
+
                                     if (sendPassword == null || sendPassword.isEmpty()) {
                                         if (progressBarSendCoins.getVisibility() == View.VISIBLE) {
                                             message = getResources().getString(R.string.send_transaction_message_exits);
                                             GlobalMethods.ShowToast(getContext(), message);
                                         } else {
                                             unlockDialogFragment(view, progressBarSendCoins,
-                                                    walletAddress, toAddress, dp_wei, languageKey);
+                                                    walletAddress, toAddress, quantity, languageKey);
                                         }
                                     } else {
                                         sendTransaction(getContext(), progressBarSendCoins,
-                                                walletAddress, toAddress, dp_wei, sendPassword, languageKey);
+                                                walletAddress, toAddress, quantity, sendPassword, languageKey);
                                     }
                                     return;
                                 }
@@ -254,7 +271,7 @@ public class SendFragment extends Fragment  {
     }
 
     private void unlockDialogFragment(View view, ProgressBar progressBarSendCoins,
-                                     String walletAddress, String toAddress, String dp_wei, String languageKey) {
+                                     String walletAddress, String toAddress, String quantity, String languageKey) {
         try {
             //Alert unlock dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -290,7 +307,7 @@ public class SendFragment extends Fragment  {
                     if(sendButtonStatus == 1){
                         dialog.dismiss();
                         sendTransaction(getContext(), progressBarSendCoins,
-                                walletAddress, toAddress, dp_wei, password.trim(), languageKey);
+                                walletAddress, toAddress, quantity, password.trim(), languageKey);
                     }
                     sendButtonStatus = 2;
                 }
@@ -363,7 +380,7 @@ public class SendFragment extends Fragment  {
     }
 
     private void sendTransaction(Context context, ProgressBar progressBar,
-                                 String fromAddress, String toAddress, String dp_wei, String password, String languageKey) {
+                                 String fromAddress, String toAddress, String quantity, String password, String languageKey) {
         try {
             if (progressBar.getVisibility() == View.VISIBLE) {
                 String message = getResources().getString(R.string.send_transaction_message_exits);
@@ -372,8 +389,10 @@ public class SendFragment extends Fragment  {
                 progressBar.setVisibility(View.VISIBLE);
                 String[] keyData = keyViewModel.decryptDataByAccount(context, fromAddress, password);
                 int[] SK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[0]);
+                int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[1]);
 
-                getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, dp_wei, SK_KEY, password, languageKey);
+                getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, quantity, SK_KEY, PK_KEY,
+                        password, languageKey);
             }
             return;
         } catch (KeyServiceException e){
@@ -387,7 +406,7 @@ public class SendFragment extends Fragment  {
     }
 
     private  void getBalanceNonceByAccount(Context context, ProgressBar progressBar, String fromAddress, String toAddress,
-                                           String dp_wei, int[] SK_KEY, String password, String languageKey) {
+                                           String quantity, int[] SK_KEY, int[] PK_KEY, String password, String languageKey) {
         try{
             linerLayoutOffline.setVisibility(View.GONE);
 
@@ -401,7 +420,7 @@ public class SendFragment extends Fragment  {
                     @Override
                     public void onFinished(BalanceResponse balanceResponse) {
                         getTxData(context, progressBar, balanceResponse, fromAddress, toAddress,
-                                dp_wei, SK_KEY, password, languageKey);
+                                quantity, SK_KEY, PK_KEY, password, languageKey);
                     }
                     @Override
                     public void onFailure(com.dpwallet.app.api.read.ApiException e) {
@@ -440,8 +459,8 @@ public class SendFragment extends Fragment  {
     }
 
     private  void getTxData(Context context, ProgressBar progressBar, BalanceResponse balanceResponse,
-                            String fromAddress, String toAddress, String dp_wei,
-                            int[] SK_KEY, String password, String languageKey){
+                            String fromAddress, String toAddress, String quantity,
+                            int[] SK_KEY, int[] PK_KEY, String password, String languageKey){
         try {
             String NONCE = "0";
 
@@ -453,18 +472,17 @@ public class SendFragment extends Fragment  {
                 }
             }
 
-            int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
             int[] message  = (int[]) keyViewModel.getTxnSigningHash(fromAddress,  NONCE,
-                    toAddress, dp_wei, GlobalMethods.GAS_QCN_LIMIT,  GlobalMethods.NETWORK_ID);
+                    toAddress, quantity, GlobalMethods.GAS_QCN_LIMIT, "", GlobalMethods.NETWORK_ID);
             int[] SIGN = GlobalMethods.GetIntDataArrayByString(keyViewModel.signAccount(message, SK_KEY));
             int verify = (int) keyViewModel.verifyAccount(message, SIGN, PK_KEY);
 
             if(verify==0){
-                //String txHash = (String) keyViewModel.getTxHash(fromAddress,  NONCE, toAddress, dp_wei,
+                //String txHash = (String) keyViewModel.getTxHash(fromAddress,  NONCE, toAddress, quantity,
                 //        GlobalMethods.GAS, GlobalMethods.GAS_PRICE,  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
 
-                String txData = (String) keyViewModel.getTxData(fromAddress,  NONCE, toAddress, dp_wei,
-                        GlobalMethods.GAS_QCN_LIMIT,  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
+                String txData = (String) keyViewModel.getTxData(fromAddress,  NONCE, toAddress, quantity,
+                        GlobalMethods.GAS_QCN_LIMIT, "",  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
 
                 transactionByAccount(context, progressBar, txData, password);
             } else {

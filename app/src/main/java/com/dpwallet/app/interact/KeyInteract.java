@@ -119,7 +119,7 @@ public class KeyInteract {
         }
     }
 
-    public int[] publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
+    public String publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.publicKeyFromPrivateKey(skKey);
             if (result.getException() != null) {
@@ -127,7 +127,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("publicKeyFromPrivateKey").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("publicKeyFromPrivateKey").d("error %s", ex.getMessage());
@@ -188,7 +188,7 @@ public class KeyInteract {
                               String amount, String gasLimit, String chainId) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getTxnSigningHash(fromAddress, nonce, toAddress,
-                    amount, gasLimit, "",  chainId);
+                    amount, gasLimit, null,  chainId);
             if (result.getException() != null) {
                 Timber.tag("getTxMessage").d("error %s", result.getException());
                 throw new ServiceException((String) result.getException());
@@ -223,24 +223,6 @@ public class KeyInteract {
 
 
     public String getTxHash(String fromAddress, String nonce, String toAddress,
-                              String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
-        try {
-            Result<Object> result = _iKeyService.getTxHash(fromAddress, nonce, toAddress,
-                    amount, gasLimit, "",  chainId, pkKey, sig);
-            if (result.getException() != null) {
-                Timber.tag("getTxHash").d("error %s", result.getException());
-                throw new ServiceException((String) result.getException());
-            }
-            Timber.tag("getTxHash").d("success");
-            return (String) result.getResult();
-        }
-        catch(Exception ex) {
-            Timber.tag("getTxHash").d("error %s", ex.getMessage());
-            throw new ServiceException((String) ex.getMessage());
-        }
-    }
-
-    public String getTxHash(String fromAddress, String nonce, String toAddress,
                             String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getTxHash(fromAddress, nonce, toAddress,
@@ -258,23 +240,6 @@ public class KeyInteract {
         }
     }
 
-    public String getTxData(String fromAddress, String nonce, String toAddress,
-                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
-        try {
-            Result<Object> result = _iKeyService.getTxData(fromAddress, nonce, toAddress,
-                    amount, gasLimit, "", chainId, pkKey, sig);
-            if (result.getException() != null) {
-                Timber.tag("getTxData").d("error %s", result.getException());
-                throw new ServiceException((String) result.getException());
-            }
-            Timber.tag("getTxData").d("success");
-            return (String) result.getResult();
-        }
-        catch(Exception ex) {
-            Timber.tag("getTxData").d("error %s", ex.getMessage());
-            throw new ServiceException((String) ex.getMessage());
-        }
-    }
 
     public String getTxData(String fromAddress, String nonce, String toAddress,
                             String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
@@ -322,6 +287,22 @@ public class KeyInteract {
         }
         catch(Exception ex) {
             Timber.tag("getParseBigFloat").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+    public String getParseBigFloatInner(String value) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.getParseBigFloatInner(value);
+            if (result.getException() != null) {
+                Timber.tag("getParseBigFloatInner").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("getParseBigFloatInner").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("getParseBigFloatInner").d("error %s", ex.getMessage());
             throw new ServiceException((String) ex.getMessage());
         }
     }

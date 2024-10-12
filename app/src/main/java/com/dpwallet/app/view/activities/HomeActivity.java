@@ -37,6 +37,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ClipboardManager;
 
 import com.dpwallet.app.R;
+import com.dpwallet.app.api.read.ApiClient;
 import com.dpwallet.app.api.read.model.BalanceResponse;
 import com.dpwallet.app.asynctask.read.AccountBalanceRestTask;
 import com.dpwallet.app.entity.ServiceException;
@@ -105,7 +106,6 @@ public class HomeActivity extends FragmentActivity implements
 
     private JsonViewModel jsonViewModel;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +146,7 @@ public class HomeActivity extends FragmentActivity implements
             ImageButton copyClipboardImageButton = (ImageButton) findViewById(R.id.imageButton_home_copy_clipboard);
             ImageButton blockExploreImageButton = (ImageButton) findViewById(R.id.imageButton_home_block_explore);
 
-            TextView balanceTitleTextView = (TextView) findViewById(R.id.textView_home_balance_title);
+            TextView balanceCoinSymbolTextView = (TextView) findViewById(R.id.textView_home_coin_symbol);
             balanceValueTextView = (TextView) findViewById(R.id.textView_home_balance_value);
             ImageButton refreshImageButton = (ImageButton) findViewById(R.id.imageButton_home_refresh);
             progressBar = (ProgressBar) findViewById(R.id.progress_home_loader);
@@ -168,7 +168,8 @@ public class HomeActivity extends FragmentActivity implements
             Button buttonRetry = (Button) findViewById(R.id.button_retry);
 
             titleTextView.setText(jsonViewModel.getTitleByLangValues());
-            balanceTitleTextView.setText(jsonViewModel.getBalanceByLangValues());
+            //balanceTitleTextView.setText(jsonViewModel.getBalanceByLangValues());
+            balanceCoinSymbolTextView.setText(GlobalMethods.COIN_SYMBOL);
 
             sendTitleTextView.setText(jsonViewModel.getSendByLangValues());
             receiveTitleTextView.setText(jsonViewModel.getReceiveByLangValues());
@@ -186,6 +187,7 @@ public class HomeActivity extends FragmentActivity implements
 
             int blockchainNetworkIdIndex = PrefConnect.readInteger(getApplicationContext(),
                     PrefConnect.BLOCKCHAIN_NETWORK_ID_INDEX_KEY, 0);
+
             List<BlockchainNetwork> blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getApplicationContext());
             BlockchainNetwork blockchainNetwork = blockchainNetworkList.get(blockchainNetworkIdIndex);
             GlobalMethods.SCAN_API_URL = GlobalMethods.HTTPS + blockchainNetwork.getScanApiDomain();
@@ -219,7 +221,7 @@ public class HomeActivity extends FragmentActivity implements
             blockExploreImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", walletAddressTextView.getText())))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", walletAddressTextView.getText())))
                     );
                 }
             });
@@ -508,7 +510,7 @@ public class HomeActivity extends FragmentActivity implements
     public void onGetCoinsCompleteByBackArrow() {
         try {
             screenViewType(1);
-            beginTransaction(HomeMainFragment.newInstance(), bundle);
+            beginTransaction(SettingsFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -606,6 +608,8 @@ public class HomeActivity extends FragmentActivity implements
             if (GlobalMethods.IsNetworkAvailable(getApplicationContext())) {
 
                 progressBar.setVisibility(View.VISIBLE);
+
+                balanceValueTextView.setText("0");
 
                 String[] taskParams = {address};
 

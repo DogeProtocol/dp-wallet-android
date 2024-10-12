@@ -1,5 +1,8 @@
 package com.dpwallet.app.view.fragment;
 
+import static org.web3j.crypto.Bip32ECKeyPair.HARDENED_BIT;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,12 +46,21 @@ import java.util.Objects;
 import com.google.android.gms.common.util.Strings;
 import com.opencsv.CSVReader;
 
+/*
 import wallet.core.jni.CoinType;
 import wallet.core.jni.Curve;
 import wallet.core.jni.HDWallet;
 import wallet.core.jni.Hash;
 import wallet.core.jni.Mnemonic;
 import wallet.core.jni.PrivateKey;
+
+import wallet.core.jni.proto.Ethereum;
+*/
+import org.web3j.crypto.Bip32ECKeyPair;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.MnemonicUtils;
+import org.web3j.crypto.Sign;
+import org.web3j.utils.Numeric;
 
 public class GetCoinsDogepTokensFragment extends Fragment  {
 
@@ -119,7 +131,6 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
 
         Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-
         getCoinsViewGetCoinsForTokensTextView.setText(jsonViewModel.getGetCoinsForDogePTokensByLangValues());
         getCoinsViewGetCoinsForTokensInfoTextView.setText(jsonViewModel.getGetCoinsForTokensInfoByLangValues());
         getCoinsViewEnterEthSeedTextView.setText(jsonViewModel.getEnterEthSeedByLangValues());
@@ -162,24 +173,60 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
                     }
                 }
 
-                if (Mnemonic.isValid(seedPhrase))
+                byte[] seed = MnemonicUtils.generateSeed(seedPhrase, "");
+
+                if (seed.length > 0)
                 {
-                    HDWallet newWallet = new HDWallet(seedPhrase, "");
+                    //HDWallet newWallet = new HDWallet(seedPhrase, "");
                     //PrivateKey walletKey = newWallet.getKeyForCoin(CoinType.ETHEREUM);
+
+                    Bip32ECKeyPair masterKeypair = Bip32ECKeyPair.generateKeyPair(seed);
+
                     progressBar.setVisibility(View.VISIBLE);
                     ArrayList<String> arrayList = new ArrayList<>();
                     for (int index = 0; index < GlobalMethods.ethAddressSeedDrivePathCount; index++) {
-                        PrivateKey walletKey = newWallet.getKey(CoinType.ETHEREUM,"m/44\'/60\'/0\'/0/" + index);
-                        String ethAddress = CoinType.ETHEREUM.deriveAddress(walletKey);
+                        //PrivateKey privateKey = newWallet.getKey(CoinType.ETHEREUM,"m/44\'/60\'/0\'/0/" + index);
+                        //String ethAddress = CoinType.ETHEREUM.deriveAddress(privateKey);
+
+                        final int[] path = {44 | HARDENED_BIT, 60 | HARDENED_BIT, 0 | HARDENED_BIT, 0, index};
+                        Bip32ECKeyPair childKeypair = Bip32ECKeyPair.deriveKeyPair(masterKeypair, path);
+                        Credentials credential = Credentials.create(childKeypair);
+                        String ethAddress = credential.getAddress();
+
                         boolean snapShotValidate = CsvValidation(ethAddress);
                         if (snapShotValidate) {
                             assert walletAddress != null;
-                            String message = GlobalMethods.CONVERSION_MESSAGE_TEMPLATE
+                            //"\\x19Ethereum Signed Message:\n32" +
+                            //byte[] p = privateKey.getPublicKeySecp256k1(false).data();
+                            //byte[] e = ethAddress.getBytes();
+                            //int[] intArray = new int[e.length];
+                            //for (int i = 0; i < e.length; intArray[i] = e[i++]);
+                            //System.out.println(Arrays.toString(intArray));
+                            //int[] r = new int[] {175, 112, 110, 200, 202, 165, 140, 14, 188, 172, 236, 26, 164, 183, 234, 229, 23, 98, 244, 72};
+
+/*
+                            String message =  GlobalMethods.CONVERSION_MESSAGE_TEMPLATE
                                     .replace("[ETH_ADDRESS]",ethAddress.toLowerCase())
                                     .replace("[QUANTUM_ADDRESS]",walletAddress.toLowerCase());
 
                             byte[] digest = Hash.keccak256(message.getBytes());
-                            String ethSignature = new String(walletKey.sign(digest, Curve.SECP256K1));
+                            byte[] bytesArray= privateKey.sign(digest, Curve.SECP256K1);
+                            String ethSignature = GlobalMethods.ADDRESS_START_PREFIX + bytesToHex(patchSignatureVComponent(bytesArray));
+*/
+                            String message =  GlobalMethods.CONVERSION_MESSAGE_TEMPLATE
+                                    .replace("[ETH_ADDRESS]",ethAddress.toLowerCase())
+                                    .replace("[QUANTUM_ADDRESS]",walletAddress.toLowerCase());
+
+                            byte[] messageBytes = message.getBytes();
+                            Sign.SignatureData signature = Sign.signPrefixedMessage(messageBytes, credential.getEcKeyPair());
+
+                            byte[] retval = new byte[65];
+                            System.arraycopy(signature.getR(), 0, retval, 0, 32);
+                            System.arraycopy(signature.getS(), 0, retval, 32, 32);
+                            System.arraycopy(signature.getV(), 0, retval, 64, 1);
+
+                            String ethSignature = Numeric.toHexString(retval);
+
                             SnapWallet snapWallet = new SnapWallet(ethAddress, message, ethSignature);
                             ethAddressList.add(snapWallet);
                             arrayList.add(ethAddress);
@@ -236,8 +283,6 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
             }
         });
 
-
-
         buttonRetry.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 String message = getResources().getString(R.string.send_transaction_message_description);
@@ -287,76 +332,6 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
         };
         return getCoinsEditText;
     }
-
-/*
-    private void Screen1(JsonViewModel jsonViewModel,  ProgressBar progressBar,
-                         String walletAddress,
-                         EditText[] getCoinsEditText, String languageKey){
-
-        progressBar.setVisibility(View.VISIBLE);
-        String seedPhrase = "";
-
-        for (int i = 0; i < 12; i++) {
-            String word = getCoinsEditText[i].getText().toString();
-            if (word.trim().length() < 2) {
-                messageDialogFragment(languageKey, jsonViewModel.getEthSeedEmpty());
-                progressBar.setVisibility(View.GONE);
-                return;
-            }
-            if (i == 0) {
-                seedPhrase = word;
-            } else {
-                seedPhrase = seedPhrase + " " + word;
-            }
-        }
-
-        ArrayList<SnapWallet> ethAddressList = new ArrayList<SnapWallet>();
-
-        if (Mnemonic.isValid(seedPhrase))
-        {
-            HDWallet newWallet = new HDWallet(seedPhrase, "");
-            PrivateKey walletKey = newWallet.getKeyForCoin(CoinType.ETHEREUM);
-
-            for (int index = 0; index < 1; index++) {
-                String ethAddress = CoinType.ETHEREUM.deriveAddress(walletKey);
-                boolean snapShotValidate = CsvValidation(ethAddress);
-                if (snapShotValidate) {
-                    assert walletAddress != null;
-                    String message = GlobalMethods.CONVERSION_MESSAGE_TEMPLATE
-                            .replace("[ETH_ADDRESS]",ethAddress.toLowerCase())
-                            .replace("[QUANTUM_ADDRESS]",walletAddress.toLowerCase());
-
-                    byte[] digest = Hash.keccak256(message.getBytes());
-                    String ethSignature = new String(walletKey.sign(digest, Curve.SECP256K1));
-                    SnapWallet snapWallet = new SnapWallet(ethAddress, message, ethSignature);
-                    ethAddressList.add(snapWallet);
-                }
-
-            }
-        } else {
-            progressBar.setVisibility(View.GONE);
-            messageDialogFragment(languageKey, jsonViewModel.getEthSeedError());
-        }
-    }
-
-    private void Screen2(JsonViewModel jsonViewModel, KeyViewModel keyViewModel, ProgressBar progressBar,
-                         String walletAddress, String walletPassword,
-                         EditText[] getCoinsEditText, String languageKey, ArrayList<SnapWallet> ethAddressList){
-
-        if(!ethAddressList.isEmpty()) {
-            for(SnapWallet snapWallet: ethAddressList) {
-                if (walletPassword == null || walletPassword.isEmpty()) {
-                    unlockDialogFragment(jsonViewModel, keyViewModel, progressBar,
-                            walletAddress, snapWallet.ethAddress, snapWallet.ethSignature, languageKey);
-                } else {
-
-                }
-            }
-        } else {
-            messageDialogFragment(languageKey, jsonViewModel.getSeedDoesNotExistByErrors());
-        }
-    }
-*/
 
     private void messageDialogFragment(String languageKey, String message) {
         try {
@@ -414,6 +389,8 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
             unlockButton.setText(jsonViewModel.getUnlockByLangValues());
             closeButton.setText(jsonViewModel.getCloseByLangValues());
 
+            passwordEditText.setText("Test123$$Test123$$");
+
             unlockButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     String walletPassword = passwordEditText.getText().toString();
@@ -448,20 +425,27 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
                 progressBar.setVisibility(View.VISIBLE);
                 String[] keyData = keyViewModel.decryptDataByAccount(getContext(), walletAddress, walletPassword);
                 int[] SK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[0]);
-                getBalanceNonceByAccount(jsonViewModel, keyViewModel, progressBar,
-                        walletAddress, walletPassword, ethAddress, ethSignature, languageKey, SK_KEY);
+                int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[1]);
+
+                //int[] PK_KEY1 =  GlobalMethods.GetIntDataArrayByString(keyViewModel.publicKeyFromPrivateKey(SK_KEY));
+                //if(PK_KEY.equals(PK_KEY1)) {
+
+                    getBalanceNonceByAccount(jsonViewModel, keyViewModel, progressBar,
+                            walletAddress, walletPassword, ethAddress, ethSignature, languageKey, SK_KEY, PK_KEY);
+
+                //}
             }
             return;
         } catch (KeyServiceException | InvalidKeyException e){
+            progressBar.setVisibility(View.GONE);
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
-        progressBar.setVisibility(View.GONE);
         messageDialogFragment(languageKey, jsonViewModel.getWalletPasswordMismatchByErrors());
     }
 
     private  void getBalanceNonceByAccount(JsonViewModel jsonViewModel, KeyViewModel keyViewModel, ProgressBar progressBar,
                                            String walletAddress, String walletPassword, String ethAddress, String ethSignature,
-                                           String languageKey, int[] SK_KEY ) {
+                                           String languageKey, int[] SK_KEY, int[] PK_KEY) {
         try{
             linerLayoutOffline.setVisibility(View.GONE);
 
@@ -476,7 +460,7 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
                     public void onFinished(BalanceResponse balanceResponse) {
                         getTxData(jsonViewModel, keyViewModel, progressBar,
                                 walletAddress, walletPassword, ethAddress, ethSignature, languageKey,
-                                SK_KEY, balanceResponse);
+                                SK_KEY, PK_KEY, balanceResponse);
                     }
                     @Override
                     public void onFailure(com.dpwallet.app.api.read.ApiException e) {
@@ -509,9 +493,10 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
         }
     }
 
+    @SuppressLint("VisibleForTests")
     private  void getTxData(JsonViewModel jsonViewModel, KeyViewModel keyViewModel, ProgressBar progressBar,
                             String walletAddress, String walletPassword, String ethAddress, String ethSignature,
-                            String languageKey, int[] SK_KEY, BalanceResponse balanceResponse){
+                            String languageKey, int[] SK_KEY, int[] PK_KEY, BalanceResponse balanceResponse){
         try {
             String NONCE = "0";
 
@@ -523,10 +508,12 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
                 }
             }
 
-            int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
+            //int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
 
             String contractData = keyViewModel.getContractData("requestConversion", GlobalMethods.CONVERSION_CONTRACT_ABI,
                     ethAddress, ethSignature);
+
+            String s = contractData.toString();
 
             int[] messageData = keyViewModel.getTxnSigningHash(walletAddress, NONCE, GlobalMethods.CONVERSION_CONTRACT_ADDRESS,
                     "0.0", GlobalMethods.CONVERSION_DOGEP_GAS_LIMIT, contractData, GlobalMethods.NETWORK_ID);
@@ -629,6 +616,7 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
             this.ethSignature = ethSignature;
         }
     }
+
 }
 
 

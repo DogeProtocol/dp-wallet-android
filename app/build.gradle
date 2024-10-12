@@ -120,7 +120,8 @@ dependencies {
 
     implementation 'com.opencsv:opencsv:4.6'
 
-    implementation "com.trustwallet:wallet-core:2.9.5"
+    //implementation "com.trustwallet:wallet-core:2.9.5"
 
+    implementation ('org.web3j:core:4.8.9-android')
 
 }

@@ -29,9 +29,11 @@ public class HybridPqcJNIImpl implements IHybridPqcJNIImpl {
 
     public native String[] TxnSigningHash(String from, String nonce, String to, String value,
                                        String gasLimit,  String data, String chainId);
+
     public native String[] TxHash(String from, String nonce, String to, String value,
                                     String gasLimit, String data, String chainId,
                                     int[] pkKey, int[] sign);
+
     public native String[] TxData(String from, String nonce, String to, String value,
                                     String gasLimit,  String data, String chainId,
                                     int[] pkKey, int[] sign);
