@@ -27,25 +27,25 @@ sudo rm -r $PWD/app/src/main/jniLibs/armeabi-v7a/*
 sudo rm -r $PWD/app/src/main/jniLibs/x86/*
 sudo rm -r $PWD/app/src/main/jniLibs/x86_64/*
 
-curl -Lo $PWD/templibs/hybrid-pqc/includes.zip https://github.com/steveharrington10/hybrid-pqc/releases/download/v0.0.11/includes.zip
+curl -Lo $PWD/templibs/hybrid-pqc/includes.zip https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.39/includes.zip
 unzip $PWD/templibs/hybrid-pqc/includes.zip -d $PWD/templibs/hybrid-pqc
-echo "508E0F695A5F50CE07805E52AF770B40A71E10F4E775B835263F11B919B1A543 $PWD/templibs/hybrid-pqc/includes.zip" | sha256sum --check  - || exit 1
+echo "357BF7878A6910990DF69641815112BCD23CB53FE3DCEBF9930E617E00DBED1D $PWD/templibs/hybrid-pqc/includes.zip" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz https://github.com/steveharrington10/hybrid-pqc/releases/download/v0.0.11/android-arm64-v8a.tar.gz
+curl -Lo $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.39/android-arm64-v8a.tar.gz
 tar -zxf $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz --directory $PWD/templibs/hybrid-pqc//android-arm64-v8a
-echo "76f082563cef2890ddfc68fd8d325c0d5256089b21e6a4b78e50afb55cf496b1 $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
+echo "e0d5d67850be55a4304f83157c1ecac852994a6afd417d2729f524b1909653e1 $PWD/templibs/hybrid-pqc/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz https://github.com/steveharrington10/hybrid-pqc/releases/download/v0.0.11/android-armeabi-v7a.tar.gz
+curl -Lo $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.39/android-armeabi-v7a.tar.gz
 tar -zxf $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz --directory $PWD/templibs/hybrid-pqc/android-armeabi-v7a
-echo "73155443bc14687fbe8b8c7366c927345f74202ac7c78e0f0f0c704db7ad47bd $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
+echo "58e78dfa86b897c43bfafce53893e6a9ccab0184bedf1cf5fd21bdd6dcc9dc87 $PWD/templibs/hybrid-pqc/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/hybrid-pqc/android-x86.tar.gz https://github.com/steveharrington10/hybrid-pqc/releases/download/v0.0.11/android-x86.tar.gz
+curl -Lo $PWD/templibs/hybrid-pqc/android-x86.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.39/android-x86.tar.gz
 tar -zxf $PWD/templibs/hybrid-pqc/android-x86.tar.gz --directory $PWD/templibs/hybrid-pqc/android-x86
-echo "fa91fc25663daa3fd465de8babae39070c4a8d092a142f217548fcb2e3e6213b $PWD/templibs/hybrid-pqc/android-x86.tar.gz" | sha256sum --check  - || exit 1
+echo "528d3a3b046b5312687fb56a31031f0df13c95a9e6c6f7e8b85a8c30262c21af $PWD/templibs/hybrid-pqc/android-x86.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz https://github.com/steveharrington10/hybrid-pqc/releases/download/v0.0.11/android-x86_64.tar.gz
+curl -Lo $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz https://github.com/DogeProtocol/hybrid-pqc/releases/download/v0.1.39/android-x86_64.tar.gz
 tar -zxf $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz --directory $PWD/templibs/hybrid-pqc/android-x86_64
-echo "12ce9f872185c6cdb763a319a17a3ec88943cec99a487f944f53646225b0d3d2 $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
+echo "5335a9e476ae67cf90657a83e6c8e8daadfd0553cf834a7151671cc6c1dc94fa $PWD/templibs/hybrid-pqc/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
 sudo cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/arm64-v8a/hybrid.h
 sudo cp $PWD/templibs/hybrid-pqc/build/include/dilithium/hybrid.h $PWD/app/src/main/jniLibs/armeabi-v7a/hybrid.h
@@ -72,21 +72,21 @@ sudo cp $PWD/templibs/hybrid-pqc/android-armeabi-v7a/libhybridpqc.so $PWD/app/sr
 sudo cp $PWD/templibs/hybrid-pqc/android-x86/libhybridpqc.so $PWD/app/src/main/jniLibs/x86/libhybridpqc.so
 sudo cp $PWD/templibs/hybrid-pqc/android-x86_64/libhybridpqc.so $PWD/app/src/main/jniLibs/x86_64/libhybridpqc.so
 
-curl -Lo $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.26/android-arm64-v8a.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.49/android-arm64-v8a.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz --directory $PWD/templibs/mobile-go/android-arm64-v8a
-echo "3287e1f8aaf1e81a9a3c6819df84fac5c8cb300549b936813f4aa00322720444 $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
+echo "b03a6e856229b728652fd1af486875ac54081b8b4c546ef52aa093f0eb3dc0bd $PWD/templibs/mobile-go/android-arm64-v8a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.26/android-armeabi-v7a.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.49/android-armeabi-v7a.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz --directory $PWD/templibs/mobile-go/android-armeabi-v7a
-echo "d965f064dfa0c819523a8e606ba8f7c7cbb73c9ca275f9f934e5d4497b0ecca9 $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
+echo "430c130d870ea83c7f8ac082b02ceb62ddf8a6d8be669f12baed62fca7645c04 $PWD/templibs/mobile-go/android-armeabi-v7a.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-x86.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.26/android-x86.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-x86.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.49/android-x86.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-x86.tar.gz --directory $PWD/templibs/mobile-go/android-x86
-echo "a19a5f1cd8ac114ae5630bf6af7ef756fea74156d84575e548ea63429349a4c8 $PWD/templibs/mobile-go/android-x86.tar.gz" | sha256sum --check  - || exit 1
+echo "ca86766e07bb487468c7c16833e45de6909a6dcd1edd6e4e3a9ca61709b901ce $PWD/templibs/mobile-go/android-x86.tar.gz" | sha256sum --check  - || exit 1
 
-curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/steveharrington10/go-dp/releases/download/v0.0.26/android-x86_64.tar.gz
+curl -Lo $PWD/templibs/mobile-go/android-x86_64.tar.gz https://github.com/DogeProtocol/go-dp/releases/download/v2.0.49/android-x86_64.tar.gz
 tar -zxf $PWD/templibs/mobile-go/android-x86_64.tar.gz --directory $PWD/templibs/mobile-go/android-x86_64
-echo "6d59db9f167fe43ed6359bccbb6d3e58fc14e2c2564b2365fae1655306c1199a $PWD/templibs/mobile-go/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
+echo "22d676b41a725032dce6bf2a4bfd4fcafbcbda84587dd035425b61c6f843593e $PWD/templibs/mobile-go/android-x86_64.tar.gz" | sha256sum --check  - || exit 1
 
 sudo cp $PWD/templibs/mobile-go/android-arm64-v8a/* $PWD/app/src/main/jniLibs/arm64-v8a/
 sudo cp $PWD/templibs/mobile-go/android-armeabi-v7a/* $PWD/app/src/main/jniLibs/armeabi-v7a/
