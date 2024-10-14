@@ -9,30 +9,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.dpwallet.app.R;
-import com.dpwallet.app.api.faucet.ApiException;
-import com.dpwallet.app.api.faucet.model.FaucetTransactionSummaryResponse;
-import com.dpwallet.app.asynctask.faucet.FaucetTransactionRestTask;
-import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 
 public class SettingsFragment extends Fragment  {
 
     private static final String TAG = "SettingsFragment";
 
-    private KeyViewModel keyViewModel = new KeyViewModel();
-
     private LinearLayout linerLayoutOffline;
     private ImageView imageViewRetry;
     private TextView textViewTitleRetry;
     private TextView textViewSubTitleRetry;
+
 
     private OnSettingsCompleteListener mSettingsListener;
 
@@ -60,13 +53,20 @@ public class SettingsFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_setting_back_arrow);
-        Button exportWallet = (Button) getView().findViewById(R.id.button_settings_export_wallet);
-        Button requestTestCoins = (Button) getView().findViewById(R.id.button_settings_request_test_coins);
-        Button deleteWallet = (Button) getView().findViewById(R.id.button_settings_delete_wallet);
+        String languageKey = getArguments().getString("languageKey");
 
-        ProgressBar progressBarRequestTestCoins = (ProgressBar) getView().findViewById(R.id.progress_settings_request_test_loader);
-        ProgressBar progressBarDeleteWallet = (ProgressBar) getView().findViewById(R.id.progress_settings_delete_wallet_loader);
+        JsonViewModel jsonViewModel = new JsonViewModel(getContext(), languageKey);
+
+        ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_setting_back_arrow);
+        TextView settings = (TextView) getView().findViewById(R.id.textview_settings_langValues_settings);
+        Button buttonGetCoins = (Button) getView().findViewById(R.id.button_settings_langValues_get_coins_for_dogep_tokens);
+        Button buttonNetworks = (Button) getView().findViewById(R.id.button_settings_langValues_networks);
+
+        settings.setText(jsonViewModel.getSettingsByLangValues());
+        buttonGetCoins.setText(jsonViewModel.getGetCoinsForDogePTokensByLangValues());
+        buttonNetworks.setText(jsonViewModel.getNetworksByLangValues());
+
+        buttonGetCoins.setVisibility(View.GONE);
 
         linerLayoutOffline = (LinearLayout) getView().findViewById(R.id.linerLayout_setting_offline);
         imageViewRetry = (ImageView) getView().findViewById(R.id.image_retry);
@@ -74,95 +74,27 @@ public class SettingsFragment extends Fragment  {
         textViewSubTitleRetry = (TextView) getView().findViewById(R.id.textview_subtitle_retry);
         Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-        String walletAddress = getArguments().getString("walletAddress");
-
         backArrowImageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(walletAddress.trim().length() != 0) {
-                    mSettingsListener.onSettingsComplete(0);
-                } else {
-                    mSettingsListener.onSettingsComplete(3);
-                }
+                mSettingsListener.onSettingsCompleteCompleteByBackArrow();
             }
         });
 
-        exportWallet.setOnClickListener(new View.OnClickListener() {
+        buttonGetCoins.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                if(walletAddress.trim().length() != 0)
-                {
-                    mSettingsListener.onSettingsComplete(1);
-                    return;
-                }
-                showInformationDialog();
+                mSettingsListener.onSettingsCompleteByGetCoin();
             }
         });
 
-        requestTestCoins.setOnClickListener(new View.OnClickListener() {
+        buttonNetworks.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                if(walletAddress.trim().length() != 0)
-                {
-                    RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
-                    return;
-                }
-                showInformationDialog();
-            }
-        });
-
-        deleteWallet.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (progressBarDeleteWallet.getVisibility() == View.VISIBLE) {
-                    String message = getResources().getString(R.string.setting_dialog_message_exits);
-                    GlobalMethods.ShowToast(getContext(), message);
-                    return;
-                }
-
-                if(walletAddress.trim().length() != 0)
-                {
-                    progressBarDeleteWallet.setVisibility(View.VISIBLE);
-
-                    //Alert Yes or No
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle((CharSequence) "").setView((int)
-                                    R.layout.delete_dialog_fragment).create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-
-                    TextView textViewYes = (TextView) dialog.findViewById(
-                            R.id.textView_delete_dialog_yes);
-
-                    TextView textViewNo = (TextView) dialog.findViewById(
-                            R.id.textView_delete_dialog_no);
-
-                    textViewYes.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            progressBarDeleteWallet.setVisibility(View.GONE);
-                            dialog.dismiss();
-                            keyViewModel.deleteKeyByAccount(getContext(), walletAddress);
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            mSettingsListener.onSettingsComplete(3);
-                        }
-                    });
-
-                    textViewNo.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            progressBarDeleteWallet.setVisibility(View.GONE);
-                            dialog.dismiss();
-                        }
-                    });
-
-                } else {
-                    showInformationDialog();
-                }
+                mSettingsListener.onSettingsCompleteByNetwork();
             }
         });
 
         buttonRetry.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                RequestTestnetCoins(walletAddress, progressBarRequestTestCoins);
+                mSettingsListener.onSettingsCompleteCompleteByBackArrow();
             }
         });
     }
@@ -178,7 +110,9 @@ public class SettingsFragment extends Fragment  {
     }
 
     public static interface OnSettingsCompleteListener {
-        public abstract void onSettingsComplete(int status);
+        public abstract void onSettingsCompleteCompleteByBackArrow();
+        public abstract void onSettingsCompleteByNetwork();
+        public abstract void onSettingsCompleteByGetCoin();
     }
 
     public void onAttach(Context context) {
@@ -188,83 +122,6 @@ public class SettingsFragment extends Fragment  {
         }
         catch (final ClassCastException e) {
             throw new ClassCastException(context.toString() + " ");
-        }
-    }
-
-    private void showInformationDialog(){
-        Bundle bundleRoute = new Bundle();
-        bundleRoute.putString("message", getResources().getString(R.string.setting_message_description));
-        FragmentManager fragmentManager  = getFragmentManager();
-        MessageInformationDialogFragment messageDialogFragment = MessageInformationDialogFragment.newInstance();
-        messageDialogFragment.setCancelable(false);
-        messageDialogFragment.setArguments(bundleRoute);
-        messageDialogFragment.show(fragmentManager, "");
-    }
-
-    private void RequestTestnetCoins(String address, ProgressBar progressBar){
-        try{
-            linerLayoutOffline.setVisibility(View.GONE);
-
-            if (progressBar.getVisibility() == View.VISIBLE) {
-                String message = getResources().getString(R.string.setting_dialog_message_exits);
-                GlobalMethods.ShowToast(getContext(), message);
-                return;
-            }
-
-            //Internet connection check
-            if (GlobalMethods.IsNetworkAvailable(getContext())) {
-                progressBar.setVisibility(View.VISIBLE);
-                String[] taskParams = { address };
-
-                FaucetTransactionRestTask task = new FaucetTransactionRestTask(
-                        getContext(), new FaucetTransactionRestTask.TaskListener() {
-
-                    @Override
-                    public void onFinished(FaucetTransactionSummaryResponse faucetTransactionSummaryResponse) {
-                        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                                .setTitle((CharSequence) "").setView((int)
-                                        R.layout.request_coins_alert_dialog_fragment).create();
-                        dialog.setCancelable(false);
-                        dialog.show();
-
-                        TextView textViewOk = (TextView) dialog.findViewById(
-                                R.id.textView_request_coins_alert_dialog_ok);
-
-                        textViewOk.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                progressBar.setVisibility(View.GONE);
-                                dialog.dismiss();
-                                mSettingsListener.onSettingsComplete(2);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(ApiException e) {
-                        progressBar.setVisibility(View.GONE);
-                        int code = e.getCode();
-                        boolean check = GlobalMethods.ApiExceptionSourceCodeBoolean(code);
-                        if(check == true) {
-                            GlobalMethods.ApiExceptionSourceCodeRoute(getContext(), code,
-                                    getString(R.string.apierror),
-                                    TAG + " : AccountBalanceRestTask : " + e.toString());
-                        } else {
-                            GlobalMethods.OfflineOrExceptionError(getContext(),
-                                    linerLayoutOffline, imageViewRetry, textViewTitleRetry,
-                                    textViewSubTitleRetry, true);
-                        }
-                    }
-
-                });
-
-                task.execute(taskParams);
-            } else {
-                GlobalMethods.OfflineOrExceptionError(getContext(),
-                        linerLayoutOffline, imageViewRetry, textViewTitleRetry,
-                        textViewSubTitleRetry, false);
-            }
-        } catch (Exception e) {
-            GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "networks": [
+    {
+      "scanApiDomain": "t4-scan.dpapi.org",
+      "txnApiDomain": "t4-txn.dpapi.org",
+      "blockExplorerDomain": "t4.dpscan.app",
+      "blockchainName": "TESTNET T4",
+      "networkId": 310324
+    },
+    {
+      "scanApiDomain": "scan.dpapi.org",
+      "txnApiDomain": "txn.dpapi.org",
+      "blockExplorerDomain": "dpscan.app",
+      "blockchainName": "MAINNET",
+      "networkId": 123123
+    }
+  ]
+}

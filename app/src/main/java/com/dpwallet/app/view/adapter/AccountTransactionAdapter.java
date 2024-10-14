@@ -52,14 +52,12 @@ public class AccountTransactionAdapter extends
         public DataObjectHolder(View itemView) {
             super(itemView);
             try{
-                this.imageViewInOut = (ImageView) itemView.findViewById(R.id.imageView_account_transactions_adapter_inout);
-                this.textViewTransHash = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_trans_hash);
+                this.imageViewInOut = (ImageView) itemView.findViewById(R.id.imageView_account_transactions_adapter_in_out);
+                this.textViewQuantity = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_quantity);
                 this.textViewDate = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_date);
-
                 this.textViewFrom = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_from);
                 this.textViewTo = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_to);
-
-                this.textViewQuantity = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_quantity);
+                this.textViewTransHash = (TextView) itemView.findViewById(R.id.textView_account_transactions_adapter_trans_hash);
             } catch(Exception ex){
                 GlobalMethods.ExceptionError(context, TAG, ex);
             }
@@ -84,11 +82,11 @@ public class AccountTransactionAdapter extends
     public void onBindViewHolder(DataObjectHolder holder, @SuppressLint("RecyclerView") final int position) {
         try {
 
-            String hash = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getHash().toString();
+            String value = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getValue().toString();
             String createDate = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getCreatedAt().toString();
             String from =  ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getFrom().toString();
             String to = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getTo().toString();
-            String value = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getValue().toString();
+            String hash = ((AccountTransactionSummary) accountTransactionSummaries.get(position)).getHash().toString();
 
             int inOut = 1;
 
@@ -124,7 +122,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_TX_HASH_URL.replace("{txhash}", hash)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_TX_HASH_URL.replace("{txhash}", hash)))
                     );
                 }
             });
@@ -133,7 +131,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_ACCOUNT_TRANSACTION_URL.replace("{address}", from)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", from)))
                     );
                 }
             });
@@ -142,7 +140,7 @@ public class AccountTransactionAdapter extends
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_ACCOUNT_TRANSACTION_URL.replace("{address}", to)))
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", to)))
                     );
                 }
             });

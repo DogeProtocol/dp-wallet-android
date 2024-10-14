@@ -56,10 +56,10 @@ public class KeyStore implements IKeyStore {
 
     private Toast toast = null;
 
-    public static final int SALT_LENGTH = 128; //20;
+    public static final int SALT_LENGTH = 128; //16;
     public static final int IV_LENGTH = 128; //16;
 
-    public static final int KEY_LENGTH = 256; //20;
+    public static final int KEY_LENGTH = 256; //32;
     public static final int ITERATION_COUNT = 100;
 
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
@@ -73,8 +73,8 @@ public class KeyStore implements IKeyStore {
     }
 
     @Override
-    public boolean EncryptData(Context context, String address, String password, byte[] SK_KEY, byte[] PK_KEY) {
-        return encrypt(context, address, password, SK_KEY, PK_KEY);
+    public boolean EncryptData(Context context, String address, String password, String keyPair) {
+        return encrypt(context, address, password, keyPair);
     }
 
     @Override
@@ -82,91 +82,9 @@ public class KeyStore implements IKeyStore {
         return decrypt(context, address, password);
     }
 
-    @Override
-    public void DeleteKey(Context context, String address) {
-        deleteKey(context, address.toLowerCase().substring(2));
-        deleteKey(context, address.toLowerCase().substring(2) + "-pk-key");
-    }
-
-
-    @Override
-    public String ExportKey(Context context, String address) {
-        try {
-            //encrypted_skKey
-            String skKeyPath = getFilePath(context, address.toLowerCase().substring(2));
-            byte[] skKeyMessage = readBytesFromFile(skKeyPath);
-
-            byte[] skKeySalt = Arrays.copyOfRange(skKeyMessage, 0, 16);
-            byte[] skKeyIv = Arrays.copyOfRange(skKeyMessage,  16, 32);
-            byte[] skKeyEncryptedData = Arrays.copyOfRange(skKeyMessage,  32, skKeyMessage.length);
-
-            String skKeySaltHex = byteArrayToString(skKeySalt);
-            String skKeyIvHex = byteArrayToString(skKeyIv);
-            String skKeyEncryptedHex = byteArrayToString(skKeyEncryptedData);
-
-            String  encrypted_skKey = skKeySaltHex + skKeyIvHex + skKeyEncryptedHex;
-
-            //encrypted_pkKey
-            String pkKeyPath = getFilePath(context, address.toLowerCase().substring(2) + "-pk-key");
-            byte[] pkKeyMessage = readBytesFromFile(pkKeyPath);
-
-            byte[] pkKeySalt = Arrays.copyOfRange(pkKeyMessage, 0, 16);
-            byte[] pkKeyIv = Arrays.copyOfRange(pkKeyMessage,  16, 32);
-            byte[] pkKeyEncryptedData = Arrays.copyOfRange(pkKeyMessage,  32, pkKeyMessage.length);
-
-            String pkKeySaltHex = byteArrayToString(pkKeySalt);
-            String pkKeyIvHex = byteArrayToString(pkKeyIv);
-            String pkKeyEncryptedHex = byteArrayToString(pkKeyEncryptedData);
-
-            String  encrypted_pkKey = pkKeySaltHex + pkKeyIvHex + pkKeyEncryptedHex;
-
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("encrypted_skkey", encrypted_skKey);
-            jsonObject.put("encrypted_pkkey", encrypted_pkKey);
-
-            String jSONDocument = jsonObject.toString();
-
-            return jSONDocument;
-        }
-        catch (Exception e)
-        {
-
-        }
-        return null;
-    }
-
-    @Override
-    public byte[] ImportKey(Context context, String jsonString, String password) {
-        try{
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String encrypted_skKey = jsonObject.getJSONObject("encrypted_skkey").toString();
-
-            String skKeySaltString = encrypted_skKey.substring(0, 32);
-            String skKeyIvString = encrypted_skKey.substring(32, 64);
-            String skKeyEncryptedDataString = encrypted_skKey.substring(64);
-
-            byte[] skKeySalt = stringToByteArray(skKeySaltString);
-            byte[] skKeyIv = stringToByteArray(skKeyIvString);
-            byte[] skKeyEncryptedData = stringToByteArray(skKeyEncryptedDataString);
-
-            SecretKey secretKey = getSecretKey(password, skKeySalt);
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(skKeyIv);
-
-            Cipher outCipher = Cipher.getInstance(CIPHER_ALGORITHM);
-            outCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
-            byte[] SK_KEY = outCipher.doFinal(skKeyEncryptedData);
-
-            return SK_KEY;
-        }
-        catch (Exception e)
-        {
-
-        }
-        return null;
-    }
 
     private synchronized boolean encrypt(Context context, String address, String password,
-                                         byte[] SK_KEY, byte[] PK_KEY) {
+                                         String keyPair) {
         try
         {
             byte[] salt = generateSalt();
@@ -178,19 +96,12 @@ public class KeyStore implements IKeyStore {
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
 
-            byte[] skKeyEncryptedData = cipher.doFinal(SK_KEY);
-            byte[] skKeyMessage = new byte[salt.length + iv.length + skKeyEncryptedData.length];
-            skKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv),skKeyEncryptedData);
-
+            //sk key
+            byte[] keyEncryptedData = cipher.doFinal(keyPair.getBytes());
+            byte[] keyMessage = new byte[salt.length + iv.length + keyEncryptedData.length];
+            keyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv),keyEncryptedData);
             String skKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2));
-            writeBytesToFile(skKeyEncryptedPath, skKeyMessage);
-
-            //pk key
-            byte[] pkKeyEncryptedData = cipher.doFinal(PK_KEY);
-            byte[] pkKeyMessage = new byte[salt.length + iv.length + pkKeyEncryptedData.length];
-            pkKeyMessage = ArrayUtils.addAll(ArrayUtils.addAll(salt,  iv), pkKeyEncryptedData);
-            String pkKeyEncryptedPath = getFilePath(context, address.toLowerCase().substring(2) + "-pk-key");
-            writeBytesToFile(pkKeyEncryptedPath, pkKeyMessage);
+            writeBytesToFile(skKeyEncryptedPath, keyMessage);
 
             return true;
         }
@@ -217,9 +128,8 @@ public class KeyStore implements IKeyStore {
 
             Cipher outCipher = Cipher.getInstance(CIPHER_ALGORITHM);
             outCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
-            byte[] SK_KEY = outCipher.doFinal(skKeyEncryptedData);
 
-            return SK_KEY;
+            return outCipher.doFinal(skKeyEncryptedData);
         }
         catch (InvalidKeyException e)
         {

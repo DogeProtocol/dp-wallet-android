@@ -23,7 +23,23 @@ public class KeyInteract {
         this._iKeyStore = iKeyStore;
     }
 
-    public int[] newAccount() throws ServiceException {
+    public String[] newAccountFromSeed(int[] expandedSeedArray) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.newAccountFromSeed(expandedSeedArray);
+            if (result.getException() != null) {
+                Timber.tag("newAccountFromSeed").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("newAccountFromSeed").d("success");
+            return (String[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+    public String[] newAccount() throws ServiceException {
         try {
             Result<Object> result = _iKeyService.newAccount();
             if (result.getException() != null) {
@@ -31,7 +47,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("newAccount").d("success");
-            return (int[]) result.getResult();
+            return (String[]) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("newAccount catch").d("error %s", ex.getMessage());
@@ -39,7 +55,7 @@ public class KeyInteract {
         }
     }
 
-    public int[] signAccount(int[] message, int[] skKey) throws ServiceException {
+    public String signAccount(int[] message, int[] skKey) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.signAccount(message, skKey);
             if (result.getException() != null) {
@@ -47,7 +63,7 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("signAccount").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("signAccount catch").d("error %s", ex.getMessage());
@@ -71,7 +87,39 @@ public class KeyInteract {
         }
     }
 
-    public int[] publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
+    public String seedExpander(int[] seed) throws ServiceException {
+        //try {
+            Result<Object> result = _iKeyService.seedExpander(seed);
+            if (result.getException() != null) {
+                Timber.tag("newAccountFromSeed").d("error %s", result.getException());
+                //throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("newAccountFromSeed").d("success");
+            return (String) result.getResult();
+       // }
+        //catch(Exception ex) {
+            //Timber.tag("newAccountFromSeed cach").d("error %s", ex.getMessage());
+            //throw new ServiceException((String) ex.getMessage());
+        //}
+    }
+
+    public String random() throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.random();
+            if (result.getException() != null) {
+                Timber.tag("random").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("random").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("random catch").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+    public String publicKeyFromPrivateKey(int[] skKey) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.publicKeyFromPrivateKey(skKey);
             if (result.getException() != null) {
@@ -79,13 +127,30 @@ public class KeyInteract {
                 throw new ServiceException((String) result.getException());
             }
             Timber.tag("publicKeyFromPrivateKey").d("success");
-            return (int[]) result.getResult();
+            return (String) result.getResult();
         }
         catch(Exception ex) {
             Timber.tag("publicKeyFromPrivateKey").d("error %s", ex.getMessage());
             throw new ServiceException((String) ex.getMessage());
         }
     }
+
+    public int[] scrypt(int[] skKey, int[] salt) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.scrypt(skKey, salt);
+            if (result.getException() != null) {
+                Timber.tag("scrypt").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("scrypt").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("scrypt catch").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
 
     public String getAccountAddress(int[] pkKey) throws ServiceException {
         try {
@@ -103,11 +168,27 @@ public class KeyInteract {
         }
     }
 
+    public String isValidAddress(String quantumAddress) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.isValidAddress(quantumAddress);
+            if (result.getException() != null) {
+                Timber.tag("isValidAddress").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("isValidAddress").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("isValidAddress").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
     public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
                               String amount, String gasLimit, String chainId) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getTxnSigningHash(fromAddress, nonce, toAddress,
-                    amount, gasLimit, "",  chainId);
+                    amount, gasLimit, null,  chainId);
             if (result.getException() != null) {
                 Timber.tag("getTxMessage").d("error %s", result.getException());
                 throw new ServiceException((String) result.getException());
@@ -121,11 +202,31 @@ public class KeyInteract {
         }
     }
 
+
+    public int[] getTxnSigningHash(String fromAddress, String nonce, String toAddress,
+                                   String amount, String gasLimit, String data, String chainId) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.getTxnSigningHash(fromAddress, nonce, toAddress,
+                    amount, gasLimit, data,  chainId);
+            if (result.getException() != null) {
+                Timber.tag("getTxMessage").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("getTxMessage").d("success");
+            return (int[]) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("getTxMessage").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+
     public String getTxHash(String fromAddress, String nonce, String toAddress,
-                              String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+                            String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getTxHash(fromAddress, nonce, toAddress,
-                    amount, gasLimit,  chainId, pkKey, sig);
+                    amount, gasLimit, data,  chainId, pkKey, sig);
             if (result.getException() != null) {
                 Timber.tag("getTxHash").d("error %s", result.getException());
                 throw new ServiceException((String) result.getException());
@@ -139,11 +240,12 @@ public class KeyInteract {
         }
     }
 
+
     public String getTxData(String fromAddress, String nonce, String toAddress,
-                            String amount, String gasLimit, String chainId, int[] pkKey, int[] sig) throws ServiceException {
+                            String amount, String gasLimit, String data, String chainId, int[] pkKey, int[] sig) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getTxData(fromAddress, nonce, toAddress,
-                    amount, gasLimit,  chainId, pkKey, sig);
+                    amount, gasLimit, data, chainId, pkKey, sig);
             if (result.getException() != null) {
                 Timber.tag("getTxData").d("error %s", result.getException());
                 throw new ServiceException((String) result.getException());
@@ -157,18 +259,18 @@ public class KeyInteract {
         }
     }
 
-    public String getDogeProtocolToWei(String value) throws ServiceException {
+    public String getContractData(String method, String abiData, String argument1, String argument2) throws ServiceException {
         try {
-            Result<Object> result = _iKeyService.getDogeProtocolToWei(value);
+            Result<Object> result = _iKeyService.getContractData(method, abiData, argument1, argument2);
             if (result.getException() != null) {
-                Timber.tag("getDogeProtocolToWei").d("error %s", result.getException());
+                Timber.tag("getContractData").d("error %s", result.getException());
                 throw new ServiceException((String) result.getException());
             }
-            Timber.tag("getDogeProtocolToWei").d("success");
+            Timber.tag("getContractData").d("success");
             return (String) result.getResult();
         }
         catch(Exception ex) {
-            Timber.tag("getDogeProtocolToWei").d("error %s", ex.getMessage());
+            Timber.tag("getContractData").d("error %s", ex.getMessage());
             throw new ServiceException((String) ex.getMessage());
         }
     }
@@ -189,6 +291,39 @@ public class KeyInteract {
         }
     }
 
+    public String getParseBigFloatInner(String value) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.getParseBigFloatInner(value);
+            if (result.getException() != null) {
+                Timber.tag("getParseBigFloatInner").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("getParseBigFloatInner").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("getParseBigFloatInner").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+    public String getDogeProtocolToWei(String value) throws ServiceException {
+        try {
+            Result<Object> result = _iKeyService.getDogeProtocolToWei(value);
+            if (result.getException() != null) {
+                Timber.tag("getDogeProtocolToWei").d("error %s", result.getException());
+                throw new ServiceException((String) result.getException());
+            }
+            Timber.tag("getDogeProtocolToWei").d("success");
+            return (String) result.getResult();
+        }
+        catch(Exception ex) {
+            Timber.tag("getDogeProtocolToWei").d("error %s", ex.getMessage());
+            throw new ServiceException((String) ex.getMessage());
+        }
+    }
+
+
     public String getWeiToDogeProtocol(String value) throws ServiceException {
         try {
             Result<Object> result = _iKeyService.getWeiToDogeProtocol(value);
@@ -205,23 +340,13 @@ public class KeyInteract {
         }
     }
 
-    public boolean encryptDataByAccount(Context context, String address, String password, byte[] SK_KEY, byte[] PK_KEY){
-        return _iKeyStore.EncryptData(context, address, password, SK_KEY, PK_KEY);
+    public boolean encryptDataByAccount(Context context, String address, String password, String keyPair){
+        return _iKeyStore.EncryptData(context, address, password, keyPair);
     }
 
     public byte[] decryptDataByAccount(Context context, String address, String password) throws InvalidKeyException, KeyServiceException {
         return _iKeyStore.DecryptData(context, address, password);
     }
 
-    public String exportKeyByAccount(Context context, String address)  {
-        return _iKeyStore.ExportKey(context, address);
-    }
 
-    public byte[] importKeyByAccount(Context context, String jsonString, String password)  {
-        return _iKeyStore.ImportKey(context, jsonString, password);
-    }
-
-    public void deleteKeyByAccount(Context context, String address) {
-        _iKeyStore.DeleteKey(context, address);
-    }
 }

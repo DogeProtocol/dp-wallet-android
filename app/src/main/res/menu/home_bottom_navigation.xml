@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/m_home"
-        android:id="@+id/nav_home"
-        android:title="@string/nav_home_title"
+        android:icon="@drawable/m_wallets"
+        android:id="@+id/nav_wallets"
+        android:title="@string/nav_wallets_title"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
 
@@ -19,9 +19,9 @@
 
 
     <item
-        android:icon="@drawable/m_dp_scan"
-        android:id="@+id/nav_big_scan"
-        android:title="@string/nav_dp_scan_title"
+        android:icon="@drawable/m_block_explorer"
+        android:id="@+id/nav_block_explorer"
+        android:title="@string/nav_block_explorer_title"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
 

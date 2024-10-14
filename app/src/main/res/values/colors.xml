@@ -92,4 +92,19 @@
 
   <color name="colorCommon10">#5C5C5E</color>
 
+  <color name="colorSeedA">#5C5C5E</color>
+
+  <color name="colorCommonSeedA">#0000FF</color>
+  <color name="colorCommonSeedB">#008000</color>
+  <color name="colorCommonSeedC">#AA6F00</color>
+  <color name="colorCommonSeedD">#EB2B4D</color>
+  <color name="colorCommonSeedE">#5E0D1B</color>
+  <color name="colorCommonSeedF">#9B0BB8</color>
+  <color name="colorCommonSeedG">#046D94</color>
+  <color name="colorCommonSeedH">#000000</color>
+  <color name="colorCommonSeedI">#3519C5</color>
+  <color name="colorCommonSeedJ">#648D24</color>
+  <color name="colorCommonSeedK">#DF1313</color>
+  <color name="colorCommonSeedL">#003F4D</color>
+
 </resources>

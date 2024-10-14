@@ -19,7 +19,7 @@
             android:layout_alignParentEnd="true" />
 
         <ImageView
-            android:id="@+id/imageView_account_transactions_adapter_inout"
+            android:id="@+id/imageView_account_transactions_adapter_in_out"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
@@ -35,13 +35,12 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/textView_account_transactions_adapter_trans_hash"
+            android:id="@+id/textView_account_transactions_adapter_quantity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
-            android:gravity="center"
-            android:textSize="12dp"
-            android:textColor="@color/colorCommon8"/>
+            android:textSize="10dp"
+            android:gravity="center" />
 
         <View
             android:layout_width="1dp"
@@ -98,12 +97,13 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/textView_account_transactions_adapter_quantity"
+            android:id="@+id/textView_account_transactions_adapter_trans_hash"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight= "1"
-            android:textSize="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="12dp"
+            android:textColor="@color/colorCommon8"/>
 
         <View
             android:layout_width="1dp"

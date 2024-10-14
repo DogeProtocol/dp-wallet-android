@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top_linear_layout_blockchain_network_add_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent">
+                <ImageButton
+                    android:id="@+id/imageButton_blockchain_network_add_back_arrow"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="left"
+                    android:background="@drawable/image_selector"
+                    android:src="@drawable/arrow_back_circle_outline"
+                    app:tint="@color/colorCommon6"/>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_blockchain_network_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="false"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:max="100"
+                android:progress="0"
+                android:background="@android:color/transparent"
+                android:indeterminateDrawable="@drawable/progress" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/top_linear_layout_blockchain_network_add_id"
+                android:background="@drawable/center_container">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textview_blockchain_network_add_langValues_add_network"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorCommon6" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
+                        <TextView
+                            android:id="@+id/textview_blockchain_network_add_langValues_enter_network_json"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorCommon6" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
+                        <EditText
+                            android:id="@+id/editText_blockchain_network_add_langValues_add_network"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:lines="8"
+                            android:minLines="6"
+                            android:gravity="top|start"
+                            android:maxLines="10"
+                            android:scrollbars="vertical" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:alpha="0.2"
+                            android:background="@drawable/line_2_shape" />
+
+                        <Button
+                            android:id="@+id/button_blockchain_network_add_langValues_add"
+                            android:background="@drawable/button_green_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:padding="5dp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorCommon7" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

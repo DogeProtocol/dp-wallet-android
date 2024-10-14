@@ -1,8 +1,18 @@
 package com.dpwallet.app.view.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,8 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -25,13 +40,24 @@ import com.dpwallet.app.asynctask.write.TransactionRestTask;
 import com.dpwallet.app.entity.KeyServiceException;
 import com.dpwallet.app.entity.ServiceException;
 import com.dpwallet.app.utils.GlobalMethods;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
 import com.google.android.gms.common.util.Strings;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 
-public class SendFragment extends Fragment  {
+import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.pm.PackageManager;
 
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+public class SendFragment extends Fragment  {
     private static final String TAG = "SendFragment";
 
     private int retryStatus = 0;
@@ -43,8 +69,12 @@ public class SendFragment extends Fragment  {
     private TextView textViewSubTitleRetry;
 
     private SendFragment.OnSendCompleteListener mSendListener;
+    private KeyViewModel keyViewModel = new KeyViewModel();
+    private JsonViewModel jsonViewModel;
 
-    private  KeyViewModel keyViewModel = new KeyViewModel();
+    private BarcodeDetector barcodeDetector;
+    private CameraSource cameraSource;
+    private static final int REQUEST_CAMERA_PERMISSION = 201;
 
     public static SendFragment newInstance() {
         SendFragment fragment = new SendFragment();
@@ -70,18 +100,57 @@ public class SendFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
+            String languageKey = getArguments().getString("languageKey");
+            String walletAddress = getArguments().getString("walletAddress");
+            String sendPassword = getArguments().getString("sendPassword");
+            ////String sendPassword = "Test123$$Test123$$"; //getArguments().getString("sendPassword");
+
+            jsonViewModel = new JsonViewModel(getContext(), languageKey);
+
             ImageButton backArrowImageButton = (ImageButton) getView().findViewById(R.id.imageButton_send_back_arrow);
 
-            TextView balanceTextView = (TextView) getView().findViewById(R.id.textView_send_balance);
-            EditText toAddressEditText = (EditText) getView().findViewById(R.id.editText_send_to_address);
-            EditText quantityEditText = (EditText) getView().findViewById(R.id.editText_send_quantity);
-            Button sendButton = (Button) getView().findViewById(R.id.button_send_send);
+            TextView sendTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_send);
+            sendTextView.setText(jsonViewModel.getSendByLangValues());
+
+            TextView sendNetworkTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_network);
+            sendNetworkTextView.setText(jsonViewModel.getNetworkByLangValues());
+
+            TextView sendNetworkValueTextView = (TextView) getView().findViewById(R.id.textView_send_network_value);
+            sendNetworkValueTextView.setText( GlobalMethods.BLOCKCHAIN_NAME);
+
+            TextView balanceTextView = (TextView) getView().findViewById(R.id.textView_send_langValue_balance);
+            balanceTextView.setText(jsonViewModel.getBalanceByLangValues());
+
+            TextView balanceCoinSymbolTextView = (TextView) getView().findViewById(R.id.textView_send_coin_symbol);
+            balanceCoinSymbolTextView.setText(GlobalMethods.COIN_SYMBOL);
+
+            TextView balanceValueTextView = (TextView) getView().findViewById(R.id.textView_send_balance_value);
 
             ProgressBar progressBar = (ProgressBar)  getView().findViewById(R.id.progress_send_loader);
-            ProgressBar progressBarSendCoins = (ProgressBar)  getView().findViewById(R.id.progress_loader_send_coins);
 
-            TextView address1TextView = (TextView) getView().findViewById(R.id.textView_send_sample_address1);
-            TextView address2TextView = (TextView) getView().findViewById(R.id.textView_send_sample_address2);
+            TextView addressToSendTextView = (TextView) getView().findViewById(R.id.textView_send_address_to_send);
+            addressToSendTextView.setText(jsonViewModel.getAddressToSendByLangValues());
+
+            EditText addressToSendEditText = (EditText) getView().findViewById(R.id.editText_send_address_to_send);
+            addressToSendEditText.setHint(jsonViewModel.getAddressToSendByLangValues());
+
+            ImageButton qrCodeImageButton = (ImageButton) getView().findViewById(R.id.imageButton_scan_qr_code);
+
+            TextView quantityToSendTextView = (TextView) getView().findViewById(R.id.textView_send_quantity_to_send);
+            quantityToSendTextView.setText(jsonViewModel.getQuantityToSendByLangValues());
+
+            EditText quantityToSendEditText = (EditText) getView().findViewById(R.id.editText_send_quantity_to_send);
+            quantityToSendEditText.setHint(jsonViewModel.getQuantityToSendByLangValues());
+
+            Button sendButton = (Button) getView().findViewById(R.id.button_send_send);
+            sendButton.setText(jsonViewModel.getSendByLangValues());
+
+            //////////////////////////////////////////////////////////////
+            ////addressToSendEditText.setText("0xF0CC7651951D8B08Dac76f9E03f22374935661fB134E402f0943981282f5B047");
+            ////quantityToSendEditText.setText("50000");
+            //////////////////////////////////////////////////////////////
+
+            ProgressBar progressBarSendCoins = (ProgressBar)  getView().findViewById(R.id.progress_loader_send_coins);
 
             linerLayoutOffline = (LinearLayout) getView().findViewById(R.id.linerLayout_send_offline);
             imageViewRetry = (ImageView) getView().findViewById(R.id.image_retry);
@@ -90,14 +159,17 @@ public class SendFragment extends Fragment  {
 
             Button buttonRetry = (Button) getView().findViewById(R.id.button_retry);
 
-            String walletAddress = getArguments().getString("walletAddress");
-            String password = getArguments().getString("password");
-
-            getBalanceByAccount(walletAddress, balanceTextView, progressBar);
+            getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
 
             backArrowImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mSendListener.onSendComplete(password);
+                    mSendListener.onSendComplete(sendPassword);
+                }
+            });
+
+            qrCodeImageButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    QRCodeDialogFragment(view, addressToSendEditText, languageKey);
                 }
             });
 
@@ -108,31 +180,31 @@ public class SendFragment extends Fragment  {
                             return;
                         }
                         sendButtonStatus = 1;
-                        String message = getResources().getString(R.string.send_address_message_description);
-                        if (toAddressEditText.getText().toString().startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
-                            if (toAddressEditText.getText().toString().length() == GlobalMethods.ADDRESS_LENGTH) {
-                                if (quantityEditText.getText().toString().length() > 0) {
-                                    String toAddress = toAddressEditText.getText().toString();
-                                    String quantity = quantityEditText.getText().toString();
-                                    String dp_wei = (String) keyViewModel.getDogeProtocolToWei(quantity);
-                                    if (password == null || password.isEmpty()) {
+                        String message = jsonViewModel.getQuantumAddr();
+                        if (addressToSendEditText.getText().toString().startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
+                            if (addressToSendEditText.getText().toString().length() == GlobalMethods.ADDRESS_LENGTH) {
+                                if (quantityToSendEditText.getText().toString().length() > 0) {
+                                    String toAddress = addressToSendEditText.getText().toString();
+                                    String quantity = quantityToSendEditText.getText().toString();
+
+                                    if (sendPassword == null || sendPassword.isEmpty()) {
                                         if (progressBarSendCoins.getVisibility() == View.VISIBLE) {
                                             message = getResources().getString(R.string.send_transaction_message_exits);
                                             GlobalMethods.ShowToast(getContext(), message);
                                         } else {
                                             unlockDialogFragment(view, progressBarSendCoins,
-                                                    walletAddress, toAddress, dp_wei);
+                                                    walletAddress, toAddress, quantity, languageKey);
                                         }
                                     } else {
                                         sendTransaction(getContext(), progressBarSendCoins,
-                                                walletAddress, toAddress, dp_wei, password);
+                                                walletAddress, toAddress, quantity, sendPassword, languageKey);
                                     }
                                     return;
                                 }
-                                message = getResources().getString(R.string.send_quantity_message_description);
+                                message = jsonViewModel.getEnterAmount();
                             }
                         }
-                        messageDialogFragment(message);
+                        messageDialogFragment(languageKey, message);
                         sendButtonStatus = 0;
                     }catch (Exception e){
                         GlobalMethods.ExceptionError(getContext(), TAG, e);
@@ -148,24 +220,11 @@ public class SendFragment extends Fragment  {
                             break;
                         case 1:
                             String  message = getResources().getString(R.string.send_transaction_message_description);
-                            messageDialogFragment(message);
+                            messageDialogFragment(languageKey, message);
                             break;
                     }
                 }
             });
-
-            address1TextView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    toAddressEditText.setText(address1TextView.getText());
-                }
-            });
-
-            address2TextView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    toAddressEditText.setText(address2TextView.getText());
-                }
-            });
-
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
@@ -182,7 +241,7 @@ public class SendFragment extends Fragment  {
     }
 
     public static interface OnSendCompleteListener {
-        public abstract void onSendComplete(String password);
+        public abstract void onSendComplete(String sendPassword);
     }
 
     public void onAttach(Context context) {
@@ -195,9 +254,10 @@ public class SendFragment extends Fragment  {
         }
     }
 
-    private void messageDialogFragment(String message) {
+    private void messageDialogFragment(String languageKey, String message) {
         try {
             Bundle bundleRoute = new Bundle();
+            bundleRoute.putString("languageKey", languageKey);
             bundleRoute.putString("message", message);
 
             FragmentManager fragmentManager  = getFragmentManager();
@@ -211,7 +271,7 @@ public class SendFragment extends Fragment  {
     }
 
     private void unlockDialogFragment(View view, ProgressBar progressBarSendCoins,
-                                     String walletAddress, String toAddress, String dp_wei) {
+                                     String walletAddress, String toAddress, String quantity, String languageKey) {
         try {
             //Alert unlock dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -221,23 +281,33 @@ public class SendFragment extends Fragment  {
             dialog.setCancelable(false);
             dialog.show();
 
-            EditText passwordEditText = (EditText) dialog.findViewById(R.id.editText_unlock_password);
-            Button unlockButton = (Button) dialog.findViewById(R.id.button_unlock_unlock);
-            Button closeButton = (Button) dialog.findViewById(R.id.button_unlock_close);
+            TextView unlockWalletTextView = (TextView) dialog.findViewById(R.id.textView_unlock_langValues_unlock_wallet);
+            unlockWalletTextView.setText(jsonViewModel.getUnlockWalletByLangValues());
+
+            TextView unlockPasswordTextView = (TextView) dialog.findViewById(R.id.textView_unlock_langValues_enter_wallet_password);
+            unlockPasswordTextView.setText(jsonViewModel.getEnterQuantumWalletPasswordByLangValues());
+
+            EditText passwordEditText = (EditText) dialog.findViewById(R.id.editText_unlock_langValues_enter_a_password);
+            passwordEditText.setHint(jsonViewModel.getEnterApasswordByLangValues());
+
+            Button unlockButton = (Button) dialog.findViewById(R.id.button_unlock_langValues_unlock);
+            unlockButton.setText(jsonViewModel.getUnlockByLangValues());
+
+            Button closeButton = (Button) dialog.findViewById(R.id.button_unlock_langValues_close);
+            closeButton.setText(jsonViewModel.getCloseByLangValues());
 
             unlockButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    //Check Password
+                    //Check password
                     String password = passwordEditText.getText().toString();
-                    if (password == null || password.isEmpty()) {
-                        messageDialogFragment(getResources().getString(
-                                R.string.unlock_password_empty_message));
+                    if (password==null || password.isEmpty()) {
+                        messageDialogFragment(languageKey, jsonViewModel.getEnterApasswordByLangValues());
                         return;
                     }
                     if(sendButtonStatus == 1){
                         dialog.dismiss();
                         sendTransaction(getContext(), progressBarSendCoins,
-                                walletAddress, toAddress, dp_wei, password.trim());
+                                walletAddress, toAddress, quantity, password.trim(), languageKey);
                     }
                     sendButtonStatus = 2;
                 }
@@ -286,7 +356,7 @@ public class SendFragment extends Fragment  {
                         progressBar.setVisibility(View.GONE);
                         int code = e.getCode();
                         boolean check = GlobalMethods.ApiExceptionSourceCodeBoolean(code);
-                        if(check == true) {
+                        if(check==true) {
                             GlobalMethods.ApiExceptionSourceCodeRoute(getContext(), code,
                                     getString(R.string.apierror),
                                     TAG + " : AccountBalanceRestTask : " + e.toString());
@@ -310,15 +380,19 @@ public class SendFragment extends Fragment  {
     }
 
     private void sendTransaction(Context context, ProgressBar progressBar,
-                                 String fromAddress, String toAddress, String dp_wei, String password) {
+                                 String fromAddress, String toAddress, String quantity, String password, String languageKey) {
         try {
             if (progressBar.getVisibility() == View.VISIBLE) {
                 String message = getResources().getString(R.string.send_transaction_message_exits);
                 GlobalMethods.ShowToast(getContext(), message);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
-                int[] SK_KEY = keyViewModel.decryptDataByAccount(context, fromAddress, password);
-                getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, dp_wei, SK_KEY, password);
+                String[] keyData = keyViewModel.decryptDataByAccount(context, fromAddress, password);
+                int[] SK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[0]);
+                int[] PK_KEY =  GlobalMethods.GetIntDataArrayByString(keyData[1]);
+
+                getBalanceNonceByAccount(context, progressBar, fromAddress, toAddress, quantity, SK_KEY, PK_KEY,
+                        password, languageKey);
             }
             return;
         } catch (KeyServiceException e){
@@ -328,11 +402,11 @@ public class SendFragment extends Fragment  {
         }
         progressBar.setVisibility(View.GONE);
         sendButtonStatus = 0;
-        messageDialogFragment(getResources().getString(R.string.unlock_password_wrong_message));
+        messageDialogFragment(languageKey, jsonViewModel.getWalletPasswordMismatchByErrors());
     }
 
     private  void getBalanceNonceByAccount(Context context, ProgressBar progressBar, String fromAddress, String toAddress,
-                                           String dp_wei, int[] SK_KEY, String password) {
+                                           String quantity, int[] SK_KEY, int[] PK_KEY, String password, String languageKey) {
         try{
             linerLayoutOffline.setVisibility(View.GONE);
 
@@ -346,7 +420,7 @@ public class SendFragment extends Fragment  {
                     @Override
                     public void onFinished(BalanceResponse balanceResponse) {
                         getTxData(context, progressBar, balanceResponse, fromAddress, toAddress,
-                                dp_wei, SK_KEY, password);
+                                quantity, SK_KEY, PK_KEY, password, languageKey);
                     }
                     @Override
                     public void onFailure(com.dpwallet.app.api.read.ApiException e) {
@@ -385,8 +459,8 @@ public class SendFragment extends Fragment  {
     }
 
     private  void getTxData(Context context, ProgressBar progressBar, BalanceResponse balanceResponse,
-                            String fromAddress, String toAddress, String dp_wei,
-                            int[] SK_KEY, String password){
+                            String fromAddress, String toAddress, String quantity,
+                            int[] SK_KEY, int[] PK_KEY, String password, String languageKey){
         try {
             String NONCE = "0";
 
@@ -398,21 +472,21 @@ public class SendFragment extends Fragment  {
                 }
             }
 
-            int[] PK_KEY = (int[]) keyViewModel.publicKeyFromPrivateKey(SK_KEY);
             int[] message  = (int[]) keyViewModel.getTxnSigningHash(fromAddress,  NONCE,
-                    toAddress, dp_wei, GlobalMethods.GAS_LIMIT,  GlobalMethods.CHAIN_ID);
-            int[] SIGN = (int[]) keyViewModel.signAccount(message, SK_KEY);
+                    toAddress, quantity, GlobalMethods.GAS_QCN_LIMIT, "", GlobalMethods.NETWORK_ID);
+            int[] SIGN = GlobalMethods.GetIntDataArrayByString(keyViewModel.signAccount(message, SK_KEY));
             int verify = (int) keyViewModel.verifyAccount(message, SIGN, PK_KEY);
 
             if(verify==0){
-                //String txHash = (String) keyViewModel.getTxHash(fromAddress,  NONCE, toAddress, dp_wei,
-                //        GlobalMethods.GAS, GlobalMethods.GAS_PRICE,  GlobalMethods.CHAIN_ID, PK_KEY, SIGN);
-                String txData = (String) keyViewModel.getTxData(fromAddress,  NONCE, toAddress, dp_wei,
-                        GlobalMethods.GAS_LIMIT,  GlobalMethods.CHAIN_ID, PK_KEY, SIGN);
+                //String txHash = (String) keyViewModel.getTxHash(fromAddress,  NONCE, toAddress, quantity,
+                //        GlobalMethods.GAS, GlobalMethods.GAS_PRICE,  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
+
+                String txData = (String) keyViewModel.getTxData(fromAddress,  NONCE, toAddress, quantity,
+                        GlobalMethods.GAS_QCN_LIMIT, "",  GlobalMethods.NETWORK_ID, PK_KEY, SIGN);
 
                 transactionByAccount(context, progressBar, txData, password);
             } else {
-                messageDialogFragment(getResources().getString(R.string.unlock_message_description));
+                messageDialogFragment(languageKey, getResources().getString(R.string.unlock_message_description));
                 progressBar.setVisibility(View.GONE);
                 sendButtonStatus = 0;
             }
@@ -474,7 +548,6 @@ public class SendFragment extends Fragment  {
         }
     }
 
-
     private void sendCompletedDialogFragment(Context context, String password) {
         try {
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -482,10 +555,8 @@ public class SendFragment extends Fragment  {
                             R.layout.send_completed_dialog_fragment).create();
             dialog.setCancelable(false);
             dialog.show();
-
             TextView textViewOk = (TextView) dialog.findViewById(
                     R.id.textView_send_completed_alert_dialog_ok);
-
             textViewOk.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     sendButtonStatus = 0;
@@ -493,9 +564,120 @@ public class SendFragment extends Fragment  {
                     mSendListener.onSendComplete(password);
                 }
             });
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getContext(), TAG, e);
+        }
+    }
+
+
+    private void QRCodeDialogFragment(View view, EditText walletAddressEditText, String languageKey) {
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle((CharSequence) "").setView((int)
+                            R.layout.qrcode_dialog_fragment).create();
+
+            dialog.dismiss();
+            dialog.setCancelable(false);
+            dialog.show();
+
+            SurfaceView qrCodeSurfaceView = dialog.findViewById(R.id.surfaceView_qrcode);
+            TextView qrcodeTextView = dialog.findViewById(R.id.textView_qrcode);
+
+            Button okButton = (Button) dialog.findViewById(R.id.button_qrcode_langValues_ok);
+            Button closeButton = (Button) dialog.findViewById(R.id.button_qrcode_langValues_close);
+
+            okButton.setText(jsonViewModel.getOkByLangValues());
+            closeButton.setText(jsonViewModel.getCloseByLangValues());
+
+            barcodeDetector = new BarcodeDetector.Builder(getContext())
+                    .setBarcodeFormats(Barcode.ALL_FORMATS)
+                    .build();
+
+            cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
+                    .setRequestedPreviewSize(1920, 1080)
+                    .setAutoFocusEnabled(true)
+                    .build();
+
+            qrCodeSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+                @Override
+                public void surfaceCreated(SurfaceHolder holder) {
+                    try {
+                        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                            cameraSource.start(qrCodeSurfaceView.getHolder());
+                        } else {
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))
+                            {
+                                qrcodeTextView.setText(R.string.send_camara_permission_description);
+                                Toast.makeText(getActivity(), R.string.send_camara_permission_description, Toast.LENGTH_SHORT).show();
+                            } else {
+                                ActivityCompat.requestPermissions(getActivity(), new
+                                        String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                                dialog.dismiss();
+                                dialog.setCancelable(false);
+                                dialog.show();
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+                }
+
+                @Override
+                public void surfaceDestroyed(SurfaceHolder holder) {
+                    cameraSource.stop();
+                }
+            });
+
+
+            barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+                @Override
+                public void release() {
+                    //Toast.makeText(getActivity(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
+                    final SparseArray<Barcode> barCode = detections.getDetectedItems();
+                    if (barCode.size() > 0) {
+                        qrcodeTextView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String intentData = barCode.valueAt(0).displayValue;
+                                qrcodeTextView.setText(intentData);
+                            }
+                        });
+                    }
+                }
+            });
+
+            okButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    cameraSource.release();
+                    assert qrcodeTextView != null;
+                    if(qrcodeTextView.getText().toString().startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
+                        walletAddressEditText.setText(qrcodeTextView.getText());
+                    } else {
+                        walletAddressEditText.setText("");
+                    }
+                    dialog.dismiss();
+                }
+            });
+
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    cameraSource.release();
+                    dialog.dismiss();
+                }
+            });
 
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getContext(), TAG, e);
         }
     }
+
 }

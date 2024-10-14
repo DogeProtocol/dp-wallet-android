@@ -45,4 +45,19 @@
 
     <color name="colorCommon10">#000000</color>
 
+    <color name="colorSeedA">#000000</color>
+
+    <color name="colorCommonSeedA">#ABC6D3</color>
+    <color name="colorCommonSeedB">#D1D3B7</color>
+    <color name="colorCommonSeedC">#D8C9AE</color>
+    <color name="colorCommonSeedD">#D1B4B9</color>
+    <color name="colorCommonSeedE">#D8B3B9</color>
+    <color name="colorCommonSeedF">#C5ADCA</color>
+    <color name="colorCommonSeedG">#A0B5BD</color>
+    <color name="colorCommonSeedH">#C5B7B7</color>
+    <color name="colorCommonSeedI">#BCB6D8</color>
+    <color name="colorCommonSeedJ">#B6C69D</color>
+    <color name="colorCommonSeedK">#D5B3B3</color>
+    <color name="colorCommonSeedL">#B1D1D8</color>
+
 </resources>

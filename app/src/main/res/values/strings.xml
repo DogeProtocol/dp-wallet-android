@@ -1,69 +1,114 @@
 <resources>
-    <string name="app_name" translatable="false">DP Wallet</string>
+    <string name="app_name" translatable="false">Quantumcoin Wallet</string>
+    <string name="empty">empty1</string>
+
+
 
     <string name="cannot_read_encrypt_file">Wallet can not read encrypted key; re-import required.</string>
     <string name="authentication_error">Authentication to unlock key not provided or timed out. Please try again.</string>
     <string name="device_security_changed">Since this key was created the mobile device security has changed and the OS has invalidated the key. Please re-import your key.</string>
 
     <!-- Home -->
-    <string name="home_title">Doge Protocol Wallet</string>
+    <string name="home_title">QUANTUM COIN WALLET</string>
     <string name="home_total_balance_title">Total Balance</string>
 
     <!-- Home new fragment -->
-    <string name="home_new_title_1">Welcome 1 of 5</string>
-    <string name="home_new_sub_title_1">Important, Please Read!</string>
-    <string name="home_new_description_1">You are about to create to a quantum resistant wallet. Do not send Ethereum or other coins or tokens to this wallet address!</string>
-    <string name="home_new_button_next_1">Next >></string>
 
-    <string name="home_new_title_2">Welcome 2 of 5</string>
-    <string name="home_new_sub_title_2">Anti Virus</string>
-    <string name="home_new_description_2">Make sure that your computer or laptop or device has anti-virus software installed and enabled!</string>
-    <string name="home_new_button_next_2">Next >></string>
 
-    <string name="home_new_title_3">Welcome 3 of 5</string>
-    <string name="home_new_sub_title_3">Passwords</string>
-    <string name="home_new_description_3">Make sure that you use strong and long passwords. Remember the password that you use and do not forget!</string>
-    <string name="home_new_button_next_3">Next >></string>
 
-    <string name="home_new_title_4">Welcome 4 of 5</string>
-    <string name="home_new_sub_title_4">Backups</string>
-    <string name="home_new_description_4">Backup your wallet and keep it safe offline. Keep atleast 3 copies of your wallets in different places offline.</string>
-    <string name="home_new_button_next_4">Next >></string>
+    <!-- Home new fragment -->
+    <string name="home_welcome_title_1">Welcome, info 1 OF 7</string>
+    <string name="home_welcome_sub_title_1">Important, Please Read!</string>
+    <string name="home_welcome_description_1">You are about to create a quantum resistant wallet. Do not send Ethereum or other coins or tokens to this wallet address!</string>
+    <string name="home_welcome_button_next_1">Next</string>
 
-    <string name="home_new_title_5">Welcome 5 of 5</string>
-    <string name="home_new_sub_title_5">Safety</string>
-    <string name="home_new_description_5">Do not share your wallet or passwords with anyone. Scammers often offer to help but might steal your wallet!</string>
-    <string name="home_new_button_Ok_5">I understand</string>
+    <string name="home_welcome_title_2">Welcome, info 2 OF 7</string>
+    <string name="home_welcome_sub_title_2">Anti Virus</string>
+    <string name="home_welcome_description_2">Make sure that your computer or laptop or device has anti-virus software installed and enabled!</string>
+    <string name="home_welcome_button_next_2">Next</string>
 
-    <string name="home_new_title_6">Safety Quiz</string>
-    <string name="home_new_sub_title_6">Wallet</string>
-    <string name="home_new_description_6">What coins or tokens can you send to this wallet?</string>
-    <string name="home_new_option_1_6">Ethereum</string>
-    <string name="home_new_option_2_6">DogeP Tokens</string>
-    <string name="home_new_option_3_6">DP Testnet Coins</string>
-    <string name="home_new_option_4_6">All the above</string>
-    <string name="home_new_button_Submit_6">Submit</string>
+    <string name="home_welcome_title_3">Welcome, info 3 OF 7</string>
+    <string name="home_welcome_sub_title_3">Passwords</string>
+    <string name="home_welcome_description_3">Make sure that you use a strong, long password and do not forget it!</string>
+    <string name="home_welcome_button_next_3">Next</string>
 
-    <string name="home_new_title_7">Wallet</string>
-    <string name="home_new_description_7">You can create a new wallet an existing DP Test Coin Wallet. Do not import your DogeP token or Ethereum wallet!</string>
-    <string name="home_new_button_wallet_7">Create A New Wallet</string>
-    <string name="home_import_button_wallet_7">Import An Existing Wallet</string>
+    <string name="home_welcome_title_4">Welcome, info 4 OF 7</string>
+    <string name="home_welcome_sub_title_4">Backups</string>
+    <string name="home_welcome_description_4">Backup your wallet and keep it safe offline. Keep at least three copies of your wallets in different places offline.</string>
+    <string name="home_welcome_button_next_4">Next</string>
 
-    <string name="home_safety_quiz_message_correct">That is correct. You should send only DP Testnet Coins to this wallet.</string>string>
-    <string name="home_safety_quiz_message_wrong">That is wrong! Please read the question carefully and try again.</string>
+    <string name="home_welcome_title_5">Welcome, info 5 OF 7</string>
+    <string name="home_welcome_sub_title_5">Wallet Safety</string>
+    <string name="home_welcome_description_5">Do not share your wallet or passwords with anyone. Scammers often offer to help but will steal your wallet!</string>
+    <string name="home_welcome_button_next_5">Next</string>
 
-    <!-- Home new wallet fragment -->
-    <string name="home_new_wallet_title">Create New Wallet</string>
-    <string name="home_new_wallet_description">Use a strong and long password. And do not forget it!</string>
-    <string name="home_new_wallet_password_title">Password</string>
-    <string name="home_new_wallet_password_description">Enter a password</string>
-    <string name="home_new_wallet_retype_password_title">Retype Password</string>
-    <string name="home_new_wallet_retype_password_description">Retype the password</string>
-    <string name="home_new_wallet_create_title">Create Wallet</string>
+    <string name="home_welcome_title_6">Welcome, info 6 OF 7</string>
+    <string name="home_welcome_sub_title_6">Email Safety</string>
+    <string name="home_welcome_description_6">Do not reply to or open attachments, links or images in emails that talks about Doge Protocol coins, tokens or wallets. They are most likely scams that can result in your coins and tokens getting stolen!</string>
+    <string name="home_welcome_button_next_6">Next</string>
 
-    <string name="home_new_wallet_password_minimum_message">Password should be minimum 16 characters in length!</string>
-    <string name="home_new_wallet_password_mismatch_message">Passwords don\'t match!</string>
-    <string name="home_new_wallet_message_exits">Processing...</string>
+    <string name="home_welcome_title_7">Welcome, info 7 OF 7</string>
+    <string name="home_welcome_sub_title_7">Social Media and Messaging Apps Safety</string>
+    <string name="home_welcome_description_7">Do not respond to social media and messaging app direct-messages from community members or anyone in general talking about Doge Protocol. They are most likely scammers who can trick you and steal your coins or tokens!</string>
+    <string name="home_welcome_button_next_7">Next</string>
+
+    <string name="home_safety_quiz_title_1">Safety Quiz 1 OF 2</string>
+    <string name="home_safety_quiz_sub_title_1">Coin Type</string>
+    <string name="home_safety_quiz_description_1">What coins or tokens can you send to this wallet?</string>
+    <string name="home_safety_quiz_option_1_1">Ethereum</string>
+    <string name="home_safety_quiz_option_2_1"> DogeP ERC20 Tokens</string>
+    <string name="home_safety_quiz_option_3_1">DP Mainnet Coins</string>
+    <string name="home_safety_quiz_option_4_1">All the above</string>
+    <string name="home_safety_quiz_button_next_1">Next</string>
+
+    <string name="home_safety_quiz_title_2">Safety Quiz 2 OF 2</string>
+    <string name="home_safety_quiz_sub_title_2">Lost wallet or password</string>
+    <string name="home_safety_quiz_description_2">If you lost your wallet or password, who can help recover?</string>
+    <string name="home_safety_quiz_option_1_2">Doge Protocol Community</string>
+    <string name="home_safety_quiz_option_2_2">Customer Support Team</string>
+    <string name="home_safety_quiz_option_3_2">Dev</string>
+    <string name="home_safety_quiz_option_4_2">No one</string>
+    <string name="home_safety_quiz_button_next_2">Next</string>
+
+    <string name="home_safety_quiz_message">Please select an option.</string>string>
+
+    <string name="home_safety_quiz_message_correct_1">This is correct. You should only send DP Mainnet coins to this wallet.</string>string>
+    <string name="home_safety_quiz_quiz_message_wrong_1">That is wrong! Please read the question carefully and try again.</string>
+
+    <string name="home_safety_quiz_message_correct_2">This is correct. No one can help you recover your wallet or password.</string>string>
+    <string name="home_safety_quiz_quiz_message_wrong_2">Your answer is wrong! Please read the question carefully and try again.</string>
+
+    <string name="home_set_wallet_title">Set Wallet Password</string>
+    <string name="home_set_wallet_description">Use a strong and long password. And do not forget it!</string>
+    <string name="home_set_wallet_password_title">Password</string>
+    <string name="home_set_wallet_password_description">Enter a password</string>
+    <string name="home_set_wallet_retype_password_title">Retype Password</string>
+    <string name="home_set_wallet_retype_password_description">Retype the password</string>
+    <string name="home_set_wallet_next_title">Next</string>
+
+    <string name="home_set_wallet_password_minimum_message">Enter a minimum of 12 characters for password</string>
+    <string name="home_set_wallet_password_mismatch_message">Retype the password correctly</string>
+
+    <string name="home_create_restore_wallet_title">Create or Restore Quantum Wallet</string>
+    <string name="home_create_restore_wallet_description">Select an option</string>
+    <string name="home_create_restore_wallet_option_1">Create New Quantum Wallet</string>
+    <string name="home_create_restore_wallet_option_2">Restore A Quantum Wallet From Seed Words</string>
+    <string name="home_create_restore_wallet_option_3">Restore A Quantum Wallet From a Backup File</string>
+    <string name="home_create_restore_wallet_next_title">Next</string>
+
+    <string name="home_seed_words_wallet_title">Seed Words</string>
+    <string name="home_seed_words_wallet_description_1">1.Ensure that no one is looking at the screen other than you.</string>
+    <string name="home_seed_words_wallet_description_2">2.Ensure that there is no camera pointed at this screen, including from your phone.</string>
+    <string name="home_seed_words_wallet_description_3">3.You should save the seed words safely offline and keep multiple copies in a trustworthy and safe location.</string>
+    <string name="home_seed_words_wallet_description_4">4.If these seed words are stolen or someone else gets access to them, your wallet is compromised.</string>
+    <string name="home_seed_words_wallet_description_5">5.Click here to reveal the seed words.</string>
+
+    <string name="home_restore_seed_words_wallet_title">Seed Words</string>
+
+    <string name="home_seed_words_wallet_title_a1">A1</string>
+    <string name="home_seed_words_wallet_title_a2">A2</string>
+    <string name="home_seed_words_wallet_title_a3">A3</string>
+    <string name="home_seed_words_wallet_title_a4">A4</string>
 
     <!-- Home import wallet fragment -->
     <string name="home_import_wallet_title">Import Wallet</string>
@@ -95,9 +140,9 @@
 
 
     <!--- Menu -->
-    <string name="nav_home_title">Home</string>
+    <string name="nav_wallets_title">Wallets</string>
     <string name="nav_help_title">Help</string>
-    <string name="nav_dp_scan_title">DpScan</string>
+    <string name="nav_block_explorer_title">Block Explorer</string>
     <string name="nav_settings_title">Settings</string>
 
     <string name="nav_send_title">Send</string>
@@ -149,6 +194,8 @@
     <string name="send_quantity_title">Quantity</string>
     <string name="send_quantity_description">Quantity to send</string>
     <string name="send_button_send_title">Send</string>
+
+    <string name="send_camara_permission_description">The camera permission is restricted and unavailable. Give permission manually.</string>
 
     <string name="send_address_message_description">Enter the to address correctly!</string>
     <string name="send_quantity_message_description">Enter the to quantity correctly!</string>

@@ -122,7 +122,7 @@ struct ContractData_return {
 	char* r0;
 	char* r1;
 };
-extern struct ContractData_return ContractData(char** argv, GoInt argvLength);
+extern struct ContractData_return ContractData(char** args, GoInt argvLength);
 
 /* Return type for ParseBigFloat */
 struct ParseBigFloat_return {

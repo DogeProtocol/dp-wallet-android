@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.dpwallet.app"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -19,7 +19,6 @@ android {
             abiFilters "armeabi-v7a" , "arm64-v8a", "x86", "x86_64"
         }
     }
-
     buildTypes {
         release {
             debuggable false
@@ -35,7 +34,7 @@ android {
                         // on below line we are setting a
                         // name to our apk as dp-wallet.apk
                     output->
-                        def name = "dp-wallet.apk"
+                        def name = "QuantumCoin-wallet.apk"
                         // on below line we are setting the
                         // outputFile Name to our apk file.
                         output.outputFileName = name
@@ -56,6 +55,7 @@ android {
         viewBinding true
     }
 }
+
 
 //Notification
 def core_version = "1.6.0"
@@ -98,8 +98,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-    //QR Code
+    //QR Writer Code
     implementation 'com.google.zxing:core:3.2.0'
+
+    //QR Code Scanner library
+    implementation "com.google.android.gms:play-services-vision:17.0.2"
 
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
@@ -114,4 +117,11 @@ dependencies {
 
     //Notification
     implementation "androidx.core:core:$core_version"
+
+    implementation 'com.opencsv:opencsv:4.6'
+
+    //implementation "com.trustwallet:wallet-core:2.9.5"
+
+    implementation ('org.web3j:core:4.8.9-android')
+
 }

@@ -1,6 +1,7 @@
 package com.dpwallet.app.view.activities;
 
-import android.app.Notification;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,8 +12,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,49 +37,51 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ClipboardManager;
 
 import com.dpwallet.app.R;
+import com.dpwallet.app.api.read.ApiClient;
 import com.dpwallet.app.api.read.model.BalanceResponse;
-import com.dpwallet.app.asynctask.download.DownloadingTask;
 import com.dpwallet.app.asynctask.read.AccountBalanceRestTask;
 import com.dpwallet.app.entity.ServiceException;
-import com.dpwallet.app.utils.CheckForSDCard;
+import com.dpwallet.app.model.BlockchainNetwork;
+import com.dpwallet.app.seedwords.SeedWords;
 import com.dpwallet.app.utils.GlobalMethods;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.Utility;
-import com.dpwallet.app.view.fragment.ExportWalletFragment;
-import com.dpwallet.app.view.fragment.HomeFragment;
-import com.dpwallet.app.view.fragment.HomeImportWalletFragment;
-import com.dpwallet.app.view.fragment.HomeNewFragment;
-import com.dpwallet.app.view.fragment.HomeNewWalletFragment;
-import com.dpwallet.app.view.fragment.QrCodeDialogFragment;
-import com.dpwallet.app.view.fragment.QrCodeFragment;
+import com.dpwallet.app.view.fragment.BlockchainNetworkAddFragment;
+import com.dpwallet.app.view.fragment.BlockchainNetworkDialogFragment;
+import com.dpwallet.app.view.fragment.BlockchainNetworkFragment;
+import com.dpwallet.app.view.fragment.GetCoinsDogepTokensFragment;
+import com.dpwallet.app.view.fragment.HomeMainFragment;
+import com.dpwallet.app.view.fragment.HomeStartFragment;
+import com.dpwallet.app.view.fragment.HomeWalletFragment;
 import com.dpwallet.app.view.fragment.ReceiveFragment;
 import com.dpwallet.app.view.fragment.SendFragment;
 import com.dpwallet.app.view.fragment.SettingsFragment;
+import com.dpwallet.app.view.fragment.RevealWalletFragment;
 import com.dpwallet.app.view.fragment.AccountTransactionsFragment;
 
-import com.dpwallet.app.view.fragment.TestnetCoinsFragment;
-
+import com.dpwallet.app.view.fragment.WalletsFragment;
+import com.dpwallet.app.viewmodel.JsonViewModel;
 import com.dpwallet.app.viewmodel.KeyViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class HomeActivity extends FragmentActivity implements
-        HomeFragment.OnHomeCompleteListener, HomeNewFragment.OnHomeNewCompleteListener, HomeNewWalletFragment.OnHomeNewWalletCompleteListener,
-        HomeImportWalletFragment.OnHomeImportWalletCompleteListener,
-        QrCodeDialogFragment.OnQrCodeDialogCompleteListener,
+        HomeMainFragment.OnHomeMainCompleteListener, HomeStartFragment.OnHomeStartCompleteListener,
+        HomeWalletFragment.OnHomeWalletCompleteListener,
+        BlockchainNetworkDialogFragment.OnBlockchainNetworkDialogCompleteListener,
+        BlockchainNetworkFragment.OnBlockchainNetworkCompleteListener,
+        BlockchainNetworkAddFragment.OnBlockchainNetworkAddCompleteListener,
         SendFragment.OnSendCompleteListener, ReceiveFragment.OnReceiveCompleteListener,
-        AccountTransactionsFragment.OnAccountTransactionsCompleteListener, ExportWalletFragment.OnExportWalletCompleteListener,
-        TestnetCoinsFragment.OnTestnetCoinsCompleteListener, SettingsFragment.OnSettingsCompleteListener {
+        AccountTransactionsFragment.OnAccountTransactionsCompleteListener, WalletsFragment.OnWalletsCompleteListener,
+        SettingsFragment.OnSettingsCompleteListener,  GetCoinsDogepTokensFragment.OnGetCoinsCompleteListener,
+        RevealWalletFragment.OnRevealWalletCompleteListener {
 
     private static final String TAG = "HomeActivity";
+
     private final int notificationRequestCode = 112;
 
     private LinearLayout topLinearLayout;
@@ -91,8 +92,10 @@ public class HomeActivity extends FragmentActivity implements
 
     private String walletAddress = "";
 
+    private TextView blockChainNetworkTextView;
+
     private TextView walletAddressTextView;
-    private TextView balanceTextView;
+    private TextView balanceValueTextView;
     private ProgressBar progressBar;
     private BottomNavigationView bottomNavigationView;
 
@@ -101,39 +104,59 @@ public class HomeActivity extends FragmentActivity implements
     private TextView textViewTitleRetry;
     private TextView textViewSubTitleRetry;
 
+    private JsonViewModel jsonViewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
+        try {
             //locale language
-            String languageKey = getIntent().getStringExtra("languagekey");
+
+            //String languageKey = getIntent().getStringExtra("languageKey");
+            String languageKey="en";
 
             //Bundle
-            bundle  = new Bundle();
+            bundle = new Bundle();
             bundle.putString("languageKey", languageKey);
 
-            GlobalMethods.LocaleLanguage(getBaseContext(),TAG, languageKey);
+            jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
+
+            loadSeedsThread();
+
+            PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP = PrefConnect.loadHashMap(getApplicationContext(),
+                    PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX);
+
+            PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP = PrefConnect.loadHashMap(getApplicationContext(),
+                    PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_INDEX_ADDRESS);
+
+            PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_VALUE = PrefConnect.readString(getApplicationContext(),
+                    PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_KEY, "0");
 
             setContentView(R.layout.home_activity);
 
             //Linear top layout
             topLinearLayout = (LinearLayout) findViewById(R.id.top_linear_layout_home_id);
             topLinearLayoutParams = topLinearLayout.getLayoutParams();
+            blockChainNetworkTextView = (TextView) findViewById(R.id.textView_home_blockchain_network);
+            TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
 
             //Center Relative layout & Image Button
             centerRelativeLayout = (RelativeLayout) findViewById(R.id.center_relative_layout_home_id);
             walletAddressTextView = (TextView) findViewById(R.id.textView_home_wallet_address);
             ImageButton copyClipboardImageButton = (ImageButton) findViewById(R.id.imageButton_home_copy_clipboard);
-            ImageButton qrCodeImageButton = (ImageButton) findViewById(R.id.imageButton_home_qr_code);
+            ImageButton blockExploreImageButton = (ImageButton) findViewById(R.id.imageButton_home_block_explore);
 
-            balanceTextView = (TextView) findViewById(R.id.textView_home_balance_value);
+            TextView balanceCoinSymbolTextView = (TextView) findViewById(R.id.textView_home_coin_symbol);
+            balanceValueTextView = (TextView) findViewById(R.id.textView_home_balance_value);
             ImageButton refreshImageButton = (ImageButton) findViewById(R.id.imageButton_home_refresh);
             progressBar = (ProgressBar) findViewById(R.id.progress_home_loader);
 
+            TextView sendTitleTextView = (TextView) findViewById(R.id.textView_home_send_title);
             ImageButton sendImageButton = (ImageButton) findViewById(R.id.imageButton_home_send);
+            TextView receiveTitleTextView = (TextView) findViewById(R.id.textView_home_receive_title);
             ImageButton receiveImageButton = (ImageButton) findViewById(R.id.imageButton_home_receive);
+            TextView transactionsTitleTextView = (TextView) findViewById(R.id.textView_home_transactions_title);
             ImageButton transactionsImageButton = (ImageButton) findViewById(R.id.imageButton_home_transactions);
-            ImageButton dpScanImageButton = (ImageButton) findViewById(R.id.imageButton_home_dpscan);
 
             //Bottom navigation
             bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -144,35 +167,68 @@ public class HomeActivity extends FragmentActivity implements
             textViewSubTitleRetry = (TextView) findViewById(R.id.textview_subtitle_retry);
             Button buttonRetry = (Button) findViewById(R.id.button_retry);
 
-            setWalletAddress();
+            titleTextView.setText(jsonViewModel.getTitleByLangValues());
+            //balanceTitleTextView.setText(jsonViewModel.getBalanceByLangValues());
+            balanceCoinSymbolTextView.setText(GlobalMethods.COIN_SYMBOL);
+
+            sendTitleTextView.setText(jsonViewModel.getSendByLangValues());
+            receiveTitleTextView.setText(jsonViewModel.getReceiveByLangValues());
+            transactionsTitleTextView.setText(jsonViewModel.getTransactionsByLangValues());
+
+            getCurrentWallet(PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_VALUE);
 
             //Notification permission
             if (Build.VERSION.SDK_INT >= 33) {
-                if (ContextCompat.checkSelfPermission(this,  android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS},notificationRequestCode);
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, notificationRequestCode);
                 }
                 createNotificationChannel();
             }
+
+            int blockchainNetworkIdIndex = PrefConnect.readInteger(getApplicationContext(),
+                    PrefConnect.BLOCKCHAIN_NETWORK_ID_INDEX_KEY, 0);
+
+            List<BlockchainNetwork> blockchainNetworkList = GlobalMethods.BlockChainNetworkRead(getApplicationContext());
+            BlockchainNetwork blockchainNetwork = blockchainNetworkList.get(blockchainNetworkIdIndex);
+            GlobalMethods.SCAN_API_URL = GlobalMethods.HTTPS + blockchainNetwork.getScanApiDomain();
+            GlobalMethods.TXN_API_URL = GlobalMethods.HTTPS + blockchainNetwork.getTxnApiDomain();
+            GlobalMethods.BLOCK_EXPLORER_URL = GlobalMethods.HTTPS + blockchainNetwork.getBlockExplorerDomain();
+            GlobalMethods.BLOCKCHAIN_NAME = blockchainNetwork.getBlockchainName();
+            GlobalMethods.NETWORK_ID = blockchainNetwork.getNetworkId();
+
+            blockChainNetworkTextView.setText(GlobalMethods.BLOCKCHAIN_NAME);
+
+            blockChainNetworkTextView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    bundle.putString("blockchainNetworkIdIndex", String.valueOf(blockchainNetworkIdIndex));
+
+                    BlockchainNetworkDialogFragment blockChainDialogFragment = BlockchainNetworkDialogFragment.newInstance();
+                    blockChainDialogFragment.setCancelable(false);
+                    blockChainDialogFragment.setArguments(bundle);
+                    blockChainDialogFragment.show(getSupportFragmentManager(), "BlockchainNetworkDialog");
+                }
+            });
 
             //Center buttons setOnClickListener
             copyClipboardImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     ClipboardManager clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("label", walletAddressTextView.getText());
+                    ClipData clipData = ClipData.newPlainText("currentAddress", walletAddressTextView.getText());
                     clipBoard.setPrimaryClip(clipData);
                 }
             });
 
-            qrCodeImageButton.setOnClickListener(new View.OnClickListener() {
+            blockExploreImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    screenViewType(0);
-                    beginTransaction(QrCodeFragment.newInstance(), bundle);
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL + GlobalMethods.BLOCK_EXPLORER_ACCOUNT_TRANSACTION_URL.replace("{address}", walletAddressTextView.getText())))
+                    );
                 }
             });
 
             refreshImageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    getBalanceByAccount(walletAddress, balanceTextView, progressBar);
+                    getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
                 }
             });
 
@@ -197,17 +253,7 @@ public class HomeActivity extends FragmentActivity implements
                 }
             });
 
-            dpScanImageButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                   //Open url with address
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GlobalMethods.DP_SCAN_ACCOUNT_TRANSACTION_URL.replace(
-                                    "{address}", walletAddressTextView.getText())))
-                    );
-                }
-            });
-
-            buttonRetry.setOnClickListener(new View.OnClickListener(){
+            buttonRetry.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent intent = getIntent();
                     finish();
@@ -216,16 +262,15 @@ public class HomeActivity extends FragmentActivity implements
             });
 
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            if (walletAddress.length()>10) {
-                                screenViewType(0);
-                                beginTransaction(HomeFragment.newInstance(), bundle);
-                            } else {
-                                bundle.putString("screenStart", "1");
-                                screenViewType(1);
-                                beginTransaction(HomeNewFragment.newInstance(), bundle);
+                        case R.id.nav_wallets:
+                            if (walletAddress.startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
+                                if (walletAddress.length() == GlobalMethods.ADDRESS_LENGTH){
+                                    screenViewType(1);
+                                    beginTransaction(WalletsFragment.newInstance(), bundle);
+                                }
                             }
                             return true;
                         case R.id.nav_help:
@@ -233,9 +278,9 @@ public class HomeActivity extends FragmentActivity implements
                                     Uri.parse(GlobalMethods.DP_DOCS_URL))
                             );
                             return true;
-                        case R.id.nav_big_scan:
+                        case R.id.nav_block_explorer:
                             startActivity(new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(GlobalMethods.DP_SCAN_URL))
+                                    Uri.parse(GlobalMethods.BLOCK_EXPLORER_URL))
                             );
                             return true;
                         case R.id.nav_settings:
@@ -247,17 +292,16 @@ public class HomeActivity extends FragmentActivity implements
                 }
             });
 
-           // if (savedInstanceState == null) {
-                if (walletAddress.length()>10) {
+            if (walletAddress.startsWith(GlobalMethods.ADDRESS_START_PREFIX)) {
+                if (walletAddress.length() == GlobalMethods.ADDRESS_LENGTH){
                     screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
+                    beginTransaction(HomeMainFragment.newInstance(), bundle);
                     notificationThread(1);
-                } else {
-                    bundle.putString("screenStart", "1");
-                    screenViewType(1);
-                    beginTransaction(HomeNewFragment.newInstance(), bundle);
                 }
-          //  }
+            } else {
+                screenViewType(-1);
+                beginTransaction(HomeStartFragment.newInstance(), bundle);
+            }
 
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
@@ -282,116 +326,92 @@ public class HomeActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onHomeComplete() {
-        try{
-            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.nav_home);
-            item.setChecked(true);
-            getBalanceByAccount(walletAddress, balanceTextView, progressBar);
+    public void onHomeMainComplete() {
+        try {
+            getBalanceByAccount(walletAddress, balanceValueTextView, progressBar);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onHomeNewComplete(int status) {
-        try{
-            //0 - Create new wallet, 1- Import wallet
-            switch(status) {
-                case 0 :
-                    screenViewType(1);
-                    beginTransaction(HomeNewWalletFragment.newInstance(), bundle);
-                    break;
-                case 1:
-                    screenViewType(1);
-                    beginTransaction(HomeImportWalletFragment.newInstance(), bundle);
-                    break;
-            }
+    public void onHomeStartComplete() {
+        try {
+            screenViewType(-1);
+            beginTransaction(HomeWalletFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onHomeNewWalletComplete(int status) {
-        try{
-            //0 - Back button, 1- New wallet
-            switch(status) {
-                case 0 :
-                    bundle.putString("screenStart", "7");
-                    screenViewType(1);
-                    beginTransaction(HomeNewFragment.newInstance(), bundle);
-                    break;
-                case 1:
-                    screenViewType(1);
-                    setWalletAddress();
-                    beginTransaction(TestnetCoinsFragment.newInstance(), bundle);
-                    break;
-            }
+    public void onHomeWalletCompleteByHomeMain( String indexKey) {
+        try {
+            getCurrentWallet(indexKey);
+            screenViewType(0);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+            notificationThread(1);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onHomeImportWalletComplete(int status) {
-        try{
-            //0 - Back button, 1- New wallet
-            switch(status) {
-                case 0 :
-                    bundle.putString("screenStart", "7");
-                    screenViewType(1);
-                    beginTransaction(HomeNewFragment.newInstance(), bundle);
-                    break;
-                case 1:
-                   // screenViewType(0);
-                   // beginTransaction(HomeFragment.newInstance(), bundle);
-                    break;
-            }
+    public void onHomeWalletCompleteByWallets() {
+        try {
+            screenViewType(1);
+            beginTransaction(WalletsFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onTestnetCoinsComplete() {
+    public void onBlockchainNetworkDialogCancel() {
         try{
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
-            notificationThread(0);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @SuppressLint("UnsafeIntentLaunch")
+    @Override
+    public void onBlockchainNetworkDialogOk() {
+        try{
+            finish();
+            startActivity(getIntent());
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onExportWalletComplete(int status, ProgressBar progressBar) {
+    public void onBlockchainNetworkCompleteByBackArrow() {
         try{
-            //0 - Skip wallet, 1- Export wallet
-            switch(status) {
-                case 0 :
-                    if (walletAddress.length()>10) {
-                        screenViewType(0);
-                        beginTransaction(HomeFragment.newInstance(), bundle);
-                        return;
-                    }
-                    bundle.putString("screenStart", "7");
-                    screenViewType(1);
-                    beginTransaction(HomeNewFragment.newInstance(), bundle);
-                    break;
-                case 1:
-                    ExportKey(walletAddress, progressBar);
-                    break;
-            }
+            screenViewType(1);
+            beginTransaction(SettingsFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onQrCodeDialogComplete() {
+    public void onBlockchainNetworkCompleteByAdd() {
         try{
-            screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            screenViewType(1);
+            beginTransaction(BlockchainNetworkAddFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onBlockchainNetworkAddComplete() {
+        try{
+            screenViewType(1);
+            beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -399,10 +419,10 @@ public class HomeActivity extends FragmentActivity implements
 
     @Override
     public void onSendComplete(String password) {
-        try{
-            bundle.putString("password", password);
+        try {
+            bundle.putString("sendPassword", password);
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -410,9 +430,9 @@ public class HomeActivity extends FragmentActivity implements
 
     @Override
     public void onReceiveComplete() {
-        try{
+        try {
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -420,37 +440,98 @@ public class HomeActivity extends FragmentActivity implements
 
     @Override
     public void onAccountTransactionsComplete() {
-        try{
+        try {
             screenViewType(0);
-            beginTransaction(HomeFragment.newInstance(), bundle);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
     @Override
-    public void onSettingsComplete(int status) {
-        try{
-            //0 and 3 - Back arrow, 1 - Export, 2 - Testnet, 3 - delete account
-            switch (status) {
-                case 1 :
-                    screenViewType(1);
-                    beginTransaction(ExportWalletFragment.newInstance(), bundle);
-                    break;
-                case 3:
-                    screenViewType(1);
-                    removeWalletAddress();
+    public void  onWalletsCompleteByBackArrow(){
+        screenViewType(0);
+        beginTransaction(HomeMainFragment.newInstance(), bundle);
+    }
 
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                    break;
-                default:
-                    //0, 2 Button
-                    screenViewType(0);
-                    beginTransaction(HomeFragment.newInstance(), bundle);
-                    break;
-            }
+    @Override
+    public void  onWalletsCompleteByCreateOrRestore(String walletPassword){
+        screenViewType(1);
+        bundle.putString("walletPassword", walletPassword);
+        beginTransaction(HomeWalletFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void  onWalletsCompleteBySwitchAddress(String indexKey){
+        getCurrentWallet(indexKey);
+        screenViewType(0);
+        beginTransaction(HomeMainFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void onWalletsCompleteByReveal(String walletAddress, String walletPassword){
+        screenViewType(1);
+        bundle.putString("walletAddress", walletAddress);
+        bundle.putString("walletPassword", walletPassword);
+        beginTransaction(RevealWalletFragment.newInstance(), bundle);
+    }
+
+    @Override
+    public void onSettingsCompleteCompleteByBackArrow() {
+        try {
+            screenViewType(0);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onSettingsCompleteByNetwork() {
+        try {
+            screenViewType(1);
+            beginTransaction(BlockchainNetworkFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onSettingsCompleteByGetCoin() {
+        try {
+            screenViewType(1);
+            beginTransaction(GetCoinsDogepTokensFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onGetCoinsCompleteByBackArrow() {
+        try {
+            screenViewType(1);
+            beginTransaction(SettingsFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onGetCoinsCompleteBySendData(String walletPassword) {
+        try {
+            screenViewType(0);
+            bundle.putString("walletPassword", walletPassword);
+            beginTransaction(HomeMainFragment.newInstance(), bundle);
+        } catch (Exception e) {
+            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
+        }
+    }
+
+    @Override
+    public void onRevealWalletComplete() {
+        try {
+            screenViewType(1);
+            beginTransaction(WalletsFragment.newInstance(), bundle);
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
@@ -469,46 +550,58 @@ public class HomeActivity extends FragmentActivity implements
         }
     }
 
-    private void screenViewType(int status){
-        try{
-            // 0 - default main screen, 1 - fragment screen
-            switch(status) {
+    private void screenViewType(int status) {
+        try {
+            // 0 - default main screen, 1 - fragment screen, -1 - Start app (default)
+
+            int screenHeight = 0;
+
+            switch (status) {
                 case 0:
                     topLinearLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     topLinearLayout.setLayoutParams(topLinearLayoutParams);
+                    bottomNavigationView.setVisibility(View.VISIBLE);
                     centerRelativeLayout.setVisibility(View.VISIBLE);
+                    blockChainNetworkTextView.setVisibility(View.VISIBLE);
                     break;
                 case 1:
-                    int screenHeight = (Utility.calculateScreenWidthDp(getApplicationContext()) * 30 / 100);;
+                    screenHeight = (Utility.calculateScreenWidthDp(getApplicationContext()) * 30 / 100);
                     topLinearLayoutParams.height = screenHeight;
                     topLinearLayout.setLayoutParams(topLinearLayoutParams);
+                    bottomNavigationView.setVisibility(View.VISIBLE);
                     centerRelativeLayout.setVisibility(View.GONE);
+                    blockChainNetworkTextView.setVisibility(View.GONE);
                     break;
+                default:
+                    screenHeight = (Utility.calculateScreenWidthDp(getApplicationContext()) * 30 / 100);
+                    topLinearLayoutParams.height = screenHeight;
+                    topLinearLayout.setLayoutParams(topLinearLayoutParams);
+                    bottomNavigationView.setVisibility(View.GONE);
+                    centerRelativeLayout.setVisibility(View.GONE);
+                    blockChainNetworkTextView.setVisibility(View.GONE);
             }
-
         } catch (Exception e) {
             GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
         }
     }
 
-    private void setWalletAddress(){
-        walletAddress =  (String)  PrefConnect.readString(getApplicationContext(), PrefConnect.walletAddress, "");
+    private void getCurrentWallet(String indexKey) {
+        if(PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP != null) {
+            for (Map.Entry<String, String> entry : PrefConnect.WALLET_INDEX_TO_ADDRESS_MAP.entrySet()) {
+                if (Objects.equals(indexKey, entry.getKey())) {
+                    PrefConnect.writeString(getApplicationContext(), PrefConnect.WALLET_CURRENT_ADDRESS_INDEX_KEY, indexKey);
+                    walletAddress = entry.getValue();
+                    break;
+                }
+            }
+        }
         bundle.putString("walletAddress", walletAddress);
         walletAddressTextView.setText(walletAddress);
     }
-
-    private void removeWalletAddress(){
-        PrefConnect.writeString(getApplicationContext(), PrefConnect.walletAddress, "");
-        walletAddress =  (String)  PrefConnect.readString(getApplicationContext(), PrefConnect.walletAddress, "");
-        bundle.putString("walletAddress", walletAddress);
-        walletAddressTextView.setText(walletAddress);
-    }
-
-    //Open downloaded folder
 
     //Get balance task
-    private void getBalanceByAccount(String address, TextView balanceTextView, ProgressBar progressBar) {
-        try{
+    private void getBalanceByAccount(String address, TextView balanceValueTextView, ProgressBar progressBar) {
+        try {
             linerLayoutOffline.setVisibility(View.GONE);
 
             //Internet connection check
@@ -516,7 +609,9 @@ public class HomeActivity extends FragmentActivity implements
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                String[] taskParams = { address };
+                balanceValueTextView.setText("0");
+
+                String[] taskParams = {address};
 
                 AccountBalanceRestTask task = new AccountBalanceRestTask(
                         getApplicationContext(), new AccountBalanceRestTask.TaskListener() {
@@ -528,17 +623,18 @@ public class HomeActivity extends FragmentActivity implements
                             KeyViewModel keyViewModel = new KeyViewModel();
                             String quantity = (String) keyViewModel.getWeiToDogeProtocol(value);
 
-                            balanceTextView.setText(quantity);
+                            balanceValueTextView.setText(quantity);
                         }
                         progressBar.setVisibility(View.GONE);
                     }
+
                     @Override
                     public void onFailure(com.dpwallet.app.api.read.ApiException e) {
                         progressBar.setVisibility(View.GONE);
 
                         int code = e.getCode();
                         boolean check = GlobalMethods.ApiExceptionSourceCodeBoolean(code);
-                        if(check == true) {
+                        if (check == true) {
                             GlobalMethods.ApiExceptionSourceCodeRoute(getApplicationContext(), code,
                                     getString(R.string.apierror),
                                     TAG + " : AccountBalanceRestTask : " + e.toString());
@@ -560,126 +656,6 @@ public class HomeActivity extends FragmentActivity implements
         }
     }
 
-    //Get Export
-     private void ExportKey(String address, ProgressBar progressBar){
-         KeyViewModel keyViewModel = new KeyViewModel();
-         String jsonDocument = keyViewModel.exportKeyByAccount(getApplicationContext(), address);
-
-         String isoStr  = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date());
-         isoStr = isoStr.replaceAll(":", "-");
-         String a = address.toLowerCase().substring(2, address.length());
-         String fileName = "UTC--" + isoStr + "--" + a + ".wallet";
-
-         String downloadUrl = GlobalMethods.mainUrl + fileName;
-         downloadWallet(downloadUrl, jsonDocument, progressBar);
-
-         //Intent sendIntent = new Intent();
-         //sendIntent.setAction(Intent.ACTION_SEND);
-         //sendIntent.putExtra(Intent.EXTRA_TEXT, jsonDocument);
-         //sendIntent.setType("text/json");
-         //Intent shareIntent = Intent.createChooser(sendIntent, null);
-         //startActivity(shareIntent);
-
-         /*
-         ArrayList<String> myList = new ArrayList<>();
-         ListView listview;
-         listview = findViewById(R.id.list);
-         String state = Environment.getExternalStorageState();
-         if (Environment.MEDIA_MOUNTED.equals(state)) {
-             if (Build.VERSION.SDK_INT >= 23) {
-                 if (checkPermission()) {
-                     File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
-                     if (dir.exists()) {
-                         Log.d("path", dir.toString());
-                         File list[] = dir.listFiles();
-                         for (int i = 0; i < list.length; i++) {
-                             myList.add(list[i].getName());
-                         }
-                         ArrayAdapter arrayAdapter = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, myList);
-                         //listview.setAdapter(arrayAdapter);
-                     }
-                 } else {
-                     requestPermission(); // Code for permission
-                 }
-             } else {
-                 File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
-                 if (dir.exists()) {
-                     Log.d("path", dir.toString());
-                     File list[] = dir.listFiles();
-                     for (int i = 0; i < list.length; i++) {
-                         myList.add(list[i].getName());
-                     }
-                     ArrayAdapter arrayAdapter = new ArrayAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, myList);
-                     //listview.setAdapter(arrayAdapter);
-                 }
-             }
-         }
-
-          */
-     }
-
-    // download task
-    private void downloadWallet(String downloadUrl, String jsonDocument, ProgressBar progressBar) {
-        try{
-            linerLayoutOffline.setVisibility(View.GONE);
-
-            //Internet connection check
-            if (GlobalMethods.IsNetworkAvailable(getApplicationContext())) {
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                String[] taskParams = { downloadUrl, jsonDocument };
-
-                DownloadingTask task = new DownloadingTask(
-                        getApplicationContext(), new DownloadingTask.TaskListener() {
-                    @Override
-                    public void onFinished(boolean status) {
-                        openDownloadedFolder();
-                        progressBar.setVisibility(View.GONE);
-                        GlobalMethods.ShowToast(getApplicationContext(), "File successfully download on download folder");
-                    }
-                    @Override
-                    public void onFailure(Exception e) {
-                        progressBar.setVisibility(View.GONE);
-                        GlobalMethods.ExceptionError(getApplicationContext(),
-                                    TAG + "DownloadingTask : " ,  e);
-                    }
-                });
-                task.execute(taskParams);
-            } else {
-                GlobalMethods.OfflineOrExceptionError(getApplicationContext(),
-                        linerLayoutOffline, imageViewRetry, textViewTitleRetry,
-                        textViewSubTitleRetry, false);
-            }
-
-        } catch (Exception e) {
-            GlobalMethods.ExceptionError(getApplicationContext(), TAG, e);
-        }
-    }
-
-    private void openDownloadedFolder() {
-        if (new CheckForSDCard().isSDCardPresent()) {
-            File apkStorage = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/"
-                            + GlobalMethods.downloadDirectory);
-            if (!apkStorage.exists())
-                GlobalMethods.ShowToast(getApplicationContext(), "Right now there is no directory. Please download some file first.");
-            else {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                Uri uri = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()
-                        + "/" + GlobalMethods.downloadDirectory + "/");
-                intent.setDataAndType(uri, "text/*");
-                startActivity(Intent.createChooser(intent, "Open Download Folder"));
-
-                screenViewType(0);
-                beginTransaction(HomeFragment.newInstance(), bundle);
-            }
-        } else {
-            GlobalMethods.ShowToast(getApplicationContext(), "Oops!! There is no SD Card.");
-        }
-    }
-
-
     //Notification
     private void notificationThread(int accountStatus) {
         try {
@@ -692,18 +668,18 @@ public class HomeActivity extends FragmentActivity implements
                     String[] currentQuantity = new String[1];
 
                     //New account
-                    if(accountStatus == 0){
+                    if (accountStatus == 0) {
                         previewsQuantity[0] = "0";
                     }
 
                     try {
                         while (true) {
 
-                            if (walletAddress.length()<10){
+                            if (walletAddress.length() != GlobalMethods.ADDRESS_LENGTH) {
                                 break;
                             }
 
-                            String[] taskParams = { walletAddress };
+                            String[] taskParams = {walletAddress};
 
                             AccountBalanceRestTask task = new AccountBalanceRestTask(
                                     getApplicationContext(), new AccountBalanceRestTask.TaskListener() {
@@ -713,15 +689,16 @@ public class HomeActivity extends FragmentActivity implements
                                         String value = balanceResponse.getResult().getBalance().toString();
                                         KeyViewModel keyViewModel = new KeyViewModel();
                                         currentQuantity[0] = (String) keyViewModel.getWeiToDogeProtocol(value);
-                                        if(previewsQuantity[0] != null) {
-                                            if(!previewsQuantity[0].equals(currentQuantity[0])) {
-                                                balanceTextView.setText(currentQuantity[0]);
+                                        if (previewsQuantity[0] != null) {
+                                            if (!previewsQuantity[0].equals(currentQuantity[0])) {
+                                                balanceValueTextView.setText(currentQuantity[0]);
                                                 sendNotificationChannel(getApplicationContext().getString(R.string.notification_description) + " " + currentQuantity[0]);
                                             }
                                         }
                                         previewsQuantity[0] = currentQuantity[0];
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(com.dpwallet.app.api.read.ApiException e) {
 
@@ -738,7 +715,7 @@ public class HomeActivity extends FragmentActivity implements
                 }
             };
             thread.start();
-        }catch (Exception e) {
+        } catch (Exception e) {
             GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
         }
     }
@@ -782,42 +759,45 @@ public class HomeActivity extends FragmentActivity implements
 
         // Since android Oreo notification channel is needed.
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         notificationManager.notify(notificationID, notificationBuilder.build());
     }
 
-/*
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(HomeActivity.this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(HomeActivity.this,  android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Toast.makeText(HomeActivity.this, "Write External Storage permission allows us to read  files. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-        } else {
-            ActivityCompat.requestPermissions(HomeActivity.this, new String[]
-                    {android.Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Log.e("value", "Permission Granted, Now you can use local drive .");
-                } else{
-                    Log.e("value", "Permission Denied, You cannot use local drive .");
+    private void loadSeedsThread() {
+        try {
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                           GlobalMethods.seedWords = new SeedWords();
+                           boolean seed = GlobalMethods.seedWords.initializeSeedWordsFromUrl(getApplicationContext());
+                           if (seed){
+                               GlobalMethods.seedLoaded = true;
+                               return;
+                           }
+                           Thread.sleep(1000);
+                        }
+                    } catch (Exception e) {
+                        GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
+                    }
                 }
-            break;
+            };
+            thread.start();
+        }catch (Exception e) {
+            GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
         }
     }
-*/
+
+
 
 }

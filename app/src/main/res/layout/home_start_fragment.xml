@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:background="@android:color/transparent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/center_container">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_home_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textview_home_start_infoStep"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.2"
+                        android:background="@drawable/line_2_shape" />
+
+                    <TextView
+                        android:id="@+id/textview_home_start_infoStep_info_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+
+                    <TextView
+                        android:id="@+id/textview_home_start_infoStep_info_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="16sp"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.2"
+                        android:background="@drawable/line_2_shape" />
+
+                    <Button
+                        android:id="@+id/button_home_start_langValues_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="43dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:background="@drawable/button_green_selector"
+                        android:contentDescription="@string/empty"
+                        android:padding="5dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorCommon7" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_home_start_safety_quiz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linear_layout_home_start"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textview_home_start_safety_quiz_quizStep"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.2"
+                        android:background="@drawable/line_2_shape" />
+
+                    <TextView
+                        android:id="@+id/textview_home_start_safety_quiz_quizStep_quiz_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorCommon6"/>
+
+                    <TextView
+                        android:id="@+id/textview_home_start_safety_quiz_quizStep_quiz_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="16sp"/>
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup_home_start_safety_quiz_quizStep_quiz"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioButton_home_start_safety_quiz_quizStep_quiz_choices_0"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:alpha="0.6"
+                            android:textAppearance="@style/regular_text" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_home_start_safety_quiz_quizStep_quiz_choices_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:alpha="0.6"
+                            android:textAppearance="@style/regular_text" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_home_start_safety_quiz_quizStep_quiz_choices_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:alpha="0.6"
+                            android:textAppearance="@style/regular_text" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_home_start_safety_quiz_quizStep_quiz_choices_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="2dp"
+                            android:alpha="0.6"
+                            android:textAppearance="@style/regular_text" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.2"
+                        android:background="@drawable/line_2_shape" />
+
+                    <Button
+                        android:id="@+id/button_home_start_safety_quiz_langValues_next"
+                        android:background="@drawable/button_green_selector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:padding="5dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorCommon7"
+                        tools:ignore="RtlHardcoded" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
