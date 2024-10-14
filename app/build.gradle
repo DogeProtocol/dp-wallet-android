@@ -34,7 +34,7 @@ android {
                         // on below line we are setting a
                         // name to our apk as dp-wallet.apk
                     output->
-                        def name = "Quantumcoin-wallet.apk"
+                        def name = "QuantumCoin-wallet.apk"
                         // on below line we are setting the
                         // outputFile Name to our apk file.
                         output.outputFileName = name
