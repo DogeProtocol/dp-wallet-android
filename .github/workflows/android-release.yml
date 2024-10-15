@@ -22,16 +22,16 @@ jobs:
            chmod +x install-android-library-ubuntu.sh 
            ./install-android-library-ubuntu.sh
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
-      - name: Upload DP Wallet APK Release
+        run: ./gradlew assembleDebug
+      - name: Upload DP Wallet APK Debug
         uses: actions/upload-artifact@v3
         with:
           name: dp-wallet-release
-          path: ${{ env.main_project_module }}/build/outputs/apk/release/
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
   Release:
     name: Release APK
     runs-on: ubuntu-latest
