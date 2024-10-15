@@ -5,34 +5,14 @@ pluginManagement {
         mavenCentral()
     }
 }
-
-Properties properties = new Properties()
-File localProps = new File(rootDir.absolutePath, "local.properties")
-if (localProps.exists()) {
-    properties.load(localProps.newDataInputStream())
-    println "Authenticating user: " + properties.getProperty("gpr.user")
-} else {
-    println "local.properties not found, please create it next to build.gradle and set gpr.user and gpr.key (Create a GitHub package read only + non expiration token at https://github.com/settings/tokens)\n" +
-            "Or set GITHUB_USER and GITHUB_TOKEN environment variables"
-}
-
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
-            credentials {
-                username = properties.getProperty("gpr.user") as String?: System.getenv("GITHUB_USER")
-                password = properties.getProperty("gpr.key") as String?: System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
 }
-
 rootProject.name = "dpwallet"
 include ':app'
-
 
 
