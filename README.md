@@ -1,1 +1,1 @@
-Doge Protocol Android Wallet
+Quantum Coin Android Wallet
