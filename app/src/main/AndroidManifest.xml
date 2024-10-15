@@ -39,7 +39,8 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".view.activities.HomeActivity">
+            android:name=".view.activities.HomeActivity"
+            android:exported="false|true" tools:node="merge">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
