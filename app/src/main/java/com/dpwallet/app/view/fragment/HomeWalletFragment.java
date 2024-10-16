@@ -292,6 +292,9 @@ public class HomeWalletFragment extends Fragment {
         homeSeedWordsShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(progressBar.getVisibility() == View.VISIBLE){
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
                 new Thread(new Runnable() {
                     public void run() {
