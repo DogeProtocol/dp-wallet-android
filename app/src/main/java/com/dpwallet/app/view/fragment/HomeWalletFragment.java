@@ -144,13 +144,13 @@ public class HomeWalletFragment extends Fragment {
                 public void  onFocusChange(View view, boolean hasFocus) {
                     if (hasFocus) {
                         if(autoCompleteIndexStatus == true){
-                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 5){
+                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 3){
                                 homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
                             }
                         }
                         autoCompleteIndexStatus = false;
                     } else {
-                        if(homeSeedWordsViewAutoCompleteTextView.length()>3) {
+                        if(homeSeedWordsViewAutoCompleteTextView.length()>2) {
                             if(tempSeedArrayByCreate != null) {
                                 if (!homeSeedWordsViewAutoCompleteTextView.getText().toString().equalsIgnoreCase(homeSeedWordsViewTextViews[autoCompleteCurrentIndex].getText().toString())) {
                                     homeSeedWordsViewAutoCompleteTextView.setText("");
@@ -268,6 +268,13 @@ public class HomeWalletFragment extends Fragment {
                     ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
                     seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                             android.R.id.text1, seedWordsList);
+
+                    ////
+                    /*
+                    for (int index = 0; index < 48; index++){
+                        homeSeedWordsViewAutoCompleteTextViews[index].setText(seedWordsList.get(index));
+                    }*/
+
                 } else {
                     message = jsonViewModel.getSelectOptionByErrors();
                     bundleRoute.putString("languageKey",languageKey);
@@ -345,10 +352,10 @@ public class HomeWalletFragment extends Fragment {
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
 
-
-                ////for (int index = 0; index < 48; index++){
-                ////    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
-                ////}
+////
+                //for (int index = 0; index < 48; index++){
+                //    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                //}
             }
         });
 
@@ -372,11 +379,36 @@ public class HomeWalletFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             return;
                         }
+                        if(!GlobalMethods.seedWords.doesSeedWordExist(homeSeedWordsViewAutoCompleteTextView.getText().toString())){
+                            homeSeedWordsViewAutoCompleteTextView.setText("");
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
+                        if(!homeSeedWordsViewAutoCompleteTextView.getText().toString().equals(homeSeedWordsViewTextViews[index].getText().toString()) &&
+                            tempSeedArrayByCreate != null){
+                            homeSeedWordsViewAutoCompleteTextView.setText("");
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
                         seedWords[index] = homeSeedWordsViewAutoCompleteTextView.getText().toString().toLowerCase();
                         index = index +1;
                     }
 
                     int[] seed = GlobalMethods.GetIntDataArrayByStringArray(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords));
+
+                    for(int i=0; i<seedWords.length;i++) {
+                        if (!GlobalMethods.seedWords.verifySeedWord(i, seedWords[i], seed)) {
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
+                        if(tempSeedArrayByCreate != null) {
+                            if(tempSeedArrayByCreate[i] != seed[i]){
+                                progressBar.setVisibility(View.GONE);
+                                return;
+                            }
+                        }
+                    }
+
                     String[] stringArray = Arrays.toString(seed).split("[\\[\\]]")[1].split(", ");
 
                     String jsonText = TextUtils.join(",",stringArray);

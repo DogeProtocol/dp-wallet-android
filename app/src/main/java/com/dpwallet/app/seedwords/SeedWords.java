@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 import com.dpwallet.app.utils.PrefConnect;
 import com.dpwallet.app.utils.GlobalMethods;
@@ -263,12 +264,8 @@ public class SeedWords {
         if (SEED_INITIALIZED == false) {
             return false;
         }
-        word = word.toLowerCase();
-        if (SEED_MAP.get(word).isEmpty() ||  SEED_MAP.get(word) == null) {
-            return false;
-        }
-
-        return true;
+        String seed_word = SEED_MAP.get(word.toLowerCase());
+        return !Objects.equals(seed_word, "") && seed_word != null;
     }
 
     public boolean verifySeedWord(int friendlySeedIndex, String seedWord, int[] seedArray) {
@@ -276,7 +273,7 @@ public class SeedWords {
             return false;
         }
         seedWord = seedWord.toLowerCase();
-        if (SEED_MAP.get(seedWord).isEmpty() ||  SEED_MAP.get(seedWord) == null) {
+        if (Objects.requireNonNull(SEED_MAP.get(seedWord)).isEmpty() ||  SEED_MAP.get(seedWord) == null) {
             return false;
         }
 
@@ -285,7 +282,7 @@ public class SeedWords {
             return false;
         }
 
-        if (seedWord == actualSeedWord) {
+        if (seedWord.equals(actualSeedWord)) {
             return true;
         }
 
