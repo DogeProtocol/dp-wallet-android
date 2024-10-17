@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
-import com.dpwallet.app.utils.PrefConnect;
-import com.dpwallet.app.utils.GlobalMethods;
+import java.io.*;
 
 public class SeedWords {
     private static  int SEED_LENGTH = 96;
@@ -83,16 +82,29 @@ public class SeedWords {
     }
 */
 
-    public boolean initializeSeedWordsFromUrl(Context context, TextView loadSeedTextView) throws InterruptedException {
+    public boolean initializeSeedWordsFromUrl(Context context, TextView loadSeedTextView) throws IOException, InterruptedException {
+        //@RawRes int res = R.raw.seedwords;
+        //InputStream inputStream = context.getResources().openRawResource(res);
+        //Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+        //String seedWordsRaw = s.hasNext() ? s.next() : "";
+
         @RawRes int res = R.raw.seedwords;
         InputStream inputStream = context.getResources().openRawResource(res);
-        Scanner s = new Scanner(inputStream).useDelimiter("\\A");
-        String seedWordsRaw = s.hasNext() ? s.next() : "";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line).append("\r\n");
+        }
+        reader.close();
+        inputStream.close();
+
+        String seedWordsRaw = result.toString();
         return initializeSeedWordsFromString(context, seedWordsRaw, loadSeedTextView);
     }
 
     @SuppressLint("SetTextI18n")
-    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw, TextView loadSeedTextView) throws InterruptedException {
+    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw, TextView loadSeedTextView) {
 
         String filedata = seedWordsRaw;
         String seedMapHashMessage = "";
@@ -127,7 +139,7 @@ public class SeedWords {
             SEED_WORD_LIST.add(key);
 
             loadSeedTextView.setText("Loading seed.." + i + " Of " + seedLength);
-            Thread.sleep(50);
+            //Thread.sleep(50);
         }
 
         loadSeedTextView.setText("Hash verification - Start");
@@ -154,9 +166,7 @@ public class SeedWords {
                 if (SEED_REVERSE_MAP.get(testKey).isEmpty() || SEED_REVERSE_MAP.get(testKey) == null) {
                     return false;
                 }
-                Thread.sleep(50);
             }
-            Thread.sleep(50);
         }
 
         //Load Friendly Array
@@ -168,7 +178,6 @@ public class SeedWords {
             seedInt[1]=count + 1;
             SEED_FRIENDLY_INDEX_REVERSE_ARRAY.add(seedInt);
             count = count + 2;
-            Thread.sleep(50);
         }
 
         loadSeedTextView.setText("Seed Verify - Done");

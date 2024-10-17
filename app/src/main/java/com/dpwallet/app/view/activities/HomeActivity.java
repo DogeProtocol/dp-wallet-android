@@ -786,7 +786,6 @@ public class HomeActivity extends FragmentActivity implements
                            boolean seed = GlobalMethods.seedWords.initializeSeedWordsFromUrl(getApplicationContext(), loadSeedTextView);
                            if (seed){
                                loadSeedTextView.setText("");
-                               loadSeedTextView.setVisibility(View.GONE);
                                GlobalMethods.seedLoaded = true;
                                return;
                            }
