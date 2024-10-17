@@ -263,11 +263,40 @@ public class HomeWalletFragment extends Fragment {
                     homeSeedWordsEditLinearLayout.setVisibility(View.VISIBLE);
                     ShowEditSeedScreen(homeSeedWordsEditTitleTextView, homeSeedWordsAutoCompleteNextButton);
 
-                    homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
+                    homeSeedWordsAutoCompleteNextButton.setVisibility(View.GONE);
 
-                    ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
-                    seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
-                            android.R.id.text1, seedWordsList);
+                    if(progressBar.getVisibility() == View.VISIBLE){
+                        return;
+                    }
+                    progressBar.setVisibility(View.VISIBLE);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            while (true) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        if (GlobalMethods.seedLoaded) {
+                                            ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
+                                            homeSeedWordsAutoCompleteNextButton.setVisibility(View.VISIBLE);
+                                            homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
+                                            seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
+                                                    android.R.id.text1, seedWordsList);
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
+                                try {
+                                    if(homeSeedWordsAutoCompleteNextButton.getVisibility() == View.VISIBLE){
+                                        return;
+                                    }
+                                    Thread.sleep(1000);
+                                } catch (Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+                                    GlobalMethods.ExceptionError(getContext(), TAG, e);
+                                }
+                            }
+                        }
+                    }).start();
+
 
                     ////
                     /*

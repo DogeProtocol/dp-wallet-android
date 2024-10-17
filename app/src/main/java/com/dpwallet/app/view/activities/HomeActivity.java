@@ -121,7 +121,7 @@ public class HomeActivity extends FragmentActivity implements
 
             jsonViewModel = new JsonViewModel(getApplicationContext(),languageKey);
 
-            //loadSeedsThread();
+            loadSeedsThread();
 
             PrefConnect.WALLET_ADDRESS_TO_INDEX_MAP = PrefConnect.loadHashMap(getApplicationContext(),
                     PrefConnect.WALLET_KEY_PREFIX + PrefConnect.WALLET_KEY_ADDRESS_INDEX);
@@ -141,7 +141,7 @@ public class HomeActivity extends FragmentActivity implements
             TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
             TextView loadSeedTextView = (TextView) findViewById(R.id.textView_home_load_seed);
 
-            loadSeedsThread(loadSeedTextView);
+            //loadSeedsThread(loadSeedTextView);
 
             //Center Relative layout & Image Button
             centerRelativeLayout = (RelativeLayout) findViewById(R.id.center_relative_layout_home_id);
@@ -775,7 +775,7 @@ public class HomeActivity extends FragmentActivity implements
         notificationManager.notify(notificationID, notificationBuilder.build());
     }
 
-    private void loadSeedsThread(TextView loadSeedTextView) {
+    private void loadSeedsThread() {
         try {
             Thread thread = new Thread() {
                 @Override
@@ -783,23 +783,20 @@ public class HomeActivity extends FragmentActivity implements
                     try {
                         while (true) {
                            GlobalMethods.seedWords = new SeedWords();
-                           boolean seed = GlobalMethods.seedWords.initializeSeedWordsFromUrl(getApplicationContext(), loadSeedTextView);
+                           boolean seed = GlobalMethods.seedWords.initializeSeedWordsFromUrl(getApplicationContext());
                            if (seed){
-                               loadSeedTextView.setText("");
                                GlobalMethods.seedLoaded = true;
                                return;
                            }
                            Thread.sleep(1000);
                         }
                     } catch (Exception e) {
-                        loadSeedTextView.setText(e.toString());
                         GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
                     }
                 }
             };
             thread.start();
         }catch (Exception e) {
-            loadSeedTextView.setText(e.toString());
             GlobalMethods.ExceptionError(getBaseContext(), TAG, e);
         }
     }

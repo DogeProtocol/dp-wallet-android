@@ -82,12 +82,7 @@ public class SeedWords {
     }
 */
 
-    public boolean initializeSeedWordsFromUrl(Context context, TextView loadSeedTextView) throws IOException, InterruptedException {
-        //@RawRes int res = R.raw.seedwords;
-        //InputStream inputStream = context.getResources().openRawResource(res);
-        //Scanner s = new Scanner(inputStream).useDelimiter("\\A");
-        //String seedWordsRaw = s.hasNext() ? s.next() : "";
-
+    public boolean initializeSeedWordsFromUrl(Context context) throws IOException, InterruptedException {
         @RawRes int res = R.raw.seedwords;
         InputStream inputStream = context.getResources().openRawResource(res);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -100,11 +95,11 @@ public class SeedWords {
         inputStream.close();
 
         String seedWordsRaw = result.toString();
-        return initializeSeedWordsFromString(context, seedWordsRaw, loadSeedTextView);
+        return initializeSeedWordsFromString(context, seedWordsRaw);
     }
 
     @SuppressLint("SetTextI18n")
-    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw, TextView loadSeedTextView) {
+    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw) {
 
         String filedata = seedWordsRaw;
         String seedMapHashMessage = "";
@@ -114,9 +109,6 @@ public class SeedWords {
         {
             lines = filedata.split("\n");
         }
-
-        loadSeedTextView.setText("Loading seed..");
-        int seedLength = lines.length;
 
         for(int i=0; i<lines.length; i++) {
             String[] columns = lines[i].split(",");
@@ -137,27 +129,17 @@ public class SeedWords {
             SEED_MAP.put(key, val);
             SEED_REVERSE_MAP.put(val, key);
             SEED_WORD_LIST.add(key);
-
-            loadSeedTextView.setText("Loading seed.." + i + " Of " + seedLength);
-            //Thread.sleep(50);
         }
-
-        loadSeedTextView.setText("Hash verification - Start");
 
         String seedhashstr = sha256digestMessage(seedMapHashMessage);
         if (seedhashstr.length() <= 0) {
-            loadSeedTextView.setText("Hash verification - Failed : Empty");
             return false;
         }
 
         if (seedhashstr.equalsIgnoreCase(SEED_HASH)) {
         } else {
-            loadSeedTextView.setText("Hash verification - Invalid");
             return false;
         }
-        loadSeedTextView.setText("Hash verification - Done");
-
-        loadSeedTextView.setText("Seed Verify - Start");
 
         //verify
         for (int i = 0; i <= 255; i++) {
@@ -180,10 +162,7 @@ public class SeedWords {
             count = count + 2;
         }
 
-        loadSeedTextView.setText("Seed Verify - Done");
-
         SEED_INITIALIZED = true;
-
         return true;
     }
 
