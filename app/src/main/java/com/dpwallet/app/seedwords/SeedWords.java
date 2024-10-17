@@ -1,6 +1,9 @@
 package com.dpwallet.app.seedwords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.widget.TextView;
+
 import androidx.annotation.RawRes;
 import com.dpwallet.app.R;
 import java.io.InputStream;
@@ -80,15 +83,16 @@ public class SeedWords {
     }
 */
 
-    public boolean initializeSeedWordsFromUrl(Context context) {
+    public boolean initializeSeedWordsFromUrl(Context context, TextView loadSeedTextView) throws InterruptedException {
         @RawRes int res = R.raw.seedwords;
         InputStream inputStream = context.getResources().openRawResource(res);
         Scanner s = new Scanner(inputStream).useDelimiter("\\A");
         String seedWordsRaw = s.hasNext() ? s.next() : "";
-        return initializeSeedWordsFromString(context, seedWordsRaw);
+        return initializeSeedWordsFromString(context, seedWordsRaw, loadSeedTextView);
     }
 
-    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw) {
+    @SuppressLint("SetTextI18n")
+    public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw, TextView loadSeedTextView) throws InterruptedException {
 
         String filedata = seedWordsRaw;
         String seedMapHashMessage = "";
@@ -98,6 +102,9 @@ public class SeedWords {
         {
             lines = filedata.split("\n");
         }
+
+        loadSeedTextView.setText("Loading seed..");
+        int seedLength = lines.length;
 
         for(int i=0; i<lines.length; i++) {
             String[] columns = lines[i].split(",");
@@ -118,17 +125,27 @@ public class SeedWords {
             SEED_MAP.put(key, val);
             SEED_REVERSE_MAP.put(val, key);
             SEED_WORD_LIST.add(key);
+
+            loadSeedTextView.setText("Loading seed.." + i + " Of " + seedLength);
+            Thread.sleep(50);
         }
+
+        loadSeedTextView.setText("Hash verification - Start");
 
         String seedhashstr = sha256digestMessage(seedMapHashMessage);
         if (seedhashstr.length() <= 0) {
+            loadSeedTextView.setText("Hash verification - Failed : Empty");
             return false;
         }
 
         if (seedhashstr.equalsIgnoreCase(SEED_HASH)) {
         } else {
+            loadSeedTextView.setText("Hash verification - Invalid");
             return false;
         }
+        loadSeedTextView.setText("Hash verification - Done");
+
+        loadSeedTextView.setText("Seed Verify - Start");
 
         //verify
         for (int i = 0; i <= 255; i++) {
@@ -137,7 +154,9 @@ public class SeedWords {
                 if (SEED_REVERSE_MAP.get(testKey).isEmpty() || SEED_REVERSE_MAP.get(testKey) == null) {
                     return false;
                 }
+                Thread.sleep(50);
             }
+            Thread.sleep(50);
         }
 
         //Load Friendly Array
@@ -149,7 +168,10 @@ public class SeedWords {
             seedInt[1]=count + 1;
             SEED_FRIENDLY_INDEX_REVERSE_ARRAY.add(seedInt);
             count = count + 2;
+            Thread.sleep(50);
         }
+
+        loadSeedTextView.setText("Seed Verify - Done");
 
         SEED_INITIALIZED = true;
 
