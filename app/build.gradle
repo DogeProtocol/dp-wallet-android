@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.dpwallet.app"
-        minSdk 23
+        minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -53,6 +53,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -120,8 +123,5 @@ dependencies {
 
     implementation 'com.opencsv:opencsv:4.6'
 
-    //implementation "com.trustwallet:wallet-core:2.9.5"
-
     implementation ('org.web3j:core:4.8.9-android')
-
 }

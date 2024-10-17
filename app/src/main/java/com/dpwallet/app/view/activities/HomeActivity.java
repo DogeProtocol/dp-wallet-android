@@ -139,6 +139,9 @@ public class HomeActivity extends FragmentActivity implements
             topLinearLayoutParams = topLinearLayout.getLayoutParams();
             blockChainNetworkTextView = (TextView) findViewById(R.id.textView_home_blockchain_network);
             TextView titleTextView = (TextView) findViewById(R.id.textView_home_tile);
+            TextView loadSeedTextView = (TextView) findViewById(R.id.textView_home_load_seed);
+
+            //loadSeedsThread(loadSeedTextView);
 
             //Center Relative layout & Image Button
             centerRelativeLayout = (RelativeLayout) findViewById(R.id.center_relative_layout_home_id);

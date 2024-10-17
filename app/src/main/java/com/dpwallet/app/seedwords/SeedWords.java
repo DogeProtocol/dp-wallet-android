@@ -1,6 +1,9 @@
 package com.dpwallet.app.seedwords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.widget.TextView;
+
 import androidx.annotation.RawRes;
 import com.dpwallet.app.R;
 import java.io.InputStream;
@@ -8,9 +11,9 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
-import com.dpwallet.app.utils.PrefConnect;
-import com.dpwallet.app.utils.GlobalMethods;
+import java.io.*;
 
 public class SeedWords {
     private static  int SEED_LENGTH = 96;
@@ -79,14 +82,23 @@ public class SeedWords {
     }
 */
 
-    public boolean initializeSeedWordsFromUrl(Context context) {
+    public boolean initializeSeedWordsFromUrl(Context context) throws IOException, InterruptedException {
         @RawRes int res = R.raw.seedwords;
         InputStream inputStream = context.getResources().openRawResource(res);
-        Scanner s = new Scanner(inputStream).useDelimiter("\\A");
-        String seedWordsRaw = s.hasNext() ? s.next() : "";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line).append("\r\n");
+        }
+        reader.close();
+        inputStream.close();
+
+        String seedWordsRaw = result.toString();
         return initializeSeedWordsFromString(context, seedWordsRaw);
     }
 
+    @SuppressLint("SetTextI18n")
     public boolean initializeSeedWordsFromString(Context context, String seedWordsRaw) {
 
         String filedata = seedWordsRaw;
@@ -151,7 +163,6 @@ public class SeedWords {
         }
 
         SEED_INITIALIZED = true;
-
         return true;
     }
 
@@ -263,12 +274,8 @@ public class SeedWords {
         if (SEED_INITIALIZED == false) {
             return false;
         }
-        word = word.toLowerCase();
-        if (SEED_MAP.get(word).isEmpty() ||  SEED_MAP.get(word) == null) {
-            return false;
-        }
-
-        return true;
+        String seed_word = SEED_MAP.get(word.toLowerCase());
+        return !Objects.equals(seed_word, "") && seed_word != null;
     }
 
     public boolean verifySeedWord(int friendlySeedIndex, String seedWord, int[] seedArray) {
@@ -276,7 +283,7 @@ public class SeedWords {
             return false;
         }
         seedWord = seedWord.toLowerCase();
-        if (SEED_MAP.get(seedWord).isEmpty() ||  SEED_MAP.get(seedWord) == null) {
+        if (Objects.requireNonNull(SEED_MAP.get(seedWord)).isEmpty() ||  SEED_MAP.get(seedWord) == null) {
             return false;
         }
 
@@ -285,7 +292,7 @@ public class SeedWords {
             return false;
         }
 
-        if (seedWord == actualSeedWord) {
+        if (seedWord.equals(actualSeedWord)) {
             return true;
         }
 

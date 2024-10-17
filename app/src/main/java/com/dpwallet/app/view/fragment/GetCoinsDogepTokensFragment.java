@@ -46,16 +46,6 @@ import java.util.Objects;
 import com.google.android.gms.common.util.Strings;
 import com.opencsv.CSVReader;
 
-/*
-import wallet.core.jni.CoinType;
-import wallet.core.jni.Curve;
-import wallet.core.jni.HDWallet;
-import wallet.core.jni.Hash;
-import wallet.core.jni.Mnemonic;
-import wallet.core.jni.PrivateKey;
-
-import wallet.core.jni.proto.Ethereum;
-*/
 import org.web3j.crypto.Bip32ECKeyPair;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.MnemonicUtils;
@@ -79,7 +69,7 @@ public class GetCoinsDogepTokensFragment extends Fragment  {
     }
 
     public GetCoinsDogepTokensFragment() {
-        System.loadLibrary("TrustWalletCore");
+
     }
 
     @Override

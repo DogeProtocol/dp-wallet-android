@@ -35,6 +35,15 @@
                 android:textColor="@color/colorCommon6"
                 android:textSize="16dp"
                 android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/textView_home_load_seed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorCommon6"
+                android:textSize="16dp"
+                android:textAlignment="center"/>
         </LinearLayout>
 
         <LinearLayout

@@ -23,11 +23,11 @@
       },
       {
         "title": "Email Safety",
-        "desc": "Do not reply to or open attachments, links or images in emails that talks about Doge Protocol coins, tokens or wallets. They are most likely scams that can result in your coins and tokens getting stolen!"
+        "desc": "Do not reply to or open attachments, links or images in emails that talks about Quantum Coin, tokens or wallets. They are most likely scams that can result in your coins and tokens getting stolen!"
       },
       {
         "title": "Social Media and Messaging Apps Safety",
-        "desc": "Do not respond to social media and messaging app direct-messages from community members or anyone in general talking about Doge Protocol. They are most likely scammers who can trick you and steal your coins or tokens!"
+        "desc": "Do not respond to social media and messaging app direct-messages from community members or anyone in general talking about Quantum Coin. They are most likely scammers who can trick you and steal your coins or tokens!"
       },
       {
         "title": "Wallet Location",
@@ -48,13 +48,13 @@
         "All the above"
       ],
       "correctChoice": 3,
-      "afterQuizInfo": "This is correct. You should only send Quantum Coin Mainnet  to this wallet."
+      "afterQuizInfo": "This is correct. You should be QuantumCoin mainnet coins ( Q )  to this wallet."
     },
     {
       "title": "Lost wallet or password",
       "question": "If you lost your wallet or password, who can help recover?",
       "choices": [
-        "Doge Protocol Community",
+        "Quantum Coin Community",
         "Customer Support Team",
         "Dev",
         "No one"

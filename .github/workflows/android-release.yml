@@ -1,4 +1,4 @@
-name: Dp Wallet
+name: Quantum Coin Wallet
 env:
   main_project_module: app
 on:
@@ -25,13 +25,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
-      - name: Upload DP Wallet APK Release
+      - name: Build Quantum Coin Wallet APK - ${{ env.main_project_module }} module
+        run: ./gradlew assembleDebug --stacktrace
+      - name: Upload Quantum Coin Wallet APK
         uses: actions/upload-artifact@v3
         with:
-          name: dp-wallet-release
-          path: ${{ env.main_project_module }}/build/outputs/apk/release/
+          name: dp-wallet-debug
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
   Release:
     name: Release APK
     runs-on: ubuntu-latest
@@ -45,11 +45,11 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
  
-      - name: Create a Release APK
+      - name: Create a release APK
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: "dp-wallet-release/*.apk"
+          artifacts: "dp-wallet-debug/*.apk"
           name: Release ${{ steps.version-string.outputs.VERSION_STR }}
           prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
           tag: ${{ steps.version-string.outputs.VERSION_STR }}

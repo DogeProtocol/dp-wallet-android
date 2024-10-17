@@ -144,13 +144,13 @@ public class HomeWalletFragment extends Fragment {
                 public void  onFocusChange(View view, boolean hasFocus) {
                     if (hasFocus) {
                         if(autoCompleteIndexStatus == true){
-                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 5){
+                            if(homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].getText().length() < 3){
                                 homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
                             }
                         }
                         autoCompleteIndexStatus = false;
                     } else {
-                        if(homeSeedWordsViewAutoCompleteTextView.length()>3) {
+                        if(homeSeedWordsViewAutoCompleteTextView.length()>2) {
                             if(tempSeedArrayByCreate != null) {
                                 if (!homeSeedWordsViewAutoCompleteTextView.getText().toString().equalsIgnoreCase(homeSeedWordsViewTextViews[autoCompleteCurrentIndex].getText().toString())) {
                                     homeSeedWordsViewAutoCompleteTextView.setText("");
@@ -263,11 +263,47 @@ public class HomeWalletFragment extends Fragment {
                     homeSeedWordsEditLinearLayout.setVisibility(View.VISIBLE);
                     ShowEditSeedScreen(homeSeedWordsEditTitleTextView, homeSeedWordsAutoCompleteNextButton);
 
-                    homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
+                    homeSeedWordsAutoCompleteNextButton.setVisibility(View.GONE);
 
-                    ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
-                    seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
-                            android.R.id.text1, seedWordsList);
+                    if(progressBar.getVisibility() == View.VISIBLE){
+                        return;
+                    }
+                    progressBar.setVisibility(View.VISIBLE);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            while (true) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        if (GlobalMethods.seedLoaded) {
+                                            ArrayList<String> seedWordsList = GlobalMethods.seedWords.getAllSeedWords();
+                                            homeSeedWordsAutoCompleteNextButton.setVisibility(View.VISIBLE);
+                                            homeSeedWordsViewAutoCompleteTextViews[autoCompleteCurrentIndex].requestFocus();
+                                            seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
+                                                    android.R.id.text1, seedWordsList);
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
+                                try {
+                                    if(homeSeedWordsAutoCompleteNextButton.getVisibility() == View.VISIBLE){
+                                        return;
+                                    }
+                                    Thread.sleep(1000);
+                                } catch (Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+                                    GlobalMethods.ExceptionError(getContext(), TAG, e);
+                                }
+                            }
+                        }
+                    }).start();
+
+
+                    ////
+                    /*
+                    for (int index = 0; index < 48; index++){
+                        homeSeedWordsViewAutoCompleteTextViews[index].setText(seedWordsList.get(index));
+                    }*/
+
                 } else {
                     message = jsonViewModel.getSelectOptionByErrors();
                     bundleRoute.putString("languageKey",languageKey);
@@ -285,6 +321,9 @@ public class HomeWalletFragment extends Fragment {
         homeSeedWordsShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(progressBar.getVisibility() == View.VISIBLE){
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
                 new Thread(new Runnable() {
                     public void run() {
@@ -345,10 +384,10 @@ public class HomeWalletFragment extends Fragment {
                 seedWordAutoCompleteAdapter = new SeedWordAutoCompleteAdapter(getContext(), android.R.layout.simple_dropdown_item_1line,
                         android.R.id.text1, seedWordsList);
 
-
-                ////for (int index = 0; index < 48; index++){
-                ////    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
-                ////}
+////
+                //for (int index = 0; index < 48; index++){
+                //    homeSeedWordsViewAutoCompleteTextViews[index].setText(homeSeedWordsViewTextViews[index].getText());
+                //}
             }
         });
 
@@ -372,11 +411,36 @@ public class HomeWalletFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             return;
                         }
+                        if(!GlobalMethods.seedWords.doesSeedWordExist(homeSeedWordsViewAutoCompleteTextView.getText().toString())){
+                            homeSeedWordsViewAutoCompleteTextView.setText("");
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
+                        if(!homeSeedWordsViewAutoCompleteTextView.getText().toString().equals(homeSeedWordsViewTextViews[index].getText().toString()) &&
+                            tempSeedArrayByCreate != null){
+                            homeSeedWordsViewAutoCompleteTextView.setText("");
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
                         seedWords[index] = homeSeedWordsViewAutoCompleteTextView.getText().toString().toLowerCase();
                         index = index +1;
                     }
 
                     int[] seed = GlobalMethods.GetIntDataArrayByStringArray(GlobalMethods.seedWords.getSeedArrayFromSeedWordList(seedWords));
+
+                    for(int i=0; i<seedWords.length;i++) {
+                        if (!GlobalMethods.seedWords.verifySeedWord(i, seedWords[i], seed)) {
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }
+                        if(tempSeedArrayByCreate != null) {
+                            if(tempSeedArrayByCreate[i] != seed[i]){
+                                progressBar.setVisibility(View.GONE);
+                                return;
+                            }
+                        }
+                    }
+
                     String[] stringArray = Arrays.toString(seed).split("[\\[\\]]")[1].split(", ");
 
                     String jsonText = TextUtils.join(",",stringArray);
